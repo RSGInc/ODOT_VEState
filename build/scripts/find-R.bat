@@ -17,6 +17,7 @@ if NOT [!R_BASE_USER!] == [] (
 		echo R_HOME = !R_HOME! 1>&2
 	)
 )
+set R_HOME=../../../R_4_1_0/App/R-Portable
 if [!R_HOME!] == [] (
 	for /f "usebackq skip=2 tokens=1-2*" %%i in (`reg query %MACHINE_KEY% /v %VALUE_NAME% 2^>nul`) do set R_HOME=%%k
 )
