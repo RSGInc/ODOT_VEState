@@ -1,0 +1,26 @@
+Package: VETransportSupplyUse
+Type: Package
+Title: Create Transport Supply Utilization Characteristics for VE
+Version: 2.0.0
+Date: 2020-08-14
+Author: Aditya Gore <aditya.gore@rsginc.com> [cre], Ben Stabler <ben.stabler@rsginc.com> [cre],  Brian Gregor <gregor@or-analytics.com> [auth]
+Maintainer: Aditya Gore <aditya.gore@rsginc.com>, Ben Stabler <ben.stabler@rsginc.com>
+Copyright: AASHTO
+URL: https://github.com/gregorbj/VisionEval/sources/modules/VETransportSupplyUse
+Description: This package contains modules that creates attributes for utilization of
+      transportation supplies.
+License: file LICENSE
+LazyData: TRUE
+Depends: R (>= 3.6.0)
+Imports:
+    visioneval
+Suggests:
+    knitr
+VignetteBuilder: knitr
+Encoding: UTF-8
+Roxygen: list(load='source')
+RoxygenNote: 7.1.1
+Collate:
+        'CalculateCongestionBase.R'
+        'CalculateCongestionFuture.R'
+        'CalculateCongestionPolicy.R'
