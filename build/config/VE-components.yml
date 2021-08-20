@@ -93,6 +93,15 @@ Components:
       - reshape2
     VE:
       - VE2001NHTS
+  VEHouseholdVehiclesDL:
+    Type: module
+    Path: sources/modules
+    Test: { Script: tests/scripts/test.R, Group: 2 }
+    CRAN:
+      - ordinal
+      - reshape2
+    VE:
+      - VE2001NHTS
 #   VEHouseholdVehiclesWithAdj:
 #     Type: module
 #     Path: sources/modules
@@ -103,6 +112,16 @@ Components:
 #     VE:
 #       - VE2001NHTS
   VELandUse:
+    Type: module
+    Path: sources/modules
+    Test: { Script: tests/scripts/test.R, Group: 2 }
+    CRAN:
+      - fields
+      - geosphere
+    VE:
+      - VE2001NHTS
+      - VESimHouseholds
+  VELandUseDL:
     Type: module
     Path: sources/modules
     Test: { Script: tests/scripts/test.R, Group: 2 }
@@ -132,7 +151,6 @@ Components:
     VE:
       - VEHouseholdTravel
       - VETravelDemandMM
-
   VESimLandUse:
     Type: module
     Path: sources/modules
@@ -142,7 +160,27 @@ Components:
     VE:
       - VELandUse
       - VESimLandUseData
+  VESimLandUseDL:
+    Type: module
+    Path: sources/modules
+    Test: { Script: tests/scripts/test.R, Group: 3 }
+    CRAN:
+      - plot3D
+    VE:
+      - VELandUse
+      - VESimLandUseData
   VETravelPerformance:
+    Type: module
+    Path: sources/modules
+    Test: { Script: tests/scripts/test.R, Group: 4 }
+    CRAN:
+      - filesstrings
+      - stringr
+      - dplyr
+    VE:
+      - VEHouseholdTravel
+      - VEPowertrainsAndFuels
+  VETravelPerformanceDL:
     Type: module
     Path: sources/modules
     Test: { Script: tests/scripts/test.R, Group: 4 }
@@ -193,6 +231,9 @@ Components:
     Type: model
     Path: sources/models
   VE-State:
+    Type: model
+    Path: sources/models
+  VE-State-DL:
     Type: model
     Path: sources/models
   VE-State-Staged:
