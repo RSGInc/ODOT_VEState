@@ -1935,10 +1935,23 @@ CalculateRoadPerformance <- function(L) {
   if (any(Ma == "None")) {
     Vt <- c("Ldv", "HvyTrk", "Bus")
     Cl <- c("None", "Mod", "Hvy", "Sev", "Ext")
+    Rc <- c("Fwy", "Art")
+    ma <- "None"
+    DriverlessDvmtProp_Rc <- calcAveDriverlessDvmtProp(
+      LdvDvmt_Rc = array(0, dim = length(Rc), dimnames = list(Rc)),
+      LdvDriverlessProp = DriverlessDvmtProp_MaTy[ma, "Ldv"],
+      HvyTrkDvmt_Rc = HvyTrkDvmt_MaRc[ma, Rc],
+      HvyTrkDriverlessProp = DriverlessDvmtProp_MaTy[ma, "HvyTrk"],
+      BusDvmt_Rc = BusDvmt_MaRc[ma, c("Fwy", "Art")],
+      BusDriverlessProp = DriverlessDvmtProp_MaTy[ma, "Bus"])
+    DriverlessDvmtProp_Rc[is.na(DriverlessDvmtProp_Rc)] <- 0
     BalanceResults_ls$None <- list(
       Dvmt_VtRc = array(0, dim = c(length(Vt), length(Rc)), dimnames = list(Vt,Rc)),
       FwyDvmt_Cl = setNames(numeric(length(Cl)), Cl),
-      ArtDvmt_Cl = setNames(numeric(length(Cl)), Cl)
+      ArtDvmt_Cl = setNames(numeric(length(Cl)), Cl),
+      SpeedAndDelay_ls = calculateSpeeds(OpsDeployment_MaOp[ma,], 
+                                         OtherOpsEffects_mx, DriverlessDvmtProp_Rc,
+                                         DriverlessFactor_ls)
     )
   }
 

@@ -1012,6 +1012,9 @@ CalculateRoadDvmt <- function(L) {
   HhDvmtWts_Ma <- HhDvmt_Ma * LdvUrbanRoadProp_Ma / UrbanLdvDvmt_Ma
   ComSvcDvmtWts_Ma <- ComSvcDvmt_Ma * LdvUrbanRoadProp_Ma / UrbanLdvDvmt_Ma
   PtVanDvmtWts_Ma <- L$Year$Marea$VanDvmt / UrbanLdvDvmt_Ma
+  HhDvmtWts_Ma[Ma=="None"] <- ifelse(is.na(HhDvmtWts_Ma[Ma=="None"]),0,HhDvmtWts_Ma[Ma=="None"])
+  ComSvcDvmtWts_Ma[Ma=="None"] <- ifelse(is.na(ComSvcDvmtWts_Ma[Ma=="None"]),0,ComSvcDvmtWts_Ma[Ma=="None"])
+  PtVanDvmtWts_Ma[Ma=="None"] <- ifelse(is.na(PtVanDvmtWts_Ma[Ma=="None"]),0,PtVanDvmtWts_Ma[Ma=="None"])
   LdvDriverlessProp_Ma <-  HhDriverlessDvmtProp_Ma * HhDvmtWts_Ma + 
     ComSvcDriverlessProp * ComSvcDvmtWts_Ma + 
     PtVanDriverlessProp * PtVanDvmtWts_Ma

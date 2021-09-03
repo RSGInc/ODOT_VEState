@@ -343,10 +343,10 @@ initializeModel <-
         SameName <- (LoadDstoreName == RunDstoreName)
         SameDir <- (LoadDstoreDir == RunDstoreDir)
         # Copy and load the model state file for the load datastore
+        LoadModelStateFileName <- file.path(RunDstoreDir, "LoadModelState.Rda")
         if (SameDir) {
           file.rename("PreviousModelState.Rda", "LoadModelState.Rda")
         } else {
-          LoadModelStateFileName <- file.path(RunDstoreDir, "LoadModelState.Rda")
           file.copy(file.path(LoadDstoreDir, "ModelState.Rda"), LoadModelStateFileName)
         }
         # JRaw: This will fail with undefined variable if SameDir is TRUE
