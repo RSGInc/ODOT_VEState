@@ -1,0 +1,21 @@
+{
+  "Model": "VE-State_AP",
+  "Scenario": "AP",
+  "Description": "Test of Adopted Plans ",
+  "Region": "Oregon",
+  "BaseYear": "2010",
+  "Years": ["2020", "2025", "2030", "2035", "2040", "2045","2050"],
+  "DatastoreName": "Datastore",
+  "DatastoreType": "RD",
+  "Seed": 1,
+  "RequiredVEPackages": [
+    "VESimHouseholds",
+    "VESimLandUseData",
+    "VESimLandUse",
+    "VESimTransportSupply",
+    "VEHouseholdVehicles",
+    "VEHouseholdTravel",
+    "VEPowertrainsAndFuels",
+    "VETravelPerformance"
+  ]
+}
