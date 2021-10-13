@@ -42,19 +42,19 @@ More details on how these files function and what they do.
 
 This is the base ODOT VE-State model. The inputs folder contain input files from "Common" scenario. The current setup of the base model is run for year 2020, 2025, 2030, 2035, 2040, 2045, and 2050 with 2010 as base year. The *run_model.R* script is similar to *run_model.R* script found in visioneval models with additional post processing scripts sourced at the end of the script. These scripts **CalcMetroMeasuresFunction.R** will output **metro_measures_XXXX.csv** for each model run year and **CalcStateValidationMeasuresFunction.R** will output **state_validation_measures.csv** in the *output* folder.
 
-![image-20211011135017939](.\images\ve_state_base_setup.png)
+![image-20211011135017939](./images/ve_state_base_setup.png)
 
 ### BaseDatastore
 
 This folder should contain the *Datastore* folder created from a historical model runs and the *ModelState.Rda* file that goes along with it.
 
-![image-20211011135756376](.\images\base_datastore.png)
+![image-20211011135756376](./images/base_datastore.png)
 
 ### scenario_inputs
 
 The folder contains the scenario input files that the tmip/emat model will choose from to build scenarios. The structure of this folder will follow the VEScenario model in visioneval repository.
 
-![image-20211011131902720](.\images\scenario_inputs.png)
+![image-20211011131902720](./images/scenario_inputs.png)
 
 ### vestate-emat-files
 
