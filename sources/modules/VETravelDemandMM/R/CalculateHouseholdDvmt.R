@@ -167,7 +167,7 @@ CalculateHouseholdDvmtSpecifications <- list(
       TABLE = "Bzone",
       GROUP = "Year",
       TYPE = "compound",
-      UNITS = "PRSN/SQM",
+      UNITS = "PRSN/ACRE",
       NAVALUE = -1,
       PROHIBIT = c("NA", "< 0"),
       ISELEMENTOF = "",
