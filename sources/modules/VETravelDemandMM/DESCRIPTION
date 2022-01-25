@@ -12,7 +12,7 @@ Description: This package contains a module for the VisionEval framework that si
 License: file LICENSE
 LazyData: TRUE
 Encoding: UTF-8
-Depends:  R (>= 3.6.0)
+Depends: R (>= 3.6.0)
 Imports:
     dplyr,
     purrr,
@@ -30,7 +30,7 @@ Suggests:
     SLD
 VignetteBuilder: knitr
 Roxygen: list(load="pkgload")
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.2
 Remotes:
     cities-lab/NHTS2009,
     cities-lab/SLD
