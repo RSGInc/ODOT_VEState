@@ -1,0 +1,27 @@
+Package: VESimTransportSupply
+Type: Package
+Title: Create Transportation System Attributes for VE
+Version: 2.0.0
+Date: 2020-08-14
+Author: Brian Gregor [aut, cre]
+Maintainer: Brian Gregor <gregorb@or-analytics.com>
+Copyright: AASHTO
+Description: This package contains several modules which attribute the
+    metropolitan area and Bzones with transportation supply characteristics
+    including freeway lane miles, public transportation revenue miles,
+    neighborhood transit accessibility, and calculation of transit vehicle miles
+    by vehicle type from transit revenue miles. This package is intended for use
+    in conjunction with the VESimLandUse package.
+License: file LICENSE
+LazyData: TRUE
+Depends: R (>= 3.6.0)
+Imports:
+    visioneval,
+    VESimLandUse,
+    VETransportSupply
+Suggests:
+    knitr
+VignetteBuilder: knitr
+Encoding: UTF-8
+Roxygen: list(load='source')
+RoxygenNote: 7.1.1
