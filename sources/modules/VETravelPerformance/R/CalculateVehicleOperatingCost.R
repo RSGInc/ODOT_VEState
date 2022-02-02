@@ -1068,6 +1068,18 @@ CalculateVehicleOperatingCostSpecifications <- list(
       DESCRIPTION = "VMT tax paid by household"
     ),
     item(
+      NAME = "ExtraVmtTax",
+      TABLE = "Household",
+      GROUP = "Year",
+      TYPE = "currency",
+      UNITS = "USD.2010",
+      NAVALUE = -1,
+      PROHIBIT = c("< 0"),
+      ISELEMENTOF = "",
+      SIZE = 0,
+      DESCRIPTION = "Extra VMT tax paid by household"
+    ),
+    item(
       NAME = "AveMRTCostPM",
       TABLE = "Household",
       GROUP = "Year",
@@ -1464,6 +1476,8 @@ CalculateVehicleOperatingCost <- function(L) {
   #Get VMT tax at the household level
   VmtTax_Hh <-
     tapply(VmtTax_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
+  #Get the extra VMT tax at the household level
+  ExtraVmtTax_Hh <- rep(ExtraVmtTax, times = length(L$Year$Household$HhId))
   #Calculate maintenance, repair, tire cost (only for owned vehicles) per mile
   AveMRTCostPM_Hh <-
     tapply(MRTCostRate_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
@@ -1502,6 +1516,7 @@ CalculateVehicleOperatingCost <- function(L) {
     AvePevChrgPM = AvePevChrgPM_Hh,
     AveCongPricePM = AveCongPricePM_Hh,
     VmtTax = VmtTax_Hh,
+    ExtraVmtTax = ExtraVmtTax_Hh,
     AveMRTCostPM = AveMRTCostPM_Hh,
     AveEnergyCostPM = AveEnergyCostPM_Hh,
     AveNonResPkgCostPM = AveNonResPkgCostPM_Hh,

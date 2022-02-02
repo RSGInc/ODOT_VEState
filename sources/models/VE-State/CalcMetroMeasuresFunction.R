@@ -2252,30 +2252,13 @@ calcMetropolitanMeasures <-
       Description = "Annual household vehicle operating expenses for vehicle maintenance and repair, energy costs (from fuel and power), road use taxes, environmental and social costs, non-residential parking costs, pay-as-you-drive insurance costs, and car service"
     )
     
-    #Annual vehicle ownership costs
-    #------------------------------
-    TotalVehOwnCost_Ma = summarizeDatasets(
-      Expr = "sum(OwnCost)",
-      Units = c(
-        OwnCost = "USD",
-        Marea = ""
-      ),
-      By_ = "Marea",
-      Table = "Household",
-      Group = Year,
-      QueryPrep_ls = QPrep_ls
-    )[Ma]
-    attributes(TotalVehOwnCost_Ma) <- list(
-      Units = "dollars",
-      Description = "Annual household vehicle ownership costs for depreciation, financing, insurance, residential parking, and registration taxes"
-    )
-    
     #Annual insurance costs
     #----------------------
     InsCost_Ma = summarizeDatasets(
-      Expr = "sum(InsCost)",
+      Expr = "sum(InsCost[HasPaydIns == 0])",
       Units = c(
         InsCost = "USD",
+        HasPaydIns = "binary",
         Marea = ""
       ),
       By_ = "Marea",
@@ -2340,6 +2323,14 @@ calcMetropolitanMeasures <-
     attributes(ResPkgCost_Ma) <- list(
       Units = "dollars",
       Description = "Annual residential parking costs"
+    )
+    
+    #Annual vehicle ownership costs
+    #------------------------------
+    TotalVehOwnCost_Ma <- VehOwnTax_Ma + InsCost_Ma + DeprCost_Ma + FinCost_Ma + ResPkgCost_Ma
+    attributes(TotalVehOwnCost_Ma) <- list(
+      Units = "dollars",
+      Description = "Annual household vehicle ownership costs for depreciation, financing, insurance, residential parking, and registration taxes"
     )
     
     #Total vehicle costs

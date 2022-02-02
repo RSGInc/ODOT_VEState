@@ -702,6 +702,21 @@ calcStateValidationMeasures <-
         Units = "dollars",
         Description = "VMT tax collected in dollars"
       )
+      #Annual extra VMT tax
+      ExtraVmtTax <- summarizeDatasets(
+        Expr = "sum(ExtraVmtTax * Dvmt) * 365",
+        Units_ = c(
+          ExtraVmtTax = "USD",
+          Dvmt = "MI/DAY"
+        ),
+        Table = "Household",
+        Group = Year,
+        QueryPrep_ls = QPrep_ls
+      )
+      attributes(ExtraVmtTax) <- list(
+        Units = "dollars",
+        Description = "Extra VMT tax collected in dollars"
+      )
       #Annual congestion fees
       CongFee <- summarizeDatasets(
         Expr = "sum(AveCongPricePM * Dvmt) * 365",
@@ -866,25 +881,12 @@ calcStateValidationMeasures <-
         Units = "dollars",
         Description = "Annual household vehicle operating expenses for vehicle maintenance and repair, energy costs (from fuel and power), road use taxes, environmental and social costs, non-residential parking costs, pay-as-you-drive insurance costs, and car service"
       )
-      #Annual vehicle ownership costs
-      TotalVehOwnCost = summarizeDatasets(
-        Expr = "sum(OwnCost)",
-        Units = c(
-          OwnCost = "USD"
-        ),
-        Table = "Household",
-        Group = Year,
-        QueryPrep_ls = QPrep_ls
-      )
-      attributes(TotalVehOwnCost) <- list(
-        Units = "dollars",
-        Description = "Annual household vehicle ownership costs for depreciation, financing, insurance, residential parking, and registration taxes"
-      )
       #Annual insurance costs
       InsCost = summarizeDatasets(
-        Expr = "sum(InsCost)",
+        Expr = "sum(InsCost[HasPaydIns == 0])",
         Units = c(
-          InsCost = "USD"
+          InsCost = "USD",
+          HasPaydIns = "binary"
         ),
         Table = "Household",
         Group = Year,
@@ -935,6 +937,12 @@ calcStateValidationMeasures <-
       attributes(ResPkgCost) <- list(
         Units = "dollars",
         Description = "Annual residential parking costs"
+      )
+      #Annual vehicle ownership costs
+      TotalVehOwnCost <- VehOwnTax + InsCost + DeprCost + FinCost + ResPkgCost
+      attributes(TotalVehOwnCost) <- list(
+        Units = "dollars",
+        Description = "Annual household vehicle ownership costs for depreciation, financing, insurance, residential parking, and registration taxes"
       )
       #Total vehicle costs
       TotalVehCost <- TotalVehUseCost + TotalVehOwnCost
@@ -999,6 +1007,7 @@ calcStateValidationMeasures <-
           "ComSvcFuelTax", 
           "TotalFuelTax",
           "VmtTax",
+          "ExtraVmtTax",
           "CongFee",
           "VehOwnTax",
           "TotalTaxRev",
