@@ -1969,13 +1969,423 @@ calcMetropolitanMeasures <-
       Ma = Ma
       )
     
-
+    #===========================================================        
+    #COST AND REVENUE SUMMARIES
+    #===========================================================
+    
+    #Annual household fuel taxes
+    #---------------------------
+    HHFuelTax_Ma <- summarizeDatasets(
+      Expr = "sum((AveFuelTaxPM) * Dvmt) * 365 + sum((AvePevChrgPM) * Dvmt) * 365",
+      Units = c(
+        AveFuelTaxPM = "USD",
+        AvePevChrgPM = "USD",
+        Dvmt = "MI/DAY",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Household",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(HHFuelTax_Ma) <- list(
+      Units = "dollars",
+      Description = "Annual household fuel taxes charged to both hydrocarbon consuming and plug-in electric vehicles"
+    )
+    
+    #Annual commercial service fuel taxes
+    #------------------------------------
+    FuelTax <- summarizeDatasets(
+      Expr = "mean(FuelTax)",
+      Units_ = c(
+        FuelTax = "USD",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Azone",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(FuelTax) <- list(
+      Units = "dollars",
+      Description = "Tax per gas gallon equivalent of fuel in dollars"
+    )
+    
+    ComSvcFuelTax_Ma <- (MareaComSvcGGE_Ma * FuelTax) * 365
+    attributes(ComSvcFuelTax_Ma) <- list(
+      Units = "dollars",
+      Description = "Total fuel tax for commercial service vehicles"
+    )
+    
+    #Annual fuel tax revenue
+    #-----------------------
+    TotalFuelTax_Ma <- HHFuelTax_Ma + ComSvcFuelTax_Ma
+    attributes(TotalFuelTax_Ma) <- list(
+      Units = "dollars",
+      Description = "Total annual fuel tax revenue"
+    )
+    
+    #Annual VMT taxes
+    #----------------
+    VmtTax_Ma <- summarizeDatasets(
+      Expr = "sum(VmtTax * Dvmt) * 365",
+      Units_ = c(
+        VmtTax = "USD",
+        Dvmt = "MI/DAY",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Household",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(VmtTax_Ma) <- list(
+      Units = "dollars",
+      Description = "VMT tax collected in dollars"
+    )
+    
+    #Annual congestion fees
+    #----------------------
+    CongFee_Ma <- summarizeDatasets(
+      Expr = "sum(AveCongPricePM * Dvmt) * 365",
+      Units = c(
+        AveCongPricePM = "USD",
+        Dvmt = "MI/DAY",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Household",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(CongFee_Ma) <- list(
+      Units = "dollars",
+      Description = "Annual congestion fees collected"
+    )
+    
+    #Annual vehicle ownership taxes
+    #------------------------------
+    VehOwnTax_Ma <- summarizeDatasets(
+      Expr = "sum(OwnTaxCost)",
+      Units = c(
+        OwnTaxCost = "USD",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Household",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(VehOwnTax_Ma) <- list(
+      Units = "dollars",
+      Description = "Annual household vehicle ownership taxes"
+    )
+    
+    #Annual maintenance and repair user costs
+    #----------------------------------------
+    MRTCost_Ma <- summarizeDatasets(
+      Expr = "sum(AveMRTCostPM * Dvmt) * 365",
+      Units_ = c(
+        AveMRTCostPM = "USD",
+        Dvmt = "MI/DAY",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Household",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(MRTCost_Ma) <- list(
+      Units = "dollars",
+      Description = "Annual maintenance, repair, tire user costs"
+    )
+    
+    #Annual energy user costs (from fuel and power)
+    #----------------------------------------------
+    EnergyCost_Ma <- summarizeDatasets(
+      Expr = "sum(AveEnergyCostPM * Dvmt) * 365",
+      Units_ = c(
+        AveEnergyCostPM = "USD",
+        Dvmt = "MI/DAY",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Household",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(EnergyCost_Ma) <- list(
+      Units = "dollars",
+      Description = "Annual energy (fuel and electric power) costs"
+    )
+    
+    #Annual environmental and social costs
+    #-------------------------------------
+    SocEnvCost_Ma <- summarizeDatasets(
+      Expr = "sum(AveSocEnvCostPM * Dvmt) * 365",
+      Units_ = c(
+        AveSocEnvCostPM = "USD",
+        Dvmt = "MI/DAY",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Household",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(SocEnvCost_Ma) <- list(
+      Units = "dollars",
+      Description = "Annual cost of the social and environmental impacts from vehicle travel"
+    )
+    
+    #Annual environmental costs
+    #--------------------------
+    EnvCost_Ma <- summarizeDatasets(
+      Expr = "sum(AveEnvCostPM * Dvmt) * 365",
+      Units_ = c(
+        AveEnvCostPM = "USD",
+        Dvmt = "MI/DAY",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Household",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(EnvCost_Ma) <- list(
+      Units = "dollars",
+      Description = "Annual cost of environmental and climate impacts from vehicle travel"
+    )
+    
+    #Annual out-of-pocket environmental costs
+    #----------------------------------------
+    EnvCostPaid_Ma <- summarizeDatasets(
+      Expr = "sum(AveEnvCostPaidPM * Dvmt) * 365",
+      Units_ = c(
+        AveEnvCostPaidPM = "USD",
+        Dvmt = "MI/DAY",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Household",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(EnvCostPaid_Ma) <- list(
+      Units = "dollars",
+      Description = "Annual out-of-pocket cost of environmental and climate impacts from vehicle travel"
+    )
+    
+    #Annual pay-as-you-drive insurance costs
+    #---------------------------------------
+    PaydInsCost_Ma <- summarizeDatasets(
+      Expr = "sum(AvePaydInsCostPM * Dvmt) * 365",
+      Units_ = c(
+        AvePaydInsCostPM = "USD",
+        Dvmt = "MI/DAY",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Household",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(PaydInsCost_Ma) <- list(
+      Units = "dollars",
+      Description = "Annual PAYD insurance"
+    )
+    
+    #Annual car service costs
+    #------------------------
+    CarSvcCost_Ma <- summarizeDatasets(
+      Expr = "sum(AveCarSvcCostPM * Dvmt) * 365",
+      Units_ = c(
+        AveCarSvcCostPM = "USD",
+        Dvmt = "MI/DAY",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Household",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(CarSvcCost_Ma) <- list(
+      Units = "dollars",
+      Description = "Annual car service cost"
+    )
+    
+    #Annual non-residential parking costs
+    #-----------------------------------
+    NonResPkgCost_Ma <- summarizeDatasets(
+      Expr = "sum(AveNonResPkgCostPM * Dvmt) * 365",
+      Units_ = c(
+        AveNonResPkgCostPM = "USD",
+        Dvmt = "MI/DAY",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Household",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(NonResPkgCost_Ma) <- list(
+      Units = "dollars",
+      Description = "Annual non-residential parking cost"
+    )
+    
+    #Annual vehicle operating costs
+    #------------------------------
+    TotalVehUseCost_Ma <- summarizeDatasets(
+      Expr = "sum(AveVehCostPM * Dvmt) * 365",
+      Units = c(
+        AveVehCostPM = "USD",
+        Dvmt = "MI/DAY",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Household",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(TotalVehUseCost_Ma) <- list(
+      Units = "dollars",
+      Description = "Annual household vehicle operating expenses for vehicle maintenance and repair, energy costs (from fuel and power), road use taxes, environmental and social costs, non-residential parking costs, pay-as-you-drive insurance costs, and car service"
+    )
+    
+    #Annual insurance costs
+    #----------------------
+    InsCost_Ma = summarizeDatasets(
+      Expr = "sum(InsCost[HasPaydIns == 0])",
+      Units = c(
+        InsCost = "USD",
+        HasPaydIns = "binary",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Household",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(InsCost_Ma) <- list(
+      Units = "dollars",
+      Description = "Annual vehicle insurance costs"
+    )
+    
+    #Annual vehicle depreciation costs
+    #---------------------------------
+    DeprCost_Ma = summarizeDatasets(
+      Expr = "sum(DeprCost)",
+      Units = c(
+        DeprCost = "USD",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Household",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(DeprCost_Ma) <- list(
+      Units = "dollars",
+      Description = "Annual household vehicle depreciation costs"
+    )
+  
+    #Annual vehicle financing costs
+    #------------------------------
+    FinCost_Ma = summarizeDatasets(
+      Expr = "sum(FinCost)",
+      Units = c(
+        FinCost = "USD",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Household",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(FinCost_Ma) <- list(
+      Units = "dollars",
+      Description = "Annual household vehicle financing costs"
+    )
+    
+    #Annual residential parking costs
+    #-------------------------------
+    ResPkgCost_Ma = summarizeDatasets(
+      Expr = "sum(ResPkgCost)",
+      Units = c(
+        ResPkgCost = "USD",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Household",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(ResPkgCost_Ma) <- list(
+      Units = "dollars",
+      Description = "Annual residential parking costs"
+    )
+    
+    #Annual vehicle ownership costs
+    #------------------------------
+    TotalVehOwnCost_Ma <- VehOwnTax_Ma + InsCost_Ma + DeprCost_Ma + FinCost_Ma + ResPkgCost_Ma
+    attributes(TotalVehOwnCost_Ma) <- list(
+      Units = "dollars",
+      Description = "Annual household vehicle ownership costs for depreciation, financing, insurance, residential parking, and registration taxes"
+    )
+    
+    #Total vehicle costs
+    #-----------------
+    TotalVehCost_Ma <- TotalVehUseCost_Ma + TotalVehOwnCost_Ma
+    attributes(TotalVehCost_Ma) <- list(
+      Units = "dollars",
+      Description = "Total annual costs from vehicle ownership and operating expenses"
+    )
+    
+    #Total tax revenue
+    #-----------------
+    TotalTaxRev_Ma <- TotalFuelTax_Ma + VehOwnTax_Ma + VmtTax_Ma
+    attributes(TotalTaxRev_Ma) <- list(
+      Units = "dollars",
+      Description = "Total annual tax revenue collected from fuel taxes, VMT taxes, and vehicle ownership taxes"
+    )
+    
+    #Data frame of cost and revenue measures
+    #---------------------------------------
+    Cost_df <- makeMeasureDataFrame(
+      DataNames_ = c(
+        "HHFuelTax_Ma",
+        "ComSvcFuelTax_Ma",
+        "TotalFuelTax_Ma",
+        "VmtTax_Ma",
+        "CongFee_Ma",
+        "VehOwnTax_Ma",
+        "TotalTaxRev_Ma",
+        "MRTCost_Ma",
+        "EnergyCost_Ma",
+        "SocEnvCost_Ma",
+        "EnvCost_Ma",
+        "EnvCostPaid_Ma",
+        "PaydInsCost_Ma",
+        "CarSvcCost_Ma",
+        "NonResPkgCost_Ma",
+        "InsCost_Ma",
+        "DeprCost_Ma",
+        "FinCost_Ma",
+        "ResPkgCost_Ma",
+        "TotalVehOwnCost_Ma",
+        "TotalVehUseCost_Ma",
+        "TotalVehCost_Ma"
+      ),
+      Ma = Ma
+    )
+    
     #Return data frame of all results
     #--------------------------
     rbind(
       HhCharacteristics_df,
       LuCharacteristics_df,
       Dvmt_df,
-      CO2e_df
+      CO2e_df,
+      Cost_df
     )
   }
