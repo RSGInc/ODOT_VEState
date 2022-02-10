@@ -277,142 +277,10 @@ Figure 2: Distribution of Survey Day DVMT per Household in the 2017 NHTS
 Figure 3: Comparison between AADVMT and Survey Day DVMT per Household in the 2017 NHTS
 </p>
 </div>
-<!-- The regression models estimated in [Model Estimation](#model-estimation) use a calculated column, "Total Freight-Intensive Employment," as an explanatory variable, intended to represent relatively more truck intensive industries (although not including freight specific facilities and employment such as warehousing that were represented seperately). RSG calculated this new column by taking the sum of employment across the following TRANS employment categories: -->
-<!-- * Retail, Major Shops, and Street Shops -->
-<!-- * Industrial and High Tech -->
-<!-- * Health and Hospitals -->
-<!-- * Post Office -->
-<!-- Sample values for several TAZs for each of these industries are shown in Table \@ref(tab:employment-table-a). -->
-<!-- ```{r employment-table-a} -->
-<!-- freight_intense_cols <- c("EmpRetail", "EmpMajorShops", "EmpStreetShops", "EmpIndustrial", "EmpHighTech", "EmpHealth", "EmpHospitals", "EmpPostOffice") -->
-<!-- knitr::kable(head(tripGenExplain[,.SD, .SDcols = c("TAZ", "EMP_calc_intense", freight_intense_cols)]), -->
-<!--              col.names = c("TAZ", "Total Freight-Intensive Employment", -->
-<!--                            "Retail", "Major Shops", "Street Shops", "Industrial", "High Tech", "Health", "Hospitals", "Post Office"), -->
-<!--              caption = "Employment-based explanatory variables") -->
-<!-- ``` -->
-<!-- The regresssion models also used a calculated column "Total Food and Entertainment Employment," as an explanatory variable. RSG calculated this new column by taking the sum of employment across the following employment categories: -->
-<!-- * Restaurants -->
-<!-- * Theatres -->
-<!-- Sample values for several TAZs for each of these industries are shown in Table \@ref(tab:employment-table-b) -->
-<!-- ```{r employment-table-b} -->
-<!-- downtown_cols <- downtown_cols <- c("EmpRestaurants", "EmpTheatres") -->
-<!-- knitr::kable(head(tripGenExplain[,.SD, .SDcols = c("TAZ", "EMP_calc_downtown", downtown_cols)]), -->
-<!--              col.names = c("TAZ", "Total Foodand Entertainment Employment", -->
-<!--                            "Restaurants", "Theatres"), -->
-<!--              caption = "Employment-based explanatory variables") -->
-<!-- ``` -->
-<!-- ## Freight-Intensive Facilities {-#freight-intensive-facilities} -->
-<!-- RSG identified potential freight-intensive facilities from the establishment survey data. Here "establishment" and "facility" are synonymous. Facilities with 2-digit NAICS codes of 48 and 49 were eligible. Each establishment record included the extablishment's six-digit NAICS code. Most of the records included the number of full-time workers employed at the establishment. -->
-<!-- During estimation, warehouse and trucking facilities proved to be a significant predictor of long distance truck trips. In particular, RSG calculated the following explanatory columns from this facility information. They are also shown in Table \@ref(tab:freight-facility-table), along with the Warehousing category employment from the TRANS employment data: -->
-<!-- * Total Facility Employment: Number of full time employees at eligible facility in this zone. -->
-<!-- * Number of Trucking Facilities: Number of trucking (NAICS 484) facilities in this TAZ. -->
-<!-- ```{r freight-facility-table} -->
-<!-- facil_cols <- c("Facilities.FT_Emp", "EmpWarehousing") -->
-<!-- knitr::kable(head(tripGenExplain[,.SD, .SDcols = c("TAZ", facil_cols)]), -->
-<!--              col.names = c("TAZ", "Total Facility Employment", "Warehousing Emp. (TRANS)"), -->
-<!--              caption = "Freight Facility and Warehousing explanatory variables") -->
-<!-- ``` -->
-<!-- # Dependent Variables {-#dependent-vars} -->
-<!-- To train these models, RSG used trip productions and attractions from the expanded GPS data. This dataset was in trip table format before RSG used it here. This means that each origin-destination transportation analysis zone ("TAZ")" pair had a number of trips. Furthermore, RSG had balanced the expanded GPS trip table. This means that the number of trip productions and attractions match for each TAZ. To create the training data for these models, RSG aggregated the trip table by origin and destination TAZ. Sample productions and attractions for several TAZs are shown in Table \@ref(tab:dependent-vars-table). -->
-<!-- This training dataset does not include all of the trips in the expanded GPS dataset. It excludes trips with their origin **and** destination outside the model region. It also excludes trips with their origin **and** destination inside the model region. -->
-<!-- Before RSG estimated the models, RSG multiplied the total trip productions and attractions of each zone by 365. Then RSG rounded the number of productions and attractions to the nearest integer. This converted the model to give results in the units of productions and attraction per year instead of per day. This also allowed RSG to use count regression models. These models do much better than ordinary linear regression at describing the behavior of variables distributed like the trips in the NCR (See the section [Model Estimation](#model-estimation) for more information.) -->
-<!-- ```{r dependent-vars-table} -->
-<!-- taz_system <- as.data.table(TAZ_System_Shape)[,geometry:=NULL] -->
-<!-- truck_trips_expanded <- merge(truck_trips_expanded, -->
-<!--                               taz_system[,.(TAZ, OTAZ_INTERNAL = INTERNAL)], -->
-<!--                               by.x = "OTAZ", by.y = "TAZ") -->
-<!-- truck_trips_expanded <- merge(truck_trips_expanded, -->
-<!--                               taz_system[,.(TAZ, DTAZ_INTERNAL = INTERNAL)], -->
-<!--                               by.x = "DTAZ", by.y = "TAZ") -->
-<!-- market_corresp <- data.table(OTAZ_INTERNAL = c(0,0,1,1), -->
-<!--                              DTAZ_INTERNAL = c(0,1,0,1), -->
-<!--                              MARKET = c("EE", "EI", "IE", "II")) -->
-<!-- truck_trips_expanded <- merge(truck_trips_expanded, market_corresp, -->
-<!--                               by = c("OTAZ_INTERNAL", "DTAZ_INTERNAL")) -->
-<!-- prods <- truck_trips_expanded[MARKET%in%c("IE","EI"),.(OrigsExpanded = sum(trips)), by = .(OTAZ)] -->
-<!-- setnames(prods, "OTAZ", "TAZ") -->
-<!-- attrs <- truck_trips_expanded[MARKET%in%c("IE","EI"),.(DestsExpanded = sum(trips)), by = .(DTAZ)] -->
-<!-- setnames(attrs, "DTAZ", "TAZ") -->
-<!-- zoneTripsExpanded <- merge(prods, attrs, by = "TAZ") -->
-<!-- zoneTripsExpanded[,':='(OrigsExpanded = as.integer(round(OrigsExpanded * 365)), -->
-<!--                         DestsExpanded = as.integer(round(DestsExpanded * 365)))] -->
-<!-- knitr::kable(head(zoneTripsExpanded), col.names = c("TAZ", "Productions Expanded", "Attractions Expanded"), -->
-<!--              caption = "Dependent variables, showing the equality of productions and attractions") -->
-<!-- ``` -->
-<!-- # Model Estimation {-#model-estimation} -->
-<!-- RSG used two indicators of model quality during the estimation and calibration process. First, RSG checked that the models predicted dependent variable values that closely matched the training data. Second, RSG required that the models reproduce the total trip productions and attractions observed in the expanded GPS data. -->
-<!-- As mentioned in [Dependent Variables](#dependent-vars), RSG used balanced expanded GPS trip data to train these models. Because productions and attractions matched, RSG did not estimate separate productions and attractions models. RSG only estimated two models, one for productions and attractions at internal zones, and one for productions and attractions at external zones. For consistency, RSG used the expanded productions from the training dataset as the dependent variable in both models. However, the results would be the same if RSG used expanded attractions instead. -->
-<!-- ```{r, include=FALSE} -->
-<!-- # Merge trips onto zone system to check for missing zones -->
-<!-- TAZ_System_Trips <- merge(taz_system, zoneTripsExpanded, -->
-<!--                           by = "TAZ", all.x = TRUE) -->
-<!-- # Merge trips onto socio-economic data to prepare for estimation -->
-<!-- ProdAttrModelData <- merge(tripGenExplain, zoneTripsExpanded, -->
-<!--                            by = "TAZ", all.y = TRUE) -->
-<!-- ProdAttrModelData[TAZ_System_Trips, INTERNAL := i.INTERNAL, on = "TAZ"] -->
-<!-- ProdAttrModelDataPrediction <- copy(ProdAttrModelData) -->
-<!-- # Remove columns which will not be useful for prediction or are linearly -->
-<!-- # dependent on more helpful columns -->
-<!-- # ProdAttrModelData[,':='(DestsExpanded = NULL, -->
-<!-- #                         TAZ = NULL, -->
-<!-- #                         SOURCE_EMPLOY = NULL, -->
-<!-- #                         POP = NULL, -->
-<!-- #                         EMP_FINANCE = NULL, -->
-<!-- #                         EMP_INFO = NULL, -->
-<!-- #                         EMP_MANAGEMENT = NULL, -->
-<!-- #                         EMP_PROFESSIONAL = NULL, -->
-<!-- #                         EMP_PUBLICADMIN = NULL, -->
-<!-- #                         EMP_REALESTATE = NULL, -->
-<!-- #                         EMP_ADMINWASTE = NULL, -->
-<!-- #                         EMP_OTHERSERVICE = NULL, -->
-<!-- #                         EMP_CONSTRUCTION = NULL)] -->
-<!-- # ProdAttrModelData[, (freight_intense_cols) := NULL] -->
-<!-- # ProdAttrModelData[, (downtown_cols) := NULL] -->
-<!-- # Calculate new columns which might help with prediction -->
-<!-- ProdAttrModelData[,':='(log_EMP_calc_downtown = log1p(EMP_calc_downtown), -->
-<!--                         log_EMP_calc_intense = log1p(EMP_calc_intense), -->
-<!--                         log_Facilities.FT_Emp = log1p(Facilities.FT_Emp))] -->
-<!-- # Set display names -->
-<!-- setnames(ProdAttrModelData, "OrigsExpanded", "Productions_Expanded") -->
-<!-- setnames(ProdAttrModelDataPrediction, "OrigsExpanded", "Productions_Expanded") -->
-<!--          # Create internal and external datasets -->
-<!-- int_prod_data <- ProdAttrModelData[INTERNAL==1] -->
-<!-- int_prod_data[, INTERNAL := NULL] -->
-<!-- # ext_prod_data <- ProdAttrModelData[INTERNAL==0] -->
-<!-- # ext_prod_data[, INTERNAL := NULL] -->
-<!-- # ext_prod_data[, (facil_cols) := NULL] -->
-<!-- # ext_prod_data[, log_Facilities.FT_Emp := NULL] -->
-<!-- # Check reasonableness of expanded truck trip matrix -->
-<!-- total_prods_internal <- int_prod_data[, sum(Productions_Expanded)] -->
-<!-- #total_prods_external <- ext_prod_data[, sum(Productions_Expanded)] -->
-<!-- ``` -->
-<!-- ```{r emp-transform-fig, fig.cap="Illustration of the Log-Transformation of the Freight-Intensive Facilities Employment Variable"} -->
-<!-- employ_plot <- int_prod_data[, .(Raw = as.numeric(EMP_calc_intense), -->
-<!--                                  `Log-Transformed` = log1p(EMP_calc_intense))] -->
-<!-- employ_plot <- melt(employ_plot, measure.vars = colnames(employ_plot), -->
-<!--                     variable.name = "transformation", -->
-<!--                     value.name = "Freight-Intensive Employment") -->
-<!-- ggplot(employ_plot) + -->
-<!--   geom_histogram(aes(x=`Freight-Intensive Employment`), bins = 30, -->
-<!--                  fill = getRsgColors("orange")) + -->
-<!--   facet_wrap("transformation", scales = "free") + -->
-<!--   scale_fill_rsg(palette = "hots") + -->
-<!--   labs(title = "Histogram of Freight-Intensive Employment\nby TAZ inside the NCR", -->
-<!--        x = "Total TAZ Freight-Intensive Employment", -->
-<!--        y = "Count of TAZs") -->
-<!-- ``` -->
-<!-- Even with the transformation, the trip attractions and productions distribution is still highly skewed. However, the transformed distribution is significantly improved from the raw distribution, as seen in Figure \@ref(fig:trips-transform-fig). -->
-<!-- ```{r trips-transform-fig, fig.cap="Illustration of the Log-Transformation of the Trip Productions/Attractions Variable"} -->
-<!-- trip_plot <- int_prod_data[, .(`Trip Productions/Attractions` = Productions_Expanded)] -->
-<!-- ggplot(trip_plot) + -->
-<!--   geom_histogram(aes(x=`Trip Productions/Attractions`), bins = 30, -->
-<!--                  fill = getRsgColors("orange")) + -->
-<!--   scale_fill_rsg(palette = "hots") + -->
-<!--   labs(title = "Histogram of Trip Productions/Attractions\nby TAZ inside the NCR", -->
-<!--        x = "Total TAZ Trip Productions/Attractions", -->
-<!--        y = "Count of TAZs") -->
-<!-- ``` -->
 </div>
+</div>
+<div id="model-estimation" class="section level1 unnumbered">
+<h1>Model Estimation</h1>
 <div id="aadvmt-new" class="section level2 unnumbered">
 <h2>2017 NHTS AADVMT Model</h2>
 <p>The following table shows the AADVMT model estimated using the 2017 NHTS for Metro areas and Non-Metro area.</p>
@@ -744,8 +612,254 @@ F Statistic
 </td>
 </tr>
 </table>
-<!--chapter:end:model_estimation_summary.Rmd-->
+<p>The following tables compare the AADVMT models estimated using the 2009 and 2017 NHTS.</p>
+<p>This first comparison is between 2009 and 2017 AADVMT Models for Metro areas.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">VarName</th>
+<th align="right">NHTS2009</th>
+<th align="right">NHTS2017</th>
+<th align="right">Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-1.333</td>
+<td align="right">-0.727</td>
+<td align="right">0.545</td>
+</tr>
+<tr class="even">
+<td align="left">Age0to14</td>
+<td align="right">0.107</td>
+<td align="right">0.052</td>
+<td align="right">0.484</td>
+</tr>
+<tr class="odd">
+<td align="left">Age65Plus</td>
+<td align="right">-0.075</td>
+<td align="right">-0.074</td>
+<td align="right">0.994</td>
+</tr>
+<tr class="even">
+<td align="left">CENSUS_RNE</td>
+<td align="right">-0.109</td>
+<td align="right">-0.069</td>
+<td align="right">0.637</td>
+</tr>
+<tr class="odd">
+<td align="left">CENSUS_RS</td>
+<td align="right">0.051</td>
+<td align="right">0.022</td>
+<td align="right">0.432</td>
+</tr>
+<tr class="even">
+<td align="left">CENSUS_RW</td>
+<td align="right">-0.092</td>
+<td align="right">-0.113</td>
+<td align="right">1.222</td>
+</tr>
+<tr class="odd">
+<td align="left">D1B</td>
+<td align="right">-0.003</td>
+<td align="right">-0.003</td>
+<td align="right">0.832</td>
+</tr>
+<tr class="even">
+<td align="left">D2A_WRKEMP</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">0.703</td>
+</tr>
+<tr class="odd">
+<td align="left">D3bpo4</td>
+<td align="right">-0.001</td>
+<td align="right">-0.001</td>
+<td align="right">0.856</td>
+</tr>
+<tr class="even">
+<td align="left">D4c</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">-Inf</td>
+</tr>
+<tr class="odd">
+<td align="left">Drivers</td>
+<td align="right">0.705</td>
+<td align="right">0.725</td>
+<td align="right">1.029</td>
+</tr>
+<tr class="even">
+<td align="left">FwyLaneMiPC</td>
+<td align="right">101.341</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">LifeCycleCouple w/o children</td>
+<td align="right">-0.036</td>
+<td align="right">-0.062</td>
+<td align="right">1.700</td>
+</tr>
+<tr class="even">
+<td align="left">LifeCycleEmpty Nester</td>
+<td align="right">-0.256</td>
+<td align="right">-0.368</td>
+<td align="right">1.436</td>
+</tr>
+<tr class="odd">
+<td align="left">LifeCycleSingle</td>
+<td align="right">-0.234</td>
+<td align="right">-0.342</td>
+<td align="right">1.464</td>
+</tr>
+<tr class="even">
+<td align="left">LogIncome</td>
+<td align="right">0.268</td>
+<td align="right">0.185</td>
+<td align="right">0.691</td>
+</tr>
+<tr class="odd">
+<td align="left">TranRevMiPC:D4c</td>
+<td align="right">-0.020</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">Workers</td>
+<td align="right">0.186</td>
+<td align="right">0.125</td>
+<td align="right">0.674</td>
+</tr>
+<tr class="odd">
+<td align="left">log1p(VehPerDriver)</td>
+<td align="right">1.794</td>
+<td align="right">2.467</td>
+<td align="right">1.376</td>
+</tr>
+</tbody>
+</table>
+<p>This second comparison is between 2009 and 2017 AADVMT Models for Non-Metro areas.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">VarName</th>
+<th align="right">NHTS2009</th>
+<th align="right">NHTS2017</th>
+<th align="right">Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-1.416</td>
+<td align="right">-2.013</td>
+<td align="right">1.422</td>
+</tr>
+<tr class="even">
+<td align="left">Age0to14</td>
+<td align="right">0.102</td>
+<td align="right">0.087</td>
+<td align="right">0.856</td>
+</tr>
+<tr class="odd">
+<td align="left">Age65Plus</td>
+<td align="right">-0.077</td>
+<td align="right">0.035</td>
+<td align="right">-0.455</td>
+</tr>
+<tr class="even">
+<td align="left">CENSUS_RNE</td>
+<td align="right">-0.112</td>
+<td align="right">0.088</td>
+<td align="right">-0.782</td>
+</tr>
+<tr class="odd">
+<td align="left">CENSUS_RS</td>
+<td align="right">0.058</td>
+<td align="right">0.150</td>
+<td align="right">2.575</td>
+</tr>
+<tr class="even">
+<td align="left">CENSUS_RW</td>
+<td align="right">-0.176</td>
+<td align="right">-0.062</td>
+<td align="right">0.352</td>
+</tr>
+<tr class="odd">
+<td align="left">D1B</td>
+<td align="right">-0.008</td>
+<td align="right">-0.009</td>
+<td align="right">1.111</td>
+</tr>
+<tr class="even">
+<td align="left">D1B:D2A_EPHHM</td>
+<td align="right">-0.027</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">D2A_EPHHM</td>
+<td align="right">-0.084</td>
+<td align="right">-0.144</td>
+<td align="right">1.709</td>
+</tr>
+<tr class="even">
+<td align="left">Drivers</td>
+<td align="right">0.744</td>
+<td align="right">0.573</td>
+<td align="right">0.770</td>
+</tr>
+<tr class="odd">
+<td align="left">HhSize</td>
+<td align="right">0.017</td>
+<td align="right">0.154</td>
+<td align="right">9.150</td>
+</tr>
+<tr class="even">
+<td align="left">LifeCycleCouple w/o children</td>
+<td align="right">-0.013</td>
+<td align="right">0.228</td>
+<td align="right">-16.923</td>
+</tr>
+<tr class="odd">
+<td align="left">LifeCycleEmpty Nester</td>
+<td align="right">-0.208</td>
+<td align="right">0.023</td>
+<td align="right">-0.110</td>
+</tr>
+<tr class="even">
+<td align="left">LifeCycleSingle</td>
+<td align="right">-0.216</td>
+<td align="right">0.194</td>
+<td align="right">-0.897</td>
+</tr>
+<tr class="odd">
+<td align="left">LogIncome</td>
+<td align="right">0.288</td>
+<td align="right">0.303</td>
+<td align="right">1.052</td>
+</tr>
+<tr class="even">
+<td align="left">Workers</td>
+<td align="right">0.177</td>
+<td align="right">0.179</td>
+<td align="right">1.014</td>
+</tr>
+<tr class="odd">
+<td align="left">log1p(VehPerDriver)</td>
+<td align="right">1.852</td>
+<td align="right">2.154</td>
+<td align="right">1.163</td>
+</tr>
+</tbody>
+</table>
 </div>
+</div>
+<div id="model-application-testing" class="section level1 unnumbered">
+<h1>Model Application Testing</h1>
+<!--chapter:end:model_estimation_summary.Rmd-->
 </div>
 
 
