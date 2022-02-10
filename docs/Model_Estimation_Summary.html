@@ -390,39 +390,59 @@ div.tocify {
 <!--        y = "Count of TAZs") -->
 <!-- ``` -->
 </div>
-<div id="aadvmt-new-metro" class="section level2 unnumbered">
-<h2>2017 NHTS AADVMT Model for Metro Areas</h2>
-<p>The following table shows the AADVMT model estimated using the 2017 NHTS for Metro areas.</p>
+<div id="aadvmt-new" class="section level2 unnumbered">
+<h2>2017 NHTS AADVMT Model</h2>
+<p>The following table shows the AADVMT model estimated using the 2017 NHTS for Metro areas and Non-Metro area.</p>
 <table style="text-align:center">
 <caption>
-<strong>Regression model summary for 2017 AADVMT Model for Metro Areas</strong>
+<strong>Regression model summary for 2017 AADVMT Model for Metro Areas and Non-Metro Areas</strong>
 </caption>
 <tr>
-<td colspan="2" style="border-bottom: 1px solid black">
+<td colspan="3" style="border-bottom: 1px solid black">
 </td>
 </tr>
 <tr>
 <td style="text-align:left">
 </td>
-<td>
+<td colspan="2">
 <em>Dependent variable:</em>
 </td>
 </tr>
 <tr>
 <td>
 </td>
-<td colspan="1" style="border-bottom: 1px solid black">
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="2">
+AADVMT
 </td>
 </tr>
 <tr>
 <td style="text-align:left">
 </td>
 <td>
-AADVMT
+METRO
+</td>
+<td>
+NONMETRO
 </td>
 </tr>
 <tr>
-<td colspan="2" style="border-bottom: 1px solid black">
+<td style="text-align:left">
+</td>
+<td>
+(1)
+</td>
+<td>
+(2)
+</td>
+</tr>
+<tr>
+<td colspan="3" style="border-bottom: 1px solid black">
 </td>
 </tr>
 <tr>
@@ -430,20 +450,20 @@ AADVMT
 Drivers
 </td>
 <td>
-0.726<sup>***</sup>
+0.726<sup>***</sup> (0.006)
+</td>
+<td>
+0.575<sup>***</sup> (0.030)
 </td>
 </tr>
 <tr>
 <td style="text-align:left">
+HhSize
 </td>
 <td>
-(0.006)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
 </td>
 <td>
+0.151<sup>***</sup> (0.023)
 </td>
 </tr>
 <tr>
@@ -451,20 +471,10 @@ Drivers
 Workers
 </td>
 <td>
-0.124<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
+0.124<sup>***</sup> (0.005)
 </td>
 <td>
-(0.005)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
+0.178<sup>***</sup> (0.021)
 </td>
 </tr>
 <tr>
@@ -472,20 +482,10 @@ Workers
 LogIncome
 </td>
 <td>
-0.399<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
+0.399<sup>***</sup> (0.007)
 </td>
 <td>
-(0.007)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
+0.621<sup>***</sup> (0.033)
 </td>
 </tr>
 <tr>
@@ -493,20 +493,10 @@ LogIncome
 Age0to14
 </td>
 <td>
-0.052<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
+0.052<sup>***</sup> (0.005)
 </td>
 <td>
-(0.005)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
+0.089<sup>***</sup> (0.027)
 </td>
 </tr>
 <tr>
@@ -514,20 +504,10 @@ Age0to14
 Age65Plus
 </td>
 <td>
--0.076<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
+-0.076<sup>***</sup> (0.006)
 </td>
 <td>
-(0.006)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
+0.032 (0.023)
 </td>
 </tr>
 <tr>
@@ -535,20 +515,10 @@ Age65Plus
 log1p(VehPerDriver)
 </td>
 <td>
-2.468<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
+2.468<sup>***</sup> (0.017)
 </td>
 <td>
-(0.017)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
+2.150<sup>***</sup> (0.058)
 </td>
 </tr>
 <tr>
@@ -556,20 +526,10 @@ log1p(VehPerDriver)
 LifeCycleCouple w/o children
 </td>
 <td>
--0.061<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
+-0.061<sup>***</sup> (0.009)
 </td>
 <td>
-(0.009)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
+0.226<sup>***</sup> (0.049)
 </td>
 </tr>
 <tr>
@@ -577,20 +537,10 @@ LifeCycleCouple w/o children
 LifeCycleEmpty Nester
 </td>
 <td>
--0.369<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
+-0.369<sup>***</sup> (0.012)
 </td>
 <td>
-(0.012)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
+0.019 (0.059)
 </td>
 </tr>
 <tr>
@@ -598,20 +548,10 @@ LifeCycleEmpty Nester
 LifeCycleSingle
 </td>
 <td>
--0.345<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
+-0.345<sup>***</sup> (0.011)
 </td>
 <td>
-(0.011)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
+0.188<sup>***</sup> (0.063)
 </td>
 </tr>
 <tr>
@@ -619,20 +559,10 @@ LifeCycleSingle
 CENSUS_RNE
 </td>
 <td>
--0.068<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
+-0.068<sup>***</sup> (0.010)
 </td>
 <td>
-(0.010)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
+0.090<sup>**</sup> (0.045)
 </td>
 </tr>
 <tr>
@@ -640,20 +570,10 @@ CENSUS_RNE
 CENSUS_RS
 </td>
 <td>
-0.023<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
+0.023<sup>***</sup> (0.008)
 </td>
 <td>
-(0.008)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
+0.150<sup>***</sup> (0.028)
 </td>
 </tr>
 <tr>
@@ -661,20 +581,10 @@ CENSUS_RS
 CENSUS_RW
 </td>
 <td>
--0.112<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
+-0.112<sup>***</sup> (0.009)
 </td>
 <td>
-(0.009)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
+-0.063 (0.043)
 </td>
 </tr>
 <tr>
@@ -682,18 +592,7 @@ CENSUS_RW
 D4c
 </td>
 <td>
--0.00000<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.00000)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
+-0.00000<sup>***</sup> (0.00000)
 </td>
 <td>
 </td>
@@ -703,20 +602,10 @@ D4c
 D1B
 </td>
 <td>
--0.003<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
+-0.003<sup>***</sup> (0.0002)
 </td>
 <td>
-(0.0002)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
+-0.009<sup>**</sup> (0.004)
 </td>
 </tr>
 <tr>
@@ -724,18 +613,7 @@ D1B
 D2A_WRKEMP
 </td>
 <td>
--0.0002
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.0001)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
+-0.0002 (0.0001)
 </td>
 <td>
 </td>
@@ -745,426 +623,7 @@ D2A_WRKEMP
 D3bpo4
 </td>
 <td>
--0.001<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.0001)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-Constant
-</td>
-<td>
-0.552<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.021)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td colspan="2" style="border-bottom: 1px solid black">
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-Observations
-</td>
-<td>
-110,941
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-R<sup>2</sup>
-</td>
-<td>
-0.478
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-Adjusted R<sup>2</sup>
-</td>
-<td>
-0.478
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-Residual Std. Error
-</td>
-<td>
-0.939 (df = 110924)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-F Statistic
-</td>
-<td>
-6,353.340<sup>***</sup> (df = 16; 110924)
-</td>
-</tr>
-<tr>
-<td colspan="2" style="border-bottom: 1px solid black">
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-<em>Note:</em>
-</td>
-<td style="text-align:right">
-<sup><em></sup>p&lt;0.1; <sup><strong></sup>p&lt;0.05; <sup></strong></em></sup>p&lt;0.01
-</td>
-</tr>
-</table>
-</div>
-<div id="aadvmt-new-non-metro" class="section level2 unnumbered">
-<h2>2017 NHTS AADVMT Model for Non-Metro Areas</h2>
-<p>The following table shows the AADVMT model estimated using the 2017 NHTS for Non-Metro areas.</p>
-<table style="text-align:center">
-<caption>
-<strong>Regression model summary for 2017 AADVMT Model for Non-Metro Areas</strong>
-</caption>
-<tr>
-<td colspan="2" style="border-bottom: 1px solid black">
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-<em>Dependent variable:</em>
-</td>
-</tr>
-<tr>
-<td>
-</td>
-<td colspan="1" style="border-bottom: 1px solid black">
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-AADVMT
-</td>
-</tr>
-<tr>
-<td colspan="2" style="border-bottom: 1px solid black">
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-Drivers
-</td>
-<td>
-0.575<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.030)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-HhSize
-</td>
-<td>
-0.151<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.023)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-Workers
-</td>
-<td>
-0.178<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.021)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-CENSUS_RNE
-</td>
-<td>
-0.090<sup>**</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.045)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-CENSUS_RS
-</td>
-<td>
-0.150<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.028)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-CENSUS_RW
-</td>
-<td>
--0.063
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.043)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-LogIncome
-</td>
-<td>
-0.621<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.033)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-Age0to14
-</td>
-<td>
-0.089<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.027)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-Age65Plus
-</td>
-<td>
-0.032
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.023)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-log1p(VehPerDriver)
-</td>
-<td>
-2.150<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.058)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-LifeCycleCouple w/o children
-</td>
-<td>
-0.226<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.049)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-LifeCycleEmpty Nester
-</td>
-<td>
-0.019
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.059)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-LifeCycleSingle
-</td>
-<td>
-0.188<sup>***</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.063)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-D1B
-</td>
-<td>
--0.009<sup>**</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
-(0.004)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
+-0.001<sup>***</sup> (0.0001)
 </td>
 <td>
 </td>
@@ -1174,20 +633,9 @@ D1B
 D2A_EPHHM
 </td>
 <td>
--0.138<sup>**</sup>
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
 </td>
 <td>
-(0.060)
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
-</td>
-<td>
+-0.138<sup>**</sup> (0.060)
 </td>
 </tr>
 <tr>
@@ -1195,29 +643,22 @@ D2A_EPHHM
 Constant
 </td>
 <td>
-0.132
-</td>
-</tr>
-<tr>
-<td style="text-align:left">
+0.552<sup>***</sup> (0.021)
 </td>
 <td>
-(0.100)
+0.132 (0.100)
 </td>
 </tr>
 <tr>
-<td style="text-align:left">
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td colspan="2" style="border-bottom: 1px solid black">
+<td colspan="3" style="border-bottom: 1px solid black">
 </td>
 </tr>
 <tr>
 <td style="text-align:left">
 Observations
+</td>
+<td>
+110,941
 </td>
 <td>
 6,529
@@ -1228,12 +669,18 @@ Observations
 R<sup>2</sup>
 </td>
 <td>
+0.478
+</td>
+<td>
 0.474
 </td>
 </tr>
 <tr>
 <td style="text-align:left">
 Adjusted R<sup>2</sup>
+</td>
+<td>
+0.478
 </td>
 <td>
 0.473
@@ -1244,6 +691,9 @@ Adjusted R<sup>2</sup>
 Residual Std. Error
 </td>
 <td>
+0.939 (df = 110924)
+</td>
+<td>
 0.982 (df = 6513)
 </td>
 </tr>
@@ -1252,18 +702,21 @@ Residual Std. Error
 F Statistic
 </td>
 <td>
+6,353.340<sup>***</sup> (df = 16; 110924)
+</td>
+<td>
 391.765<sup>***</sup> (df = 15; 6513)
 </td>
 </tr>
 <tr>
-<td colspan="2" style="border-bottom: 1px solid black">
+<td colspan="3" style="border-bottom: 1px solid black">
 </td>
 </tr>
 <tr>
 <td style="text-align:left">
 <em>Note:</em>
 </td>
-<td style="text-align:right">
+<td colspan="2" style="text-align:right">
 <sup><em></sup>p&lt;0.1; <sup><strong></sup>p&lt;0.05; <sup></strong></em></sup>p&lt;0.01
 </td>
 </tr>
