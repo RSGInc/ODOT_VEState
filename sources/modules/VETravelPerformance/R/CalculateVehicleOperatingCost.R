@@ -1008,6 +1008,18 @@ CalculateVehicleOperatingCostSpecifications <- list(
       DESCRIPTION = "Average out-of-pocket cost paid in dollars of the environmental impacts per mile of vehicle travel"
     ),
     item(
+      NAME = "AveSocCostPaidPM",
+      TABLE = "Household",
+      GROUP = "Year",
+      TYPE = "currency",
+      UNITS = "USD.2010",
+      NAVALUE = -1,
+      PROHIBIT = c("< 0"),
+      ISELEMENTOF = "",
+      SIZE = 0,
+      DESCRIPTION = "Average out-of-pocket cost paid in dollars of the social impacts per mile of vehicle travel"
+    ),
+    item(
       NAME = "AveRoadUseTaxPM",
       TABLE = "Household",
       GROUP = "Year",
@@ -1454,9 +1466,12 @@ CalculateVehicleOperatingCost <- function(L) {
   #Calculate average environmental impacts costs per mile by household
   AveEnvCostPM_Hh <- 
     tapply(ClimateImpactsRate_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
-  #Calculate average environmental impacts costs paid per mile by household
+  #Calculate average environmental costs paid per mile by household
   AveEnvCostPaidPM_Hh <- 
     tapply(ClimateCostRate_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
+  #Calculate average social costs paid per mile by household
+  AveSocCostPaidPM_Hh <- 
+    tapply(SocialCostRate_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
   #Calculate average road use taxes per mile
   AveRoadUseTaxPM_Hh <-
     tapply(RoadUseCostRate_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
@@ -1511,6 +1526,7 @@ CalculateVehicleOperatingCost <- function(L) {
     AveSocEnvCostPM = AveSocEnvCostPM_Hh,
     AveEnvCostPM = AveEnvCostPM_Hh,
     AveEnvCostPaidPM = AveEnvCostPaidPM_Hh,
+    AveSocCostPaidPM = AveSocCostPaidPM_Hh,
     AveRoadUseTaxPM = AveRoadUseTaxPM_Hh,
     AveFuelTaxPM = AveFuelTaxPM_Hh,
     AvePevChrgPM = AvePevChrgPM_Hh,

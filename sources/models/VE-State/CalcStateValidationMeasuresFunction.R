@@ -647,10 +647,24 @@ calcStateValidationMeasures <-
       # Cost and Revenue Summaries
       #----------------------
       #Annual household fuel taxes
-      HHFuelTax <- summarizeDatasets(
-        Expr = "sum((AveFuelTaxPM) * Dvmt) * 365 + sum((AvePevChrgPM) * Dvmt) * 365",
+      HhFuelTax <- summarizeDatasets(
+        Expr = "sum(AveFuelTaxPM * Dvmt) * 365",
         Units = c(
           AveFuelTaxPM = "USD",
+          Dvmt = "MI/DAY"
+        ),
+        Table = "Household",
+        Group = Year,
+        QueryPrep_ls = QPrep_ls
+      )
+      attributes(HhFuelTax) <- list(
+        Units = "dollars",
+        Description = "Annual household fuel taxes charged to hydrocarbon consuming vehicles"
+      )
+      #Annual household PEV fuel taxes
+      HhPevFuelTax <- summarizeDatasets(
+        Expr = "sum(AvePevChrgPM * Dvmt) * 365",
+        Units = c(
           AvePevChrgPM = "USD",
           Dvmt = "MI/DAY"
         ),
@@ -658,9 +672,9 @@ calcStateValidationMeasures <-
         Group = Year,
         QueryPrep_ls = QPrep_ls
       )
-      attributes(HHFuelTax) <- list(
+      attributes(HhPevFuelTax) <- list(
         Units = "dollars",
-        Description = "Annual household fuel taxes charged to both hydrocarbon consuming and plug-in electric vehicles"
+        Description = "Annual household fuel taxes charged to plug-in electric vehicles"
       )
       #Annual commercial service fuel taxes
       FuelTax <- summarizeDatasets(
@@ -682,10 +696,10 @@ calcStateValidationMeasures <-
         Description = "Total fuel tax for commercial service vehicles"
       )
       #Annual fuel tax revenue
-      TotalFuelTax <- HHFuelTax + ComSvcFuelTax
+      TotalFuelTax <- HhFuelTax + HhPevFuelTax + ComSvcFuelTax
       attributes(TotalFuelTax) <- list(
         Units = "dollars",
-        Description = "Total annual fuel tax revenue"
+        Description = "Total annual fuel tax revenue from households (for both hydrocarbon and electric vehicles) and commercial vehicles"
       )
       #Annual VMT taxes
       VmtTax <- summarizeDatasets(
@@ -821,6 +835,21 @@ calcStateValidationMeasures <-
         Units = "dollars",
         Description = "Annual out-of-pocket cost of environmental and climate impacts from vehicle travel"
       )
+      #Annual out-of-pocket social costs
+      SocCostPaid <- summarizeDatasets(
+        Expr = "sum(AveSocCostPaidPM * Dvmt) * 365",
+        Units_ = c(
+          AveSocCostPaidPM = "USD",
+          Dvmt = "MI/DAY"
+        ),
+        Table = "Household",
+        Group = Year,
+        QueryPrep_ls = QPrep_ls
+      )
+      attributes(SocCostPaid) <- list(
+        Units = "dollars",
+        Description = "Annual out-of-pocket cost of social impacts from vehicle travel"
+      )
       #Annual pay-as-you-drive insurance costs
       PaydInsCost <- summarizeDatasets(
         Expr = "sum(AvePaydInsCostPM * Dvmt) * 365",
@@ -879,7 +908,7 @@ calcStateValidationMeasures <-
       )
       attributes(TotalVehUseCost) <- list(
         Units = "dollars",
-        Description = "Annual household vehicle operating expenses for vehicle maintenance and repair, energy costs (from fuel and power), road use taxes, environmental and social costs, non-residential parking costs, pay-as-you-drive insurance costs, and car service"
+        Description = "Annual household vehicle operating expenses for vehicle maintenance and repair, energy costs (from fuel and power), road use taxes (including congestion fees), environmental and social costs, non-residential parking costs, pay-as-you-drive insurance costs, and car service"
       )
       #Annual insurance costs
       InsCost = summarizeDatasets(
@@ -1003,7 +1032,8 @@ calcStateValidationMeasures <-
           "ComSvcCO2eRate",
           "PTVanCO2eRate",
           "LdvCO2eRate",
-          "HHFuelTax",
+          "HhFuelTax",
+          "HhPevFuelTax",
           "ComSvcFuelTax", 
           "TotalFuelTax",
           "VmtTax",
@@ -1016,6 +1046,7 @@ calcStateValidationMeasures <-
           "SocEnvCost",
           "EnvCost",
           "EnvCostPaid",
+          "SocCostPaid",
           "PaydInsCost",
           "CarSvcCost",
           "NonResPkgCost",
