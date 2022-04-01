@@ -27,7 +27,7 @@ A list:
 \source{
 BudgetHouseholdDvmt.R script.
 
-BudgetHouseholdDvmt.R script.
+BudgetHouseholdDvmtDL.R script.
 }
 \usage{
 OpPropModel_ls

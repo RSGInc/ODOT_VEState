@@ -62,13 +62,13 @@ ISELEMENTOF - Categorical values that are permitted. Values in the datastore are
 |Drivers     |Household |Year  |people    |PRSN                                              |NA, < 0  |                           |
 |Age0to14    |Household |Year  |people    |PRSN                                              |NA, < 0  |                           |
 |Age65Plus   |Household |Year  |people    |PRSN                                              |NA, < 0  |                           |
-|Income      |Household |Year  |currency  |USD.2009                                          |NA, < 0  |                           |
+|Income      |Household |Year  |currency  |USD.2017                                          |NA, < 0  |                           |
 |LifeCycle   |Household |Year  |character |category                                          |         |00, 01, 02, 03, 04, 09, 10 |
 |Vehicles    |Household |Year  |vehicles  |VEH                                               |NA, < 0  |                           |
 |LocType     |Household |Year  |character |category                                          |NA       |Urban, Town, Rural         |
 |Bzone       |Household |Year  |character |none                                              |         |                           |
 |Bzone       |Bzone     |Year  |character |none                                              |         |                           |
-|D1B         |Bzone     |Year  |compound  |PRSN/SQM                                          |NA, < 0  |                           |
+|D1B         |Bzone     |Year  |compound  |PRSN/ACRE                                         |NA, < 0  |                           |
 |D2A_WRKEMP  |Bzone     |Year  |compound  |PRSN/JOB                                          |NA, < 0  |                           |
 |D2A_EPHHM   |Bzone     |Year  |double    |employment & household entropy                    |NA, < 0  |                           |
 |D3bpo4      |Bzone     |Year  |double    |pedestrian-oriented intersections per square mile |NA       |                           |
