@@ -183,7 +183,7 @@ CalculateAltModeTripsSpecifications <- list(
       TABLE = "Household",
       GROUP = "Year",
       TYPE = "currency",
-      UNITS = "USD.2009",
+      UNITS = "USD.2017",
       NAVALUE = -1,
       PROHIBIT = c("NA", "< 0"),
       ISELEMENTOF = "",
