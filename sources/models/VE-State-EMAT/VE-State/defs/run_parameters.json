@@ -1,7 +1,7 @@
 {
-  "Model": "VE-State_AP",
-  "Scenario": "AP",
-  "Description": "Test of Adopted Plans ",
+  "Model": "VE-State AP22",
+  "Scenario": "AP22 MM",
+  "Description": "Test of Adopted Plans 22 Multimodal",
   "Region": "Oregon",
   "BaseYear": "2010",
   "Years": ["2020", "2025", "2030", "2035", "2040", "2045","2050"],
@@ -15,6 +15,7 @@
     "VESimTransportSupply",
     "VEHouseholdVehicles",
     "VEHouseholdTravel",
+    "VETravelDemandMM",
     "VEPowertrainsAndFuels",
     "VETravelPerformance"
   ]
