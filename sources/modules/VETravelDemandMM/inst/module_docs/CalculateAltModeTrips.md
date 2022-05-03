@@ -75,7 +75,7 @@ ISELEMENTOF - Categorical values that are permitted. Values in the datastore are
 |Drivers     |Household |Year  |people    |PRSN                                              |NA, < 0  |                           |
 |Age0to14    |Household |Year  |people    |PRSN                                              |NA, < 0  |                           |
 |Age65Plus   |Household |Year  |people    |PRSN                                              |NA, < 0  |                           |
-|Income      |Household |Year  |currency  |USD.2009                                          |NA, < 0  |                           |
+|Income      |Household |Year  |currency  |USD.2017                                          |NA, < 0  |                           |
 |LifeCycle   |Household |Year  |character |category                                          |         |00, 01, 02, 03, 04, 09, 10 |
 |Vehicles    |Household |Year  |vehicles  |VEH                                               |NA, < 0  |                           |
 |Bzone       |Household |Year  |character |none                                              |         |                           |
