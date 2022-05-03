@@ -55,19 +55,23 @@ class VEStateModel(FilesCoreModel):
 			A YAML file that defines the scope for these model
 			runs. If not given, the default scope stored in this
 			package directly is used.
+		run_hlt (boolean, optional):
+			True if the model is used for high level tool and False
+			if running for OTP. Default is False.
 	"""
 
-	def __init__(self, db=None, db_filename="vestate.db", scope=None):
+	def __init__(self, db=None, db_filename="vestate.db", scope=None, run_hlt=False):
 
 		# Make a temporary directory for this instance.
 		self.master_directory = tempfile.TemporaryDirectory(dir=join_norm(this_directory,'Temporary'))
 		os.chdir(self.master_directory.name)
 		_logger.warning(f"changing cwd to {self.master_directory.name}")
 		cwd = self.master_directory.name
+		self._run_hlt = run_hlt
 
 		# Housekeeping for this example:
 		# Also copy the CONFIG and SCOPE files
-		for i in ['model-config', 'scope']:
+		for i in ['model-config']:
 			shutil.copy2(
 				join_norm(this_directory, 'vestate-emat-files', f"vestate-{i}.yml"),
 				join_norm(cwd, f"vestate-{i}.yml"),
@@ -75,6 +79,13 @@ class VEStateModel(FilesCoreModel):
 
 		if scope is None:
 			scope = Scope(join_norm(cwd, "vestate-scope.yml"))
+			for i in ['scope']:
+				shutil.copy2(
+					join_norm(this_directory, 'vestate-emat-files', f"vestate-{i}.yml"),
+					join_norm(cwd, f"vestate-{i}.yml"),
+				)
+		else:
+			scope.dump(filename=join_norm(cwd, f"vestate-{i}.yml"))
 
 		# Initialize a new daatabase if none was given.
 		if db is None:
@@ -105,9 +116,13 @@ class VEStateModel(FilesCoreModel):
 
 		# Populate the model_path directory of the files-based model.
 		copy_tree(
-			join_norm(this_directory, 'VE-State'),
+			join_norm(this_directory, self.model_path),
 			join_norm(cwd, self.model_path),
 		)
+
+		# Create an output directory
+		if not os.path.isdir(join_norm(cwd, self.model_path, self.rel_output_path)):
+			os.mkdir(os.path.exists(join_norm(cwd, self.model_path, self.rel_output_path)))
 
 		self._hist_datastore_dir = join_norm(self.config['model_hist_datastore'])
 
@@ -246,19 +261,28 @@ class VEStateModel(FilesCoreModel):
 		# The process of manipulating each input file is broken out
 		# into discrete sub-methods, as each step is loosely independent
 		# and having separate methods makes this clearer.
-		#self._manipulate_model_parameters_json(params)
-		self._manipulate_ludensity(params)
-		self._manipulate_intdensity(params)
-		self._manipulate_population(params)
-		# self._manipulate_income(params)
-		self._manipulate_ldvecodrv(params)
-		# self._manipulate_carsvcavail(params)
-		# self._manipulate_shdcarsvc(params)
-		# self._manipulate_drvlessadj(params)
-		# self._manipulate_drvless_param(params)
-		# self._manipulate_drvlessvehsales(params)
-		# self._manipulate_cichange(params)
-		self._manipulate_inv(params)
+		if not self._run_hlt:
+			#self._manipulate_model_parameters_json(params)
+			self._manipulate_ludensity(params)
+			self._manipulate_intdensity(params)
+			self._manipulate_population(params)
+			# self._manipulate_income(params)
+			self._manipulate_ldvecodrv(params)
+			# self._manipulate_carsvcavail(params)
+			# self._manipulate_shdcarsvc(params)
+			# self._manipulate_drvlessadj(params)
+			# self._manipulate_drvless_param(params)
+			# self._manipulate_drvlessvehsales(params)
+			# self._manipulate_cichange(params)
+			self._manipulate_inv(params)
+		
+
+		# High Level Tool Scenarios
+		if self._run_hlt:
+			self._manipulate_expand_roads(params)
+			self._manipulate_transit(params)
+			self._manipulate_bikewalk(params)
+			self._manipulate_operations(params)
 		_logger.info("ODOT OTP VEState SETUP complete")
 
 
@@ -600,6 +624,84 @@ class VEStateModel(FilesCoreModel):
 		}
 
 		return self._manipulate_by_categorical_drop_in(params, 'INVESTMENTSCEN', cat_mapping, 'I1')
+
+	def _manipulate_expand_roads(self, params):
+		"""
+		Prepare the expand road investment files
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		cat_mapping = {
+			'none': '0',
+			'low': '1',
+			'mid': '2',
+			'high': '3',
+		}
+
+		return self._manipulate_by_categorical_drop_in(params, 'EXPANDROADS', cat_mapping, 'HLE1')
+
+	def _manipulate_transit(self, params):
+		"""
+		Prepare the transit investment files
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		cat_mapping = {
+			'low': '1',
+			'mid': '2',
+			'high': '3',
+		}
+
+		return self._manipulate_by_categorical_drop_in(params, 'TRANSIT', cat_mapping, 'HLT1')
+
+
+	def _manipulate_bikewalk(self, params):
+		"""
+		Prepare the population files
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		cat_mapping = {
+			'low': '1',
+			'mid': '2',
+			'high': '3',
+		}
+
+		return self._manipulate_by_categorical_drop_in(params, 'BIKEWALK', cat_mapping, 'HLB1')
+
+
+	def _manipulate_operations(self, params):
+		"""
+		Prepare the population files
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		cat_mapping = {
+			'low': '1',
+			'mid': '2',
+			'high': '3',
+		}
+
+		return self._manipulate_by_categorical_drop_in(params, 'OPERATIONS', cat_mapping, 'HLO1')
+
+
+
 
 	def run(self):
 		"""

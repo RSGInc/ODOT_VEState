@@ -1,11 +1,11 @@
 
-model_path: ./VE-State
+model_path: ./VE-State-MM
 model_archive: E:/Projects/Clients/odot/ODOT_VEState/Github/sources/models/VE-State-EMAT/VisionEval-Archive
-model_source: E:/Projects/Clients/odot/ODOT_VEState/Github/built/av_mm_module/4.1.0/runtime/models/VE-State
+model_source: E:/Projects/Clients/odot/ODOT_VEState/Github/built/emat_setup/4.1.0/runtime/models/VE-State
 model_hist_datastore: E:/Projects/Clients/odot/ODOT_VEState/Github/sources/models/VE-State-EMAT/BaseDatastore
 model_temp_folder: ./Temporary
 
 rel_output_path: ./output
-r_library_path: E:/Projects/Clients/odot/ODOT_VEState/Github/built/av_mm_module/4.1.0/ve-lib
-r_runtime_path: E:/Projects/Clients/odot/ODOT_VEState/Github/built/av_mm_module/4.1.0/runtime
+r_library_path: E:/Projects/Clients/odot/ODOT_VEState/Github/built/emat_setup/4.1.0/ve-lib
+r_runtime_path: E:/Projects/Clients/odot/ODOT_VEState/Github/built/emat_setup/4.1.0/runtime
 r_executable: E:/Projects/Clients/odot/ODOT_VEState/R_4_1_0/App/R-Portable/bin
