@@ -442,25 +442,25 @@ CalculateHouseholdDvmt <- function(L) {
   Preds <- Preds %>%
     mutate(y=ifelse(is.na(y) | y < 0, 0.01, y))
   
-  # # Apply random draw to the predictions
-  # # Distribution parameters
-  # XiVal <- -0.6
-  # XiVal_NM <- -0.7
-  # OmegaVal <- 1.7
-  # AlphaVal <- 5
-  # DrawScale <- 0.25
-  # 
-  # MetroDraw_ <- rmsn(n = sum(D_df$metro=="metro"),
-  #                    xi = XiVal, 
-  #                    Omega = OmegaVal, 
-  #                    alpha = AlphaVal) * DrawScale
-  # NonMetroDraw_ <- rmsn(n = sum(D_df$metro!="metro"),
-  #                       xi = XiVal_NM,
-  #                       Omega = OmegaVal,
-  #                       alpha = AlphaVal) * DrawScale
-  # 
-  # Preds[["y"]][D_df$metro=="metro"] = Preds[["y"]][D_df$metro=="metro"] * (1+MetroDraw_)
-  # Preds[["y"]][D_df$metro!="metro"] = Preds[["y"]][D_df$metro!="metro"] * (1+NonMetroDraw_)
+  # Apply random draw to the predictions
+  # Distribution parameters
+  XiVal <- -0.6
+  XiVal_NM <- -0.7
+  OmegaVal <- 1.7
+  AlphaVal <- 5
+  DrawScale <- 0.25
+  
+  MetroDraw_ <- rmsn(n = sum(D_df$metro=="metro"),
+                     xi = XiVal, 
+                     Omega = OmegaVal, 
+                     alpha = AlphaVal) * DrawScale
+  NonMetroDraw_ <- rmsn(n = sum(D_df$metro!="metro"),
+                        xi = XiVal_NM,
+                        Omega = OmegaVal,
+                        alpha = AlphaVal) * DrawScale
+  
+  Preds[["y"]][D_df$metro=="metro"] = Preds[["y"]][D_df$metro=="metro"] * (1+MetroDraw_)
+  Preds[["y"]][D_df$metro!="metro"] = Preds[["y"]][D_df$metro!="metro"] * (1+NonMetroDraw_)
   
   #Apply the 95th percentile model
   #-------------------------------
