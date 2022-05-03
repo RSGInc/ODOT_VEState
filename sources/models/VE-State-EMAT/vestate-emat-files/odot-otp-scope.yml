@@ -1,0 +1,788 @@
+---
+# VEState Scope Definition for High Level Scenario Planning Tool
+
+scope:
+    name: VEState
+    desc: VisionEval State Strategic Planning Model. High level tool
+
+inputs:
+
+    # LAND-USE
+    LUDENSITYMIX:
+        # TMIP - CATEGORICAL
+        # SCENARIOFOLDER: L1
+        # FILENAME: marea_mix_targets.csv
+        shortname: Urban Mix Prop
+        ptype: exogenous uncertainty
+        dtype: cat
+        desc: Urban proportion for each marea by year
+        default: AP
+        values:
+            - AP   # AP 22 input
+            - PVOP # Preservation/Operation input
+            - MM   # Multimodal input
+    # LUDENSITYMIX:
+    #     # TMIP - MANIPULATION
+    #     # SCENARIOFOLDER: L1
+    #     # FILENAME: marea_mix_targets.csv
+    #     shortname: Urban Mix Prop
+    #     ptype: exogenous uncertainty
+    #     dtype: float
+    #     desc: Urban proportion for each marea by year
+    #     default: 0 # Default 10% of marea is urban
+    #                  # marea_mix_targets: UrbanMixProp
+    #     min: -0.2
+    #                  # marea_mix_targets: UrbanMixProp
+    #     max: 0.2
+    #                  # marea_mix_targets: UrbanMixProp
+    INTDENSITYSCEN:
+        # TMIP - MIXTURE
+        # SCENARIOFOLDER: L2
+        # FILENAME: marea_d3bpo4_adj.csv
+        shortname: D3BPO4 Adj
+        ptype: exogenous uncertainty
+        dtype: float
+        desc: D3BPO4 adjustment factor for each marea by year by Urban, Town, and Rural segments.
+        default: 0 # Default no adjustment to the D3BPO4 (AP)
+                   # marea_d3bpo4_adj: UrbanD3bpo4Adj,TownD3bpo4Adj,RuralD3bpo4Adj
+        max: 1
+                   # marea_d3bpo4_adj: UrbanD3bpo4Adj,TownD3bpo4Adj,RuralD3bpo4Adj (MM)
+        min: 0
+                   # marea_d3bpo4_adj: UrbanD3bpo4Adj,TownD3bpo4Adj,RuralD3bpo4Adj
+    # INTDENSITYSCEN:
+    #     # TMIP - MANIPULATION
+    #     # SCENARIOFOLDER: L2
+    #     # FILENAME: marea_d3bpo4_adj.csv
+    #     shortname: D3BPO4 Adj
+    #     ptype: exogenous uncertainty
+    #     dtype: float
+    #     desc: D3BPO4 adjustment factor for each marea by year by Urban, Town, and Rural segments.
+    #     default: 0 # Default no adjustment to the D3BPO4
+    #                # marea_d3bpo4_adj: UrbanD3bpo4Adj,TownD3bpo4Adj,RuralD3bpo4Adj
+    #     max: 2
+    #                # marea_d3bpo4_adj: UrbanD3bpo4Adj,TownD3bpo4Adj,RuralD3bpo4Adj
+    #     min: -2
+    #                # marea_d3bpo4_adj: UrbanD3bpo4Adj,TownD3bpo4Adj,RuralD3bpo4Adj
+            
+    # SOCIO-ECONOMIC FACOTRS
+    HHPOPGROWTHRATE:
+        # TMIP - CATEGORICAL
+        # SCENARIOFOLDER: SE1
+        # FILENAME: azone_hh_pop_by_age.csv
+        # FILENAME: azone_relative_employment.csv
+        # FILENAME: azone_loc_type_land_area.csv
+        shortname: Population Characteristics
+        ptype: exogenous uncertainty
+        dtype: cat
+        desc: Age and relative employment distribution across population by azone and year.
+        default: mid
+        values:
+            - low    #
+                     # azone_hh_pop_by_age: Population growth rate less than .2% annually 
+                     # Age0to14,Age15to19,Age20to29,Age30to54,Age55to64,Age65Plus
+                     # azone_relative_employment: relative employment close to x%
+                     # RelEmp15to19,RelEmp20to29,RelEmp30to54,RelEmp55to64,RelEmp
+                     # azone_loc_type_land_area: Land growth of a% for every 1% population growth
+                     # MetroLandArea , TownLandArea
+            - mid    #
+                     # azone_hh_pop_by_age: Population growth rate less than .6% annually 
+                     # Age0to14,Age15to19,Age20to29,Age30to54,Age55to64,Age65Plus
+                     # azone_relative_employment: relative employment close to y%
+                     # RelEmp15to19,RelEmp20to29,RelEmp30to54,RelEmp55to64,RelEmp65Plus
+                     # azone_loc_type_land_area: Land growth of a% for every 1% population growth
+                     # MetroLandArea , TownLandArea
+            - high   #
+                     # azone_hh_pop_by_age: Population growth rate more than 1% annually 
+                     # Age0to14,Age15to19,Age20to29,Age30to54,Age55to64,Age65Plus
+                     # azone_relative_employment: relative employment close to z%
+                     # RelEmp15to19,RelEmp20to29,RelEmp30to54,RelEmp55to64,RelEmp65Plus
+                     # azone_loc_type_land_area: Land growth of a% for every 1% population growth
+                     # MetroLandArea , TownLandArea
+                     
+    # INCOMEGROWTHRATE:
+    #     # TMIP - MANIPULATION
+    #     # SCENARIOFOLDER: SE2
+    #     # FILENAME: azone_per_cap_inc.csv
+    #     shortname: Income Growth
+    #     ptype: exogenous uncertainty
+    #     dtype: float
+    #     desc:  Annual growth rate of income per capita
+    #     default: 1.02 # Default 2% increase in per capita income annually starting from model base year
+    #                   # azone_per_cap_inc: HHIncomePC
+    #     max: 1.04     # Maximum of 4% increase in per capita income annually starting from model base year
+    #                   # azone_per_cap_inc: HHIncomePC
+    #     min: 0.98      # Reduction of 2% in per capita income annually starting from model base year
+    #                   # azone_per_cap_inc: HHIncomePC
+        
+    # TECHNOLOGY
+    LDVECODRVSCEN:
+        # TMIP - MIXTURE
+        # SCENARIOFOLDER: T1
+        # FILENAME: marea_speed_smooth_ecodrive.csv
+        shortname: LDV Eco Drive Penetration
+        ptype: exogenour uncertainty
+        dtype: float
+        desc: Fraction of light duty vehicles that Eco-Drive 
+        default: 0 # AP scenario eco-driving input
+                   # marea_speed_smooth_ecodrive: FwySmooth,ArtSmooth,LdvEcoDrive
+        max: 1     # STS scenario eco-driving input
+                   # marea_speed_smooth_ecodrive: FwySmooth,ArtSmooth,LdvEcoDrive
+        min: 0     # AP scenario eco-driving input
+                   # marea_speed_smooth_ecodrive: FwySmooth,ArtSmooth,LdvEcoDrive
+        
+#    CARSVCAVAILSCEN:
+#        # TMIP - CATEGORICAL
+#        # SCENARIOFOLDER: T2
+#        # FILENAME: marea_carsvc_availability.csv
+#        shortname: Car Service Availability
+#        ptype: exogenous uncertainty
+#        dtype: cat
+#        desc: Different levels of car service availability
+#        default: mid
+#        values:
+#            - low     # low level of car services availability
+#                      # marea_carsvc_availability: CenterPropHighCarSvc,InnerPropHighCarSvc,OuterPropHighCarSvc,FringePropHighCarSvc,CenterPropShdCarSvc,InnerPropShdCarSvc,OuterPropShdCarSvc,FringePropShdCarSvc
+#            - mid     # mid level of car services availability
+#                      # marea_carsvc_availability: CenterPropHighCarSvc,InnerPropHighCarSvc,OuterPropHighCarSvc,FringePropHighCarSvc,CenterPropShdCarSvc,InnerPropShdCarSvc,OuterPropShdCarSvc,FringePropShdCarSvc
+#            - high    # low level of car services availability
+#                      # marea_carsvc_availability: CenterPropHighCarSvc,InnerPropHighCarSvc,OuterPropHighCarSvc,FringePropHighCarSvc,CenterPropShdCarSvc,InnerPropShdCarSvc,OuterPropShdCarSvc,FringePropShdCarSvc
+#        
+#    SHDCARSVCOCCUPRATE:
+#        # TMIP - MANIPULATION
+#        # SCENARIOFOLDER: T3
+#        # FILENAME: region_carsvc_shd_occup.csv
+#        shortname: Shared Car Svc Occup
+#        ptype: exogenous uncertainty
+#        dtype: float
+#        desc: Average occupancy in shared car services for future year.
+#        default: 2.25 # Default average occupancy rate
+#                      # region_carsvc_shd_occup: ShdCarSvcAveOccup
+#        max: 3        # Highest estimate of average occupancy rate
+#                      # region_carsvc_shd_occup: ShdCarSvcAveOccup
+#        min: 1.5      # Lowest estimate of average occupancy rate
+#                      # region_carsvc_shd_occup: ShdCarSvcAveOccup
+#        
+#    DRVLESSADJSCEN:
+#        # TMIP - CATEGORICAL
+#        # SCENARIOFOLDER: T4
+#        # FILENAME: driverless_effect_adj_param.csv
+#        shortname: Driverless Effect Adjustment
+#        ptype: exogenous uncertainty
+#        dtype: cat
+#        desc: Factor to adjust the effect of driverless vehicles only on congestion compared to effect of 100% driverless vehicles on congestion.
+#        default: mid
+#        values:
+#            - low     # The effect of driverless vehicles only is less on congestion (more exponential in proportion of driverless DVMT)
+#                      # driverless_effect_adj_param: Beta
+#            - mid     # The effect of driverless vehicles only is average on congestion (less exponential in proportion of driverless DVMT)
+#                      # driverless_effect_adj_param: Beta
+#            - high    # The effect of driverless vehicles is more on congestion (more linear in proportion of driverless DVMT)
+#                      # driverless_effect_adj_param: Beta
+#        
+#    DRVLESSPROPREMOTEACC:
+#        # TMIP - MANIPULATION
+#        # SCENARIOFOLDER: T5
+#        # FILENAME: region_driverless_vehicle_parameter.csv
+#        shortname: Proportion of Remote Accesss
+#        ptype: exogenous uncertainty
+#        dtype: float
+#        desc: Proportion of trips in driverless vehicles that are remotely controlled for future year
+#        default: 0.15 # Default is 15% of trips in driverless vehicles can be controlled remotely in future year
+#                      # region_driverless_vehicle_parameter: PropRemoteAccess
+#        max: 0.3      # 30% of trip s in driverless vehicles can be controlled remotely in future year
+#                      # region_driverless_vehicle_parameter: PropRemoteAccess
+#        min: 0.02     # 2% of trip s in driverless vehicles can be controlled remotely in future year
+#                      # region_driverless_vehicle_parameter: PropRemoteAccess
+#        corr:
+#          PROPPARKINGFEEAVOID: 1.0
+#        
+#    PROPPARKINGFEEAVOID:
+#        # TMIP - MANIPULATION
+#        # SCENARIOFOLDER: T5
+#        # FILENAME: region_driverless_vehicle_parameter.csv
+#        shortname: Proporiton Avoided in Parking Fees
+#        ptype: exogenous uncertainty
+#        dtype: float
+#        desc: Proportion of parking fees avoided by travel in owned driverless vehicles.
+#        default: 0.17 # Default is 17% of trips in driverless vehicles can be controlled remotely in future year
+#                      # region_driverless_vehicle_parameter: PropParkingFeeAvoid
+#        max: 0.3      # 30% of trip s in driverless vehicles can be controlled remotely in future year
+#                      # region_driverless_vehicle_parameter: PropParkingFeeAvoid
+#        min: 0.02     # 2% of trip s in driverless vehicles can be controlled remotely in future year
+#                      # region_driverless_vehicle_parameter: PropParkingFeeAvoid
+#        corr:
+#          DRVLESSPROPREMOTEACC: 1.0
+#        
+#    AVVEHSALESGROWTHSCEN:
+#        # TMIP - CATEGORICAL
+#        # SCENARIOFOLDER: T6
+#        # FILENAME: region_driverless_vehicle_prop.csv
+#        shortname: Proportion of Driverless Vehicles
+#        ptype: exogenous uncertainty
+#        dtype: float
+#        desc: Proportion of vehicles sold that are driverless in a future year.
+#        default: mid
+#        values:
+#            - low     # The proportion of vehicles sold that are driverless is less than 60%
+#                      # region_driverless_vehicle_prop: AutoSalesDriverlessProp, LtTrkSalesDriverlessProp
+#            - mid     # The proportion of vehicles sold that are driverless is around 80%
+#                      # region_driverless_vehicle_prop: AutoSalesDriverlessProp, LtTrkSalesDriverlessProp
+#            - high    # The proportion of vehicles sold that are driverless is more than 95%
+#                      # region_driverless_vehicle_prop: AutoSalesDriverlessProp, LtTrkSalesDriverlessProp
+#        
+#    # ENERGY
+#    CICHANGERATESCEN:
+#        # TMIP - CATEGORICAL
+#        # SCENARIOFOLDER: E1
+#        # FILENAME: region_ave_fuel_carbon_intensity.csv
+#        # FILENAME: region_hvytrk_powertrain_prop.csv
+#        # FILENAME: region_comsvc_powertrain_prop.csv
+#        # FILENAME: marea_transit_fuel.csv
+#        # FILENAME: marea_transit_powertrain_prop.csv
+#        shortname: Change Carbon Intensity
+#        ptype: exogenous uncertainty
+#        dtype: cat
+#        desc: Levels of carbon emission based on fuel composition and vehicle powertrain distribution. 
+#        default: mid
+#        values:
+#            - low  # More carbon emission due to less reliance on electric vehicles
+#                   # region_ave_fuel_carbon_intensity - default
+#                   # HhFuelCI,CarSvcFuelCI,ComSvcFuelCI,HvyTrkFuelCI,TransitVanFuelCI,TransitBusFuelCI,TransitRailFuelCI
+#                   #
+#                   # region_hvytrk_powertrain_prop - Heavy truck ICE proportion close to 99% for 2050
+#                   # HvyTrkPropIcev,HvyTrkPropHev,HvyTrkPropBev
+#                   #
+#                   # region_comsvc_powertrain_prop - Commercial servce ICE proportion close to 90% for 2050
+#                   # ComSvcAutoPropIcev,ComSvcAutoPropHev,ComSvcAutoPropBev,ComSvcLtTrkPropIcev,ComSvcLtTrkPropHev,ComSvcLtTrkPropBev
+#                   #
+#                   # marea_transit_fuel - default
+#                   # VanPropDiesel,VanPropGasoline,VanPropCng,BusPropGasoline,BusPropDiesel,BusPropCng,RailPropGasoline,RailPropDiesel
+#                   #
+#                   # marea_transit_powertrain_prop - All transit ICE vehicles constitute close 90% for 2050
+#                   # VanPropIcev,VanPropHev,VanPropBev,BusPropIcev,BusPropHev,BusPropBev,RailPropIcev,RailPropHev,RailPropEv
+#                   #
+#            - mid  # Between the low and mid
+#                   # region_ave_fuel_carbon_intensity - default
+#                   # HhFuelCI,CarSvcFuelCI,ComSvcFuelCI,HvyTrkFuelCI,TransitVanFuelCI,TransitBusFuelCI,TransitRailFuelCI
+#                   #
+#                   # region_hvytrk_powertrain_prop - Heavy truck ICE proportion close to 65% for 2050
+#                   # HvyTrkPropIcev,HvyTrkPropHev,HvyTrkPropBev
+#                   #
+#                   # region_comsvc_powertrain_prop - Commercial servce ICE proportion close to 60% for 2050
+#                   # ComSvcAutoPropIcev,ComSvcAutoPropHev,ComSvcAutoPropBev,ComSvcLtTrkPropIcev,ComSvcLtTrkPropHev,ComSvcLtTrkPropBev
+#                   #
+#                   # marea_transit_fuel - default
+#                   # VanPropDiesel,VanPropGasoline,VanPropCng,BusPropGasoline,BusPropDiesel,BusPropCng,RailPropGasoline,RailPropDiesel
+#                   #
+#                   # marea_transit_powertrain_prop - All transit ICE vehicles constitute close 60% for 2050
+#                   # VanPropIcev,VanPropHev,VanPropBev,BusPropIcev,BusPropHev,BusPropBev,RailPropIcev,RailPropHev,RailPropEv
+#                   #
+#            - high # Less carbon emission due to more electric powertrains and better fuel composition.
+#                   # region_ave_fuel_carbon_intensity - Reduce carbon intensity by 10% for 2050 compared to default
+#                   # HhFuelCI,CarSvcFuelCI,ComSvcFuelCI,HvyTrkFuelCI,TransitVanFuelCI,TransitBusFuelCI,TransitRailFuelCI
+#                   #
+#                   # region_hvytrk_powertrain_prop - Heavy truck ICE proportion close to 50% for 2050
+#                   # HvyTrkPropIcev,HvyTrkPropHev,HvyTrkPropBev
+#                   #
+#                   # region_comsvc_powertrain_prop - Commercial servce ICE proportion close to 45% for 2050
+#                   # ComSvcAutoPropIcev,ComSvcAutoPropHev,ComSvcAutoPropBev,ComSvcLtTrkPropIcev,ComSvcLtTrkPropHev,ComSvcLtTrkPropBev
+#                   #
+#                   # marea_transit_fuel - Reduce carbon intensity by 10% for 2050 compared to default
+#                   # VanPropDiesel,VanPropGasoline,VanPropCng,BusPropGasoline,BusPropDiesel,BusPropCng,RailPropGasoline,RailPropDiesel
+#                   #
+#                   # marea_transit_powertrain_prop - All transit ICE vehicles constitute close 45% for 2050
+#                   # VanPropIcev,VanPropHev,VanPropBev,BusPropIcev,BusPropHev,BusPropBev,RailPropIcev,RailPropHev,RailPropEv
+#        
+    # INVESTMENT
+    INVESTMENTSCEN:
+        # TMIP - CATEGORICAL
+        # SCENARIOFOLDER: I1
+        # FILENAME: marea_travel-demand-mgt_by_area-type.csv
+        # FILENAME: azone_prop_sov_dvmt_diverted.csv
+        # FILENAME: marea_lane_miles.csv
+        # FILENAME: azone_veh_use_taxes .csv
+        # FILENAME: marea_transit_service.csv
+        # FILENAME: marea_congestion_charges.csv
+        shortname: Investment Scenario
+        ptype: policy lever
+        dtype: cat
+        desc: Different investment scenarios.
+        default: AP
+        values:
+            - AP
+            - MM
+            - OP
+            - PV
+
+outputs:
+    HouseholdDvmt:
+        kind: info
+        desc: Daily vehicle miles traveled by households in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdDvmt
+            - 2050
+    HouseholdDvmtPerHh:
+        kind: info
+        desc: Average daily vehicle miles traveled by households in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdDvmtPerHh
+            - 2050
+    HouseholdDvmtPerPrsn:
+        kind: info
+        desc: Average daily vehicle miles traveled per person in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdDvmtPerPrsn
+            - 2050
+    # HouseholdDvmtPerVeh:
+    #     kind: info
+    #     desc: Average daily vehicle miles traveled in a household vehicle in 2050
+    #     transform: none
+    #     metamodeltype: linear
+    #     parser:
+    #         file: state_validation_measures.csv
+    #         loc:
+    #         - HouseholdDvmtPerVeh
+    #         - 2050
+    HouseholdDvmtPerHhIncLess25K:
+        kind: info
+        desc: Average daily vehicle miles traveled by households earning less than 25K in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdDvmtPerHhIncLess25K
+            - 2050
+    HouseholdDvmtPerHhInc25Kto50K:
+        kind: info
+        desc: Average daily vehicle miles traveled by households earning between 25K to 50K in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdDvmtPerHhInc25Kto50K
+            - 2050
+    HouseholdDvmtPerHhIncOver50K:
+        kind: info
+        desc: Average daily vehicle miles traveled by households earning over 50K in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdDvmtPerHhIncOver50K
+            - 2050
+    HouseholdCarSvcDvmt:
+        kind: info
+        desc: Daily vehicle miles traveled in car services by households in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdCarSvcDvmt
+            - 2050
+    HouseholdCarSvcDvmtPerHh:
+        kind: info
+        desc: Average daily vehicle miles traveled in car services by households in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdCarSvcDvmtPerHh
+            - 2050
+    HouseholdCarSvcDvmtPerPrsn:
+        kind: info
+        desc: Average daily vehicle miles traveled in car services per person in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdCarSvcDvmtPerPrsn
+            - 2050
+    ComSvcDvmt:
+        kind: info
+        desc: Daily vehicle miles in commercial services in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - ComSvcDvmt
+            - 2050
+    # PTVanDvmt:
+    #     kind: info
+    #     desc: Daily vehicle miles traveled in public transit vans in 2050
+    #     transform: none
+    #     metamodeltype: log
+    #     parser:
+    #         file: state_validation_measures.csv
+    #         loc:
+    #         - PTVanDvmt
+    #         - 2050
+    # LdvDvmt:
+    #     kind: info
+    #     desc: Daily vehicle miles traveled in light duty vehicles in 2050
+    #     transform: none
+    #     metamodeltype: log
+    #     parser:
+    #         file: state_validation_measures.csv
+    #         loc:
+    #         - LdvDvmt
+    #         - 2050
+    # HvyTruckDvmt:
+    #     kind: info
+    #     desc: Daily vehicle miles traveled in heavy trucks in 2050
+    #     transform: none
+    #     metamodeltype: log
+    #     parser:
+    #         file: state_validation_measures.csv
+    #         loc:
+    #         - HvyTruckDvmt
+    #         - 2050
+    BusDvmt:
+        kind: info
+        desc: Daily vehicle miles traveled in buses in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - BusDvmt
+            - 2050
+    TotalDvmt:
+        kind: info
+        desc: Total daily vehicle miles traveled by households in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalDvmt
+            - 2050
+    TotalGGEPerCapita:
+        kind: minimize
+        desc: Total gasoline equivalent gallon consumption per capita in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalGGEPerCapita
+            - 2050
+    TotalGGE:
+        kind: minimize
+        desc: Total gasoline equivalent gallon consumption in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalGGE
+            - 2050
+    TotalGGEMetro:
+        kind: minimize
+        desc: Total gasoline equivalent gallon consumption in metro areas in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalGGEMetro
+            - 2050
+    TotalGGENonMetro:
+        kind: minimize
+        desc: Total gasoline equivalent gallon consumption in non-metro areas in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalGGENonMetro
+            - 2050
+    AverageLdvMpg:
+        kind: maximize
+        desc: Average efficiency in miles per gallon for LDV in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - AverageLdvMpg
+            - 2050
+    HouseholdCO2e:
+        kind: minimize
+        desc: Total CO2 equivalent green house gas emission by a household in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdCO2e
+            - 2050
+    HouseholdCO2ePerCapita:
+        kind: minimize
+        desc: Total CO2 equivalent green house gas emission by households per capita in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdCO2ePerCapita
+            - 2050    
+    TransitTrips:
+        kind: info
+        desc: Total number of transit trips
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TransitTrips
+            - 2050
+    TransitTripsHHLess25K:
+        kind: info
+        desc: Total number of transit trips by households earning less than 25K
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TransitTripsHHLess25K
+            - 2050
+    TransitTripsHH25Kto50K:
+        kind: info
+        desc: Total number of transit trips by households earning between 25K to 50K
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TransitTripsHH25Kto50K
+            - 2050
+    TransitTripsHHOver50K:
+        kind: info
+        desc: Total number of transit trips by households earning over 50K
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TransitTripsHHOver50K
+            - 2050
+    BikeTrips:
+        kind: info
+        desc: Total number of bike trips
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - BikeTrips
+            - 2050
+    BikeTripsHHLess25K:
+        kind: info
+        desc: Total number of bike trips by households earning less than 25K
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - BikeTripsHHLess25K
+            - 2050
+    BikeTripsHH25Kto50K:
+        kind: info
+        desc: Total number of bike trips by households earning between 25K to 50K
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - BikeTripsHH25Kto50K
+            - 2050
+    BikeTripsHHOver50K:
+        kind: info
+        desc: Total number of bike trips by households earning over 50K
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - BikeTripsHHOver50K
+            - 2050
+    WalkTrips:
+        kind: info
+        desc: Total number of walk trips
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - WalkTrips
+            - 2050
+    WalkTripsHHLess25K:
+        kind: info
+        desc: Total number of walk trips by households earning less than 25K
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - WalkTripsHHLess25K
+            - 2050
+    WalkTripsHH25Kto50K:
+        kind: info
+        desc: Total number of walk trips by households earning between 25K to 50K
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - WalkTripsHH25Kto50K
+            - 2050
+    WalkTripsHHOver50K:
+        kind: info
+        desc: Total number of walk trips by households earning over 50K
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - WalkTripsHHOver50K
+            - 2050
+    MetroHhDvmt:
+        kind: info
+        desc: Household Dvmt in Metro area in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - HhDvmt
+            - Metro
+    MetroAveHhDvmtPerHh:
+        kind: info
+        desc: Average household Dvmt in Metro area in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - AveHhDvmtPerHh
+            - Metro
+    MetroAveHhDvmtPerPrsn:
+        kind: info
+        desc: Average household Dvmt per person in Metro area in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - AveHhDvmtPerPrsn
+            - Metro
+    MetroAveHhDvmtPerVeh:
+        kind: info
+        desc: Average household Dvmt per vehicle in Metro area in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - AveHhDvmtPerVeh
+            - Metro
+    MetroHhGGE:
+        kind: minimize
+        desc: Total gasoline equivalent gallon consumption by households in Metro area in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - MareaHhGGE
+            - Metro
+    MetroHhCO2e:
+        kind: minimize
+        desc: Total CO2 equivalent green house gas emissions by households in Metro area in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - MareaHhCO2e
+            - Metro
+    # NonMetroHhDvmt:
+    #     kind: info
+    #     desc: Household Dvmt in NonMetro area in 2050
+    #     transform: none
+    #     metamodeltype: log
+    #     parser:
+    #         file: metro_measures_2050.csv
+    #         loc:
+    #         - HhDvmt
+    #         - NonMetro
+    # NonMetroAveHhDvmtPerHh:
+    #     kind: info
+    #     desc: Average household Dvmt in NonMetro area in 2050
+    #     transform: none
+    #     metamodeltype: linear
+    #     parser:
+    #         file: metro_measures_2050.csv
+    #         loc:
+    #         - AveHhDvmtPerHh
+    #         - NonMetro
+    # NonMetroAveHhDvmtPerPrsn:
+    #     kind: info
+    #     desc: Average household Dvmt per person in NonMetro area in 2050
+    #     transform: none
+    #     metamodeltype: linear
+    #     parser:
+    #         file: metro_measures_2050.csv
+    #         loc:
+    #         - AveHhDvmtPerPrsn
+    #         - NonMetro
+    # NonMetroAveHhDvmtPerVeh:
+    #     kind: info
+    #     desc: Average household Dvmt per vehicle in NonMetro area in 2050
+    #     transform: none
+    #     metamodeltype: linear
+    #     parser:
+    #         file: metro_measures_2050.csv
+    #         loc:
+    #         - AveHhDvmtPerVeh
+    #         - NonMetro
+    # NonMetroHhGGE:
+    #     kind: minimize
+    #     desc: Total gasoline equivalent gallon consumption by households in NonMetro area in 2050
+    #     transform: none
+    #     metamodeltype: log
+    #     parser:
+    #         file: metro_measures_2050.csv
+    #         loc:
+    #         - MareaHhGGE
+    #         - NonMetro
+    # NonMetroHhCO2e:
+    #     kind: minimize
+    #     desc: Total CO2 equivalent green house gas emissions by households in NonMetro area in 2050
+    #     transform: none
+    #     metamodeltype: log
+    #     parser:
+    #         file: metro_measures_2050.csv
+    #         loc:
+    #         - MareaHhCO2e
+    #         - NonMetro
+

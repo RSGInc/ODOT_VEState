@@ -111,6 +111,9 @@ class VEStateModel(FilesCoreModel):
 
 		self._hist_datastore_dir = join_norm(self.config['model_hist_datastore'])
 
+		self.model_base_year = 2010
+		self.model_future_year = 2050
+
 		# Ensure that R libraries can be found.
 		r_lib = self.config['r_library_path']
 		with open(join_norm(cwd, self.model_path, '.Rprofile'), 'wt') as rprof:
@@ -131,7 +134,7 @@ class VEStateModel(FilesCoreModel):
 		# 	)
 		# )
 
-		# CalcOregonValidationMeasures.R
+		# CalcStateValidationMeasuresFunction.R
 		instructions = {}
 		for measure in scope.get_measures():
 			if measure.parser and measure.parser.get('file') == 'state_validation_measures.csv':
@@ -142,6 +145,21 @@ class VEStateModel(FilesCoreModel):
 		self.add_parser(
 			TableParser(
 				"state_validation_measures.csv",
+				instructions,
+				index_col=0,
+			)
+		)
+		# CalcMetroMeasuresFunction.R
+		instructions = {}
+		for measure in scope.get_measures():
+			if measure.parser and measure.parser.get('file') == 'metro_measures_2050.csv':
+				if measure.parser.get('loc'):
+					instructions[measure.name] = loc[(str(j) for j in measure.parser.get('loc'))]
+				elif measure.parser.get('eval'):
+					instructions[measure.name] = eval(measure.parser.get('eval'))
+		self.add_parser(
+			TableParser(
+				"metro_measures_2050.csv",
 				instructions,
 				index_col=0,
 			)
@@ -229,263 +247,38 @@ class VEStateModel(FilesCoreModel):
 		# into discrete sub-methods, as each step is loosely independent
 		# and having separate methods makes this clearer.
 		#self._manipulate_model_parameters_json(params)
-		self._manipulate_income(params)
-		self._manipulate_bikes(params)
-		self._manipulate_fees(params)
-		# self._manipulate_comsvc_vehage(params)
-		#self._manipulate_land_use(params)
-		#self._manipulate_transit(params)
-		#self._manipulate_fuel_cost(params)
-		#self._manipulate_technology_mix(params)
-		#self._manipulate_parking(params)
-		#self._manipulate_demand(params)
-		#self._manipulate_vehicle_characteristics(params)
-		#self._manipulate_driving_efficiency(params)
-		#self._manipulate_vehicle_travel_cost(params)
-		_logger.info("VEState SETUP complete")
+		self._manipulate_ludensity(params)
+		self._manipulate_intdensity(params)
+		self._manipulate_population(params)
+		# self._manipulate_income(params)
+		self._manipulate_ldvecodrv(params)
+		# self._manipulate_carsvcavail(params)
+		# self._manipulate_shdcarsvc(params)
+		# self._manipulate_drvlessadj(params)
+		# self._manipulate_drvless_param(params)
+		# self._manipulate_drvlessvehsales(params)
+		# self._manipulate_cichange(params)
+		self._manipulate_inv(params)
+		_logger.info("ODOT OTP VEState SETUP complete")
 
-
-
-	def _manipulate_model_parameters_json(self, params):
-		"""
-		Prepare the model_parameters input file based on the existing file.
-
-		Args:
-			params (dict):
-				The parameters for this experiment, including both
-				exogenous uncertainties and policy levers.
-		"""
-
-		# load the text of the first demo input file
-		with open(join_norm(self.local_directory, self.model_path, 'defs', 'model_parameters.json'), 'rt') as f:
-			y = json.load(f)
-
-		y[0]['VALUE'] = str(params['ValueOfTime'])
-
-		# write the manipulated text back out to the first demo input file
-		with open(join_norm(self.local_directory, self.model_path, 'defs', 'model_parameters.json'), 'wt') as f:
-			json.dump(y, f)
-
-	def _manipulate_income(self, params):
-		"""
-		Prepare the income input file based on a template file.
-
-		Args:
-			params (dict):
-				The parameters for this experiment, including both
-				exogenous uncertainties and policy levers.
-		"""
-
-		income_df = pd.read_csv(join_norm(scenario_input('I','azone_per_cap_inc.csv')))
-		
-		income_df.loc[income_df.Year == 2025,['HHIncomePC.2005', 'GQIncomePC.2005']] = \
-			income_df.loc[income_df.Year == 2025,['HHIncomePC.2005', 'GQIncomePC.2005']] * params['Income2025']
-		income_df.loc[income_df.Year == 2030,['HHIncomePC.2005', 'GQIncomePC.2005']] = \
-			income_df.loc[income_df.Year == 2030,['HHIncomePC.2005', 'GQIncomePC.2005']] * params['Income2030']
-		income_df.loc[income_df.Year == 2035,['HHIncomePC.2005', 'GQIncomePC.2005']] = \
-			income_df.loc[income_df.Year == 2035,['HHIncomePC.2005', 'GQIncomePC.2005']] * params['Income2035']
-		income_df.loc[income_df.Year == 2040,['HHIncomePC.2005', 'GQIncomePC.2005']] = \
-			income_df.loc[income_df.Year == 2040,['HHIncomePC.2005', 'GQIncomePC.2005']] * params['Income2040']
-		income_df.loc[income_df.Year == 2045,['HHIncomePC.2005', 'GQIncomePC.2005']] = \
-			income_df.loc[income_df.Year == 2045,['HHIncomePC.2005', 'GQIncomePC.2005']] * params['Income2045']
-		income_df.loc[income_df.Year == 2050,['HHIncomePC.2005', 'GQIncomePC.2005']] = \
-			income_df.loc[income_df.Year == 2050,['HHIncomePC.2005', 'GQIncomePC.2005']] * params['Income2050']
-
-		out_filename = join_norm(
-			self.resolved_model_path, 'inputs', 'azone_per_cap_inc.csv'
-		)
-		_logger.debug(f"writing updates to: {out_filename}")
-		# with open(out_filename, 'wt') as f:
-		# 	f.write(y)
-		income_df.to_csv(out_filename, index=False)
-
-	def _manipulate_comsvc_vehage(self, params):
-		"""
-		Prepare the income input file based on a template file.
-
-		Args:
-			params (dict):
-				The parameters for this experiment, including both
-				exogenous uncertainties and policy levers.
-		"""
-
-		comsvc_vehage_df = pd.read_csv(join_norm(scenario_input('V','region_comsvc_veh_mean_age.csv')))
-		
-		comsvc_vehage_df.loc[comsvc_vehage_df.Year == 2025,['AveComSvcVehicleAge']] = \
-			comsvc_vehage_df.loc[comsvc_vehage_df.Year == 2025,['AveComSvcVehicleAge']] * params['AveComSvcVehicleAge2025']
-		comsvc_vehage_df.loc[comsvc_vehage_df.Year == 2030,['AveComSvcVehicleAge']] = \
-			comsvc_vehage_df.loc[comsvc_vehage_df.Year == 2030,['AveComSvcVehicleAge']] * params['AveComSvcVehicleAge2030']
-		comsvc_vehage_df.loc[comsvc_vehage_df.Year == 2035,['AveComSvcVehicleAge']] = \
-			comsvc_vehage_df.loc[comsvc_vehage_df.Year == 2035,['AveComSvcVehicleAge']] * params['AveComSvcVehicleAge2035']
-		comsvc_vehage_df.loc[comsvc_vehage_df.Year == 2040,['AveComSvcVehicleAge']] = \
-			comsvc_vehage_df.loc[comsvc_vehage_df.Year == 2040,['AveComSvcVehicleAge']] * params['AveComSvcVehicleAge2040']
-		comsvc_vehage_df.loc[comsvc_vehage_df.Year == 2045,['AveComSvcVehicleAge']] = \
-			comsvc_vehage_df.loc[comsvc_vehage_df.Year == 2045,['AveComSvcVehicleAge']] * params['AveComSvcVehicleAge2045']
-		comsvc_vehage_df.loc[comsvc_vehage_df.Year == 2050,['AveComSvcVehicleAge']] = \
-			comsvc_vehage_df.loc[comsvc_vehage_df.Year == 2050,['AveComSvcVehicleAge']] * params['AveComSvcVehicleAge2050']
-
-		out_filename = join_norm(
-			self.resolved_model_path, 'inputs', 'region_comsvc_veh_mean_age.csv'
-		)
-		_logger.debug(f"writing updates to: {out_filename}")
-		# with open(out_filename, 'wt') as f:
-		# 	f.write(y)
-		comsvc_vehage_df.to_csv(out_filename, index=False)
-
-	def _manipulate_bikes(self, params):
-		"""
-		Prepare the biking input file based on a template file.
-
-		Args:
-			params (dict):
-				The parameters for this experiment, including both
-				exogenous uncertainties and policy levers.
-		"""
-
-		# computed_params = {}
-		# computed_params['BikeDiversion'] = params['Bicycles']
-
-		# with open(scenario_input('B','azone_prop_sov_dvmt_diverted.csv.template'), 'rt') as f:
-		# 	y = f.read()
-
-		# for n in computed_params.keys():
-		# 	y = y.replace(
-		# 		f"__EMAT_PROVIDES_{n}__",  # the token to replace
-		# 		f"{computed_params[n]:.3f}"  # the value to replace it with (as a string)
-		# 	)
-
-		# out_filename = join_norm(
-		# 	self.resolved_model_path, 'inputs', 'azone_prop_sov_dvmt_diverted.csv'
-		# )
-		# _logger.debug(f"writing updates to: {out_filename}")
-		# with open(out_filename, 'wt') as f:
-		# 	f.write(y)
-		return self._manipulate_by_mixture(params, 'Bicycles', 'B',)
-
-	def _manipulate_by_categorical_drop_in(self, params, cat_param, cat_mapping, ve_scenario_dir):
-		"""
-		Copy in the relevant input files.
-
-		Args:
-			params (dict):
-				The parameters for this experiment, including both
-				exogenous uncertainties and policy levers.
-		"""
-		scenario_dir = cat_mapping.get(params[cat_param])
-		for i in os.scandir(scenario_input(ve_scenario_dir,scenario_dir)):
-			if i.is_file():
-				shutil.copyfile(
-					scenario_input(ve_scenario_dir,scenario_dir,i.name),
-					join_norm(self.resolved_model_path, 'inputs', i.name)
-				)
-
-	def _manipulate_land_use(self, params):
-		"""
-		Copy in the relevant the land use input files.
-
-		Args:
-			params (dict):
-				The parameters for this experiment, including both
-				exogenous uncertainties and policy levers.
-		"""
-		cat_mapping = {
-			'base': '1',
-			'growth': '2',
-		}
-		return self._manipulate_by_categorical_drop_in(params, 'LandUse', cat_mapping, 'L')
-
-	def _manipulate_vehicle_travel_cost(self, params):
-		cat_mapping = {
-			'base': '1',
-			'steady ownership cost': '2',
-			'pay-per-mile insurance and higher cost': '3',
-		}
-		return self._manipulate_by_categorical_drop_in(params, 'VehicleTravelCost', cat_mapping, 'C')
-
-	def _manipulate_transit(self, params):
-		"""
-		Prepare the income input file based on a template file.
-
-		Args:
-			params (dict):
-				The parameters for this experiment, including both
-				exogenous uncertainties and policy levers.
-		"""
-
-		computed_params = {}
-		computed_params['DRRevMi'] = params['Transit'] * 2381994.664
-		computed_params['MBRevMi'] = params['Transit'] * 3580237.203
-
-		with open(scenario_input('T','marea_transit_service.csv.template'), 'rt') as f:
-			y = f.read()
-
-		for n in computed_params.keys():
-			y = y.replace(
-				f"__EMAT_PROVIDES_{n}__",  # the token to replace
-				f"{computed_params[n]:.3f}",  # the value to replace it with (as a string)
-			)
-
-		out_filename = join_norm(
-			self.resolved_model_path, 'inputs', 'marea_transit_service.csv'
-		)
-		_logger.debug(f"writing updates to: {out_filename}")
-		with open(out_filename, 'wt') as f:
-			f.write(y)
-
-	def _manipulate_fuel_cost(self, params):
-		"""
-		Prepare the fuel and electric input file based on a template file.
-
-		Args:
-			params (dict):
-				The parameters for this experiment, including both
-				exogenous uncertainties and policy levers.
-		"""
-
-		computed_params = {}
-		computed_params['FuelCost'] = params['FuelCost']
-		computed_params['ElectricCost'] = params['ElectricCost']
-
-		with open(scenario_input('G','azone_fuel_power_cost.csv.template'), 'rt') as f:
-			y = f.read()
-
-		for n in computed_params.keys():
-			y = y.replace(
-				f"__EMAT_PROVIDES_{n}__",  # the token to replace
-				f"{computed_params[n]:.3f}",  # the value to replace it with (as a string)
-			)
-
-		out_filename = join_norm(
-			self.resolved_model_path, 'inputs', 'azone_fuel_power_cost.csv'
-		)
-		_logger.debug(f"writing updates to: {out_filename}")
-		with open(out_filename, 'wt') as f:
-			f.write(y)
-
-	def _manipulate_technology_mix(self, params, ):
-		return self._manipulate_by_mixture(params, 'TechMix', 'F',)
-
-	def _manipulate_parking(self, params, ):
-		return self._manipulate_by_mixture(params, 'Parking', 'P',)
-
-	def _manipulate_demand(self, params, ):
-		return self._manipulate_by_mixture(params, 'DemandManagement', 'D',)
-
-	def _manipulate_vehicle_characteristics(self, params, ):
-		return self._manipulate_by_mixture(params, 'VehicleCharacteristics', 'V',)
-
-	def _manipulate_driving_efficiency(self, params, ):
-		return self._manipulate_by_mixture(params, 'DrivingEfficiency', 'E',)
-
-	def _manipulate_fees(self, params, ):
-		# return self._manipulate_by_mixture(params, 'VMTFees', 'F',)
-		cat_mapping = {
-			'ap': '1',
-			'sts': '2',
-		}
-		return self._manipulate_by_categorical_drop_in(params, 'VMTFees', cat_mapping, 'F')
 
 	def _manipulate_by_mixture(self, params, weight_param, ve_scenario_dir, no_mix_cols=('Year', 'Geo',)):
+		"""
+		Prepare files by interpolating parameters between two files.
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+			weight_param:
+				The name of the parameters that is generated from the
+				scope file
+			ve_scenario_dir:
+				The name of the directory that contains the two set
+				of folder/files that need to be interpolated
+			no_mix_cols:
+				Columns that should not be interpolated
+		"""
 
 		weight_2 = params[weight_param]
 		weight_1 = 1.0-weight_2
@@ -530,6 +323,283 @@ class VEStateModel(FilesCoreModel):
 			)
 			df1.to_csv(out_filename, index=False, float_format="%.5f")
 
+	def _manipulate_by_categorical_drop_in(self, params, cat_param, cat_mapping, ve_scenario_dir):
+		"""
+		Copy in the relevant input files.
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+		scenario_dir = cat_mapping.get(params[cat_param])
+		for i in os.scandir(scenario_input(ve_scenario_dir,scenario_dir)):
+			if i.is_file():
+				shutil.copyfile(
+					scenario_input(ve_scenario_dir,scenario_dir,i.name),
+					join_norm(self.resolved_model_path, 'inputs', i.name)
+				)
+
+	def _manipulate_model_parameters_json(self, params):
+		"""
+		Prepare the model_parameters input file based on the existing file.
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		# load the text of the first demo input file
+		with open(join_norm(self.local_directory, self.model_path, 'defs', 'model_parameters.json'), 'rt') as f:
+			y = json.load(f)
+
+		y[0]['VALUE'] = str(params['ValueOfTime'])
+
+		# write the manipulated text back out to the first demo input file
+		with open(join_norm(self.local_directory, self.model_path, 'defs', 'model_parameters.json'), 'wt') as f:
+			json.dump(y, f)
+
+	def _manipulate_ludensity(self, params):
+		"""
+		Prepare the urban mix proportion by marea
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+		# # marea_mix_targets_df = pd.read_csv(join_norm(scenario_input('L1','marea_mix_targets.csv')))
+		# marea_mix_targets_df = pd.read_csv(join_norm(self.resolved_model_path, 'inputs', 'marea_mix_targets.csv'))
+		
+		# # if params['LUDENSITYMIX'] > 1E-4:
+		# if marea_mix_targets_df.UrbanMixProp.isna().sum() == marea_mix_targets_df.shape[0]:
+		# 	marea_mix_targets_df.loc[:, 'UrbanMixProp'] = 0
+		# marea_mix_targets_df.loc[marea_mix_targets_df.Geo != 'None', 'UrbanMixProp'] = (marea_mix_targets_df.loc[marea_mix_targets_df.Geo != 'None', 'UrbanMixProp'] + \
+		# 	params['LUDENSITYMIX']).clip(lower=0,upper=1)
+		# marea_mix_targets_df.loc[marea_mix_targets_df.UrbanMixProp == 0, 'UrbanMixProp'] = np.nan
+
+		# out_filename = join_norm(
+		# 	self.resolved_model_path, 'inputs', 'marea_mix_targets.csv'
+		# )
+		# _logger.debug(f"writing updates to: {out_filename}")
+		# marea_mix_targets_df.to_csv(out_filename, index=False, na_rep='NA')
+		cat_mapping = {
+			'AP': '1',
+			'PVOP': '2',
+			'MM': '3',
+		}
+		return self._manipulate_by_categorical_drop_in(params, 'LUDENSITYMIX', cat_mapping, 'L1')
+
+	def _manipulate_intdensity(self, params):
+		"""
+		Prepare the D3BPO4 adjustment factor by marea
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		# # marea_d3bo4_adj_df = pd.read_csv(join_norm(scenario_input('L2','marea_d3bpo4_adj.csv')))
+		# marea_d3bo4_adj_df = pd.read_csv(join_norm(self.resolved_model_path, 'inputs', 'marea_d3bpo4_adj.csv'))
+		
+		# marea_d3bo4_adj_df.loc[:, ['UrbanD3bpo4Adj','TownD3bpo4Adj','RuralD3bpo4Adj']] = \
+		# 	(marea_d3bo4_adj_df.loc[:, ['UrbanD3bpo4Adj','TownD3bpo4Adj','RuralD3bpo4Adj']] + params['INTDENSITYSCEN']).clip(lower=1)
+
+		# out_filename = join_norm(
+		# 	self.resolved_model_path, 'inputs', 'marea_d3bpo4_adj.csv'
+		# )
+		# _logger.debug(f"writing updates to: {out_filename}")
+		# marea_d3bo4_adj_df.to_csv(out_filename, index=False)
+		return self._manipulate_by_mixture(params, 'INTDENSITYSCEN', 'L2')
+
+	def _manipulate_population(self, params):
+		"""
+		Prepare the population files
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		cat_mapping = {
+			'low': '1',
+			'mid': '2',
+			'high': '3',
+		}
+
+		return self._manipulate_by_categorical_drop_in(params, 'HHPOPGROWTHRATE', cat_mapping, 'SE1')
+
+	def _manipulate_income(self, params):
+		"""
+		Prepare the income input file based on a template file.
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		income_df = pd.read_csv(join_norm(scenario_input('SE2','azone_per_cap_inc.csv')))
+
+		unique_years = income_df.Year.unique()
+		base_year = self.model_base_year
+
+		for run_year in unique_years:
+			year_diff = run_year - base_year
+			income_df.loc[income_df.Year == run_year,['HHIncomePC.2005', 'GQIncomePC.2005']] = \
+			income_df.loc[income_df.Year == run_year,['HHIncomePC.2005', 'GQIncomePC.2005']] * (params['INCOMEGROWTHRATE'] ** year_diff)
+		
+		out_filename = join_norm(
+			self.resolved_model_path, 'inputs', 'azone_per_cap_inc.csv'
+		)
+		_logger.debug(f"writing updates to: {out_filename}")
+		income_df.to_csv(out_filename, index=False)
+		
+	def _manipulate_ldvecodrv(self, params):
+		"""
+		Prepate the LDV ecodrive penetration file.
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+		return self._manipulate_by_mixture(params, 'LDVECODRVSCEN', 'T1')
+
+	def _manipulate_carsvcavail(self, params):
+		"""
+		Prepate the car service availability file.
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+		cat_mapping = {
+			'low': '1',
+			'mid': '2',
+			'high': '3',
+		}
+		return self._manipulate_by_categorical_drop_in(params, 'CARSVCAVAILSCEN', cat_mapping, 'T2')
+
+	def _manipulate_shdcarsvc(self, params):
+		"""
+		Prepare the shared car service occupancy rate file.
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		shdcarsvc_occp_df = pd.read_csv(join_norm(scenario_input('T3','region_carsvc_shd_occup.csv')))
+
+		future_year = self.model_future_year
+
+		shdcarsvc_occp_df.loc[shdcarsvc_occp_df.Year == future_year, 'ShdCarSvcAveOccup'] = params['SHDCARSVCOCCUPRATE']
+		
+		out_filename = join_norm(
+			self.resolved_model_path, 'inputs', 'region_carsvc_shd_occup.csv'
+		)
+		_logger.debug(f"writing updates to: {out_filename}")
+		shdcarsvc_occp_df.to_csv(out_filename, index=False)
+
+	def _manipulate_drvlessadj(self, params):
+		"""
+		Prepare the delay and smoothing adjustment factor file
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+		cat_mapping = {
+			'low': '1',
+			'mid': '2',
+			'high': '3',
+		}
+		return self._manipulate_by_categorical_drop_in(params, 'DRVLESSADJSCEN', cat_mapping, 'T4')
+
+	def _manipulate_drvless_param(self, params):
+		"""
+		Prepare the driverless vehicle parameters file.
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		drvless_veh_param_df = pd.read_csv(join_norm(scenario_input('T5','region_driverless_vehicle_parameter.csv')))
+
+		future_year = self.model_future_year
+
+		drvless_veh_param_df.loc[drvless_veh_param_df.Year == future_year, 'PropRemoteAccess'] = params['DRVLESSPROPREMOTEACC']
+		drvless_veh_param_df.loc[drvless_veh_param_df.Year == future_year, 'PropParkingFeeAvoid'] = params['PROPPARKINGFEEAVOID']
+		
+		out_filename = join_norm(
+			self.resolved_model_path, 'inputs', 'region_driverless_vehicle_parameter.csv'
+		)
+		_logger.debug(f"writing updates to: {out_filename}")
+		drvless_veh_param_df.to_csv(out_filename, index=False)
+
+	def _manipulate_drvlessvehsales(self, params):
+		"""
+		Prepare the driverless vehicles sales file
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		cat_mapping = {
+			'low': '1',
+			'mid': '2',
+			'high': '3',
+		}
+
+		return self._manipulate_by_categorical_drop_in(params, 'AVVEHSALESGROWTHSCEN', cat_mapping, 'T6')
+
+	def _manipulate_cichange(self, params):
+		"""
+		Prepare the carbon emissions related files
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		cat_mapping = {
+			'low': '1',
+			'mid': '2',
+			'high': '3',
+		}
+
+		return self._manipulate_by_categorical_drop_in(params, 'CICHANGERATESCEN', cat_mapping, 'E1')
+
+	def _manipulate_inv(self, params):
+		"""
+		Prepare the carbon emissions related files
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		cat_mapping = {
+			'AP': '1',
+			'MM': '2',
+			'OP': '3',
+			'PV': '4',
+		}
+
+		return self._manipulate_by_categorical_drop_in(params, 'INVESTMENTSCEN', cat_mapping, 'I1')
 
 	def run(self):
 		"""
@@ -549,7 +619,7 @@ class VEStateModel(FilesCoreModel):
 		Raises:
 		    UserWarning: If model is not properly setup
 		"""
-		_logger.info("VEState RUN ...")
+		_logger.info("VE-STATE RUN ...")
 
 		# Set the R path
 		os.environ['path'] = join_norm(self.config['r_executable'])+';'+os.environ['path']
@@ -565,9 +635,9 @@ class VEStateModel(FilesCoreModel):
 		# datastore_namer = re.compile(r"Datastore_202[0-9]-[0-9]+-[0-9]+_[0-9]")
 		datastore_namer = re.compile(r".*Datastore")
 		for outfolder in glob.glob(join_norm(self.local_directory, self.model_path, '*/')):
-			_logger.debug(f"VEState RUN removing: {outfolder}")
+			_logger.debug(f"VE-STATE RUN removing: {outfolder}")
 			if datastore_namer.match(outfolder):
-				_logger.debug('VEState Removing existing Datastore ' + outfolder + ' ...')
+				_logger.debug('VE-STATE Removing existing Datastore ' + outfolder + ' ...')
 				remove_tree(
 					join_norm(outfolder),
 					verbose=0
@@ -575,7 +645,7 @@ class VEStateModel(FilesCoreModel):
 
 		# Copy the common datastore that contains information of historical runs including
 		# baseyear run
-		_logger.info('VEState Copying the historical datastore ...')
+		_logger.info('VE-STATE Copying the historical datastore ...')
 		copy_tree(
 			self._hist_datastore_dir,
 			join_norm(self.local_directory, self.model_path),
@@ -584,7 +654,7 @@ class VEStateModel(FilesCoreModel):
 		# 	join_norm(this_directory, 'ModelState.Rda'),
 		# 	join_norm(self.local_directory, self.model_path, 'ModelState.Rda'),
 		# )
-		_logger.info('VEState Finished copying the historical datastore ...')
+		_logger.info('VE-STATE Finished copying the historical datastore ...')
 
 
 		# Write a small script that will run the model under VisionEval 2.0
@@ -648,7 +718,7 @@ class VEStateModel(FilesCoreModel):
 		# 			os.remove(newname)
 		# 		os.rename(outfile, newname)
 
-		_logger.info("VEState RUN complete")
+		_logger.info("VE-STATE RUN complete")
 
 	def last_run_logs(self, output=None):
 		"""
@@ -806,7 +876,7 @@ class VEStateModel(FilesCoreModel):
 			model_results_path = self.get_experiment_archive_path(experiment_id)
 		zipname = os.path.join(model_results_path, 'run_archive')
 		_logger.info(
-			f"VEState ARCHIVE\n"
+			f"VE-STATE ARCHIVE\n"
 			f" from: {join_norm(self.local_directory, self.model_path, self.rel_output_path)}\n"
 			f"   to: {zipname}.zip"
 		)

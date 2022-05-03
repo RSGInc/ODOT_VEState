@@ -1,0 +1,543 @@
+---
+# VEState Scope Definition
+
+scope:
+    name: VEStateHL
+    desc: VisionEval State Strategic Planning Model for High Level Tool
+
+inputs:
+
+#    # FUNDING CATEGORY 1
+#    REPAIR:
+#        # TMIP - CATEGORICAL
+#        # SCENARIOFOLDER: HLR1
+#        # FILENAME: region_road_cost.csv
+#        shortname: Investment in repair
+#        ptype: policy lever
+#        dtype: cat
+#        desc: Investment to reduce additional road cost for modernization, preservation, operation, maintenance, and administrative tasks.
+#        default: mid
+#        values:
+#            - low   # Low investment means higher cost
+#            - mid   # Mid investment means average cost
+#            - high  # High investment means lower cost
+            
+    # FUNDING CATEGORY 2
+    EXPANDROADS:
+        # TMIP - CATEGORICAL
+        # SCENARIOFOLDER: HLE1
+        # FILENAME: marea_lane_miles.csv
+        shortname: Investment in road expansion
+        ptype: policy lever
+        dtype: cat
+        desc: Investment to expand arterial and freeway lane miles
+        default: mid
+        values:
+            - none  # No investment in road expansion
+            - low   # Low investment 2% expansion
+            - mid   # Mid investment 5% expansion
+            - high  # High investment 10% expansion
+            
+    # FUNDING CATEGORY 3
+    TRANSIT:
+        # TMIP - CATEGORICAL
+        # SCENARIOFOLDER: HLT1
+        # FILENAME: marea_transit_service.csv
+        shortname: Investment in transit
+        ptype: policy lever
+        dtype: cat
+        desc: Investment in transit services
+        default: mid
+        values:
+            - low   # Low investment means low revenue miles
+            - mid   # Mid investment means moderate revenue miles
+            - high  # High investment means high revenue miles
+            
+    # FUNDING CATEGORY 4
+    BIKEWALK:
+        # TMIP - CATEGORICAL
+        # SCENARIOFOLDER: HLB1
+        # FILENAME: azone_prop_sov_dvmt_diverted.csv
+        #           marea_travel-demand-mgt_by_area-type.csv
+        shortname: Investment in bike and walk
+        ptype: policy lever
+        dtype: cat
+        desc: Investment in employee commute options program, individualized marketing program, and other programs that causes diversion from SOV
+        default: mid
+        values:
+            - low   # Low investment means less diversion
+            - mid   # Mid investment means moderate diversion
+            - high  # High investment means high diversion
+            
+    # FUNDING CATEGORY 5
+    OPERATIONS:
+        # TMIP - CATEGORICAL
+        # SCENARIOFOLDER: HLO1
+        # FILENAME: marea_operations_deployment.csv
+        #           marea_speed_smooth_ecodrive.csv
+        #           marea_safety_factors.csv 
+        shortname: Investment in operations
+        ptype: policy lever
+        dtype: cat
+        desc: Investment in deployment of operations to improve the areterial and freeway congestion level 
+        default: mid
+        values:
+            - low   # Low investment means more congestion and more delays
+            - mid   # Mid investment means moderate congestion and moderate delays
+            - high  # High investment means low congestion and less delays        
+
+outputs:
+   # OUTPUT CATEGORY Transportation Choices
+   HouseholdDvmtPerHh:
+        kind: info
+        desc: Average daily vehicle miles traveled by households in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdDvmtPerHh
+            - 2050
+   HouseholdDvmtPerPrsn:
+        kind: info
+        desc: Average daily vehicle miles traveled per person in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdDvmtPerPrsn
+            - 2050
+   HouseholdCarSvcDvmtPerHh:
+        kind: info
+        desc: Average daily vehicle miles traveled in car services by households in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdCarSvcDvmtPerHh
+            - 2050
+   HouseholdCarSvcDvmtPerPrsn:
+        kind: info
+        desc: Average daily vehicle miles traveled in car services per person in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdCarSvcDvmtPerPrsn
+            - 2050
+   TransitTripsPerCapita:
+       kind: info
+       desc: Total number of transit trips per capita
+       transform: none
+       metamodeltype: log
+       parser:
+           file: state_validation_measures.csv
+           loc:
+           - TransitTripsPerCapita
+           - 2050
+   BikeTripsPerCapita:
+       kind: info
+       desc: Total number of bike trips per capita
+       transform: none
+       metamodeltype: log
+       parser:
+           file: state_validation_measures.csv
+           loc:
+           - BikeTripsPerCapita
+           - 2050
+   WalkTripsPerCapita:
+       kind: info
+       desc: Total number of walk trips per capita
+       transform: none
+       metamodeltype: log
+       parser:
+           file: state_validation_measures.csv
+           loc:
+           - WalkTripsPerCapita
+           - 2050
+   # OUTPUT CATEGORY Community and Economy
+   ComSvcDvmt:
+        kind: info
+        desc: Daily vehicle miles in commercial services in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - ComSvcDvmt
+            - 2050
+   MetroFwyDvmtPropExtCong:
+        kind: info
+        desc: Proportion of freeway DVMT occurring when congestion is extreme in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - MetroFwyDvmtPropExtCong
+            - 2050
+   MetroFwyDvmtPropSevCong:
+        kind: info
+        desc: Proportion of freeway DVMT occurring when congestion is severe in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - MetroFwyDvmtPropSevCong
+            - 2050
+   AutoFatalUrban:
+        kind: info
+        desc: Total number of auto fatal crashes in urban area in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - AutoFatalUrban
+            - 2050
+#   BikeFatalUrban:
+#        kind: info
+#        desc: Total number of bike fatal crashes in urban area in 2050
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: state_validation_measures.csv
+#            loc:
+#            - BikeFatalUrban
+#            - 2050
+#   WalkFatalUrban:
+#        kind: info
+#        desc: Total number of walk fatal crashes in urban area in 2050
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: state_validation_measures.csv
+#            loc:
+#            - WalkFatalUrban
+#            - 2050
+#   BusFatalUrban:
+#        kind: info
+#        desc: Total number of bus fatal crashes in urban area in 2050
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: state_validation_measures.csv
+#            loc:
+#            - BusFatalUrban
+#            - 2050
+#   VanFatalUrban:
+#        kind: info
+#        desc: Total number of van fatal crashes in urban area in 2050
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: state_validation_measures.csv
+#            loc:
+#            - VanFatalUrban
+#            - 2050
+#   RailFatalUrban:
+#        kind: info
+#        desc: Total number of rail fatal crashes in urban area in 2050
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: state_validation_measures.csv
+#            loc:
+#            - RailFatalUrban
+#            - 2050
+   AutoInjuryUrban:
+        kind: info
+        desc: Total number of auto injury crashes in urban area in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - AutoInjuryUrban
+            - 2050
+#   BikeInjuryUrban:
+#        kind: info
+#        desc: Total number of bike injury crashes in urban area in 2050
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: state_validation_measures.csv
+#            loc:
+#            - BikeInjuryUrban
+#            - 2050
+#   WalkInjuryUrban:
+#        kind: info
+#        desc: Total number of walk injury crashes in urban area in 2050
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: state_validation_measures.csv
+#            loc:
+#            - WalkInjuryUrban
+#            - 2050
+#   BusInjuryUrban:
+#        kind: info
+#        desc: Total number of bus injury crashes in urban area in 2050
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: state_validation_measures.csv
+#            loc:
+#            - BusInjuryUrban
+#            - 2050
+#   VanInjuryUrban:
+#        kind: info
+#        desc: Total number of van injury crashes in urban area in 2050
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: state_validation_measures.csv
+#            loc:
+#            - VanInjuryUrban
+#            - 2050
+#   RailInjuryUrban:
+#        kind: info
+#        desc: Total number of rail injury crashes in urban area in 2050
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: state_validation_measures.csv
+#            loc:
+#            - RailInjuryUrban
+#            - 2050
+   AutoFatalRural:
+        kind: info
+        desc: Total number of auto fatal crashes in rural area in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - AutoFatalRural
+            - 2050
+#   BikeFatalRural:
+#        kind: info
+#        desc: Total number of bike fatal crashes in rural area in 2050
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: state_validation_measures.csv
+#            loc:
+#            - BikeFatalRural
+#            - 2050
+#   WalkFatalRural:
+#        kind: info
+#        desc: Total number of walk fatal crashes in rural area in 2050
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: state_validation_measures.csv
+#            loc:
+#            - WalkFatalRural
+#            - 2050
+#   BusFatalRural:
+#        kind: info
+#        desc: Total number of bus fatal crashes in rural area in 2050
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: state_validation_measures.csv
+#            loc:
+#            - BusFatalRural
+#            - 2050
+#   VanFatalRural:
+#        kind: info
+#        desc: Total number of van fatal crashes in rural area in 2050
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: state_validation_measures.csv
+#            loc:
+#            - VanFatalRural
+#            - 2050
+#   RailFatalRural:
+#        kind: info
+#        desc: Total number of rail fatal crashes in rural area in 2050
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: state_validation_measures.csv
+#            loc:
+#            - RailFatalRural
+#            - 2050
+   AutoInjuryRural:
+        kind: info
+        desc: Total number of auto injury crashes in rural area in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - AutoInjuryRural
+            - 2050
+#   BikeInjuryRural:
+#        kind: info
+#        desc: Total number of bike injury crashes in rural area in 2050
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: state_validation_measures.csv
+#            loc:
+#            - BikeInjuryRural
+#            - 2050
+#   WalkInjuryRural:
+#        kind: info
+#        desc: Total number of walk injury crashes in rural area in 2050
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: state_validation_measures.csv
+#            loc:
+#            - WalkInjuryRural
+#            - 2050
+#   BusInjuryRural:
+#        kind: info
+#        desc: Total number of bus injury crashes in rural area in 2050
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: state_validation_measures.csv
+#            loc:
+#            - BusInjuryRural
+#            - 2050
+#   VanInjuryRural:
+#        kind: info
+#        desc: Total number of van injury crashes in rural area in 2050
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: state_validation_measures.csv
+#            loc:
+#            - VanInjuryRural
+#            - 2050
+#   RailInjuryRural:
+#        kind: info
+#        desc: Total number of rail injury crashes in rural area in 2050
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: state_validation_measures.csv
+#            loc:
+#            - RailInjuryRural
+#            - 2050
+   # OUTPUT CATEGORY Equity
+   HouseholdDvmtPerHhIncLess25K:
+        kind: info
+        desc: Average daily vehicle miles traveled by households earning less than 25K in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdDvmtPerHhIncLess25K
+            - 2050
+   HouseholdDvmtPerHhInc25Kto50K:
+        kind: info
+        desc: Average daily vehicle miles traveled by households earning between 25K to 50K in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdDvmtPerHhInc25Kto50K
+            - 2050
+   HouseholdDvmtPerHhIncOver50K:
+        kind: info
+        desc: Average daily vehicle miles traveled by households earning over 50K in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdDvmtPerHhIncOver50K
+            - 2050
+   OwnCostProp:
+        kind: info
+        desc: Average ownership cost as a proportion of household income
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - OwnCostProp
+            - 2050
+   OwnCostPropHhLess25K:
+        kind: info
+        desc: Average ownership cost as a proportion of income for household earning less than 25K
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - OwnCostPropHhLess25K
+            - 2050
+   OwnCostPropHh25Kto50K:
+        kind: info
+        desc: Average ownership cost as a proportion of income for household earning between 25K to 50K
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - OwnCostPropHh25Kto50K
+            - 2050
+   OwnCostPropHhOver50K:
+        kind: info
+        desc: Average ownership cost as a proportion of income for household earning more than 50K
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - OwnCostPropHhOver50K
+            - 2050
+   # OUTPUT CATEGORY Climate and Sustainability
+   TotalGGEPerCapita:
+        kind: minimize
+        desc: Total gasoline equivalent gallon consumption per capita in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalGGEPerCapita
+            - 2050
+   HouseholdCO2ePerCapita:
+       kind: minimize
+       desc: Total CO2 equivalent green house gas emission by households per capita in 2050
+       transform: none
+       metamodeltype: log
+       parser:
+           file: state_validation_measures.csv
+           loc:
+           - HouseholdCO2ePerCapita
+           - 2050
+   HouseholdCO2ePerCapitaUrban:
+       kind: minimize
+       desc: Total CO2 equivalent green house gas emission by households per capita in urban areas in 2050
+       transform: none
+       metamodeltype: log
+       parser:
+           file: state_validation_measures.csv
+           loc:
+           - HouseholdCO2ePerCapitaUrban
+           - 2050
+   HouseholdCO2ePerCapitaRural:
+       kind: minimize
+       desc: Total CO2 equivalent green house gas emission by households per capita in rural areas in 2050
+       transform: none
+       metamodeltype: log
+       parser:
+           file: state_validation_measures.csv
+           loc:
+           - HouseholdCO2ePerCapitaUrban
+           - 2050

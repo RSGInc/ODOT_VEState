@@ -1,0 +1,22 @@
+{
+  "Model": "VE-State AP22",
+  "Scenario": "AP22 MM",
+  "Description": "Test of Adopted Plans 22 Multimodal",
+  "Region": "Oregon",
+  "BaseYear": "2010",
+  "Years": ["2050"],
+  "DatastoreName": "Datastore",
+  "DatastoreType": "RD",
+  "Seed": 1,
+  "RequiredVEPackages": [
+    "VESimHouseholds",
+    "VESimLandUseData",
+    "VESimLandUse",
+    "VESimTransportSupply",
+    "VEHouseholdVehicles",
+    "VEHouseholdTravel",
+    "VETravelDemandMM",
+    "VEPowertrainsAndFuelsAP2022",
+    "VETravelPerformance"
+  ]
+}
