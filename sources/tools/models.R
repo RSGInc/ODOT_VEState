@@ -602,7 +602,9 @@ ve.model.extract <- function(
   stage=NULL,
   saveTo="output",
   overwrite=FALSE,
-  quiet=FALSE
+  quiet=FALSE,
+  groups=NULL,
+  otables=NULL
 ) {
   if ( ! all(file.exists(file.path(self$modelPath,"ModelState.Rda"))) ) {
     stop("Model has not been run yet.")
@@ -612,7 +614,9 @@ ve.model.extract <- function(
   
   visioneval::assignDatastoreFunctions(self$runParams$DatastoreType)
   fields <- self$fields
-  extract <- fields[fields$Selected=="Yes",c("Name","Table","Group","Stage")]
+  if(is.null(groups)) groups <- c(self$runParams$BaseYear, setdiff(self$runParams$Years,self$runParams$BaseYear))
+  if(is.null(otables)) otables <- unique(fields$Table)
+  extract <- fields[fields$Selected=="Yes" & fields$Group %in% groups & fields$Table %in% otables,c("Name","Table","Group","Stage")]
   tables <- split( extract$Name, list(extract$Table,extract$Group,extract$Stage) )
   tables <- tables[which(sapply(tables,length)!=0)]
   DataSpecs <- lapply( names(tables), function(T.G.S) {
@@ -657,7 +661,7 @@ ve.model.extract <- function(
         out.path <- file.path(self$modelPath[s],saveTo)
         if ( ! dir.exists(out.path) ) dir.create(out.path,recursive=TRUE)
         fn <- file.path(out.path,f)
-        write.csv(data,file=fn)
+        data.table::fwrite(data,file=fn)
         if (!quiet) message("Write output file: ",gsub(ve.runtime,"",fn))
       }
     )
