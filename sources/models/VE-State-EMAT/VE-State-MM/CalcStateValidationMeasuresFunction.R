@@ -469,7 +469,19 @@ calcStateValidationMeasures <-
       #   Units = "gallons per day",
       #   Description = "Total gasoline consumed by light and heavy duty vehicles in Non-Metro"
       # )
-
+      LdvAveSpeed <- summarizeDatasets(
+        Expr = "mean(LdvAveSpeed, na.rm=TRUE)",
+        Units_ = c(
+          LdvAveSpeed = "MI/HR"
+        ),
+        Table = "Marea",
+        Group = Year,
+        QueryPrep_ls = QPrep_ls
+      )
+      attributes(LdvAveSpeed) <- list(
+        Units = "Miles per Hour",
+        Description = "Average speed (miles per hour) of light-duty vehicle travel"
+      )
       
       #-------------------
       #Light-Duty Vehicles
@@ -1323,6 +1335,7 @@ calcStateValidationMeasures <-
           "ComSvcDvmt",
           "MetroFwyDvmtPropExtCong",
           "MetroFwyDvmtPropSevCong",
+          "LdvAveSpeed",
           "AutoFatalUrban",
           "AutoInjuryUrban",
           "AutoFatalRural",

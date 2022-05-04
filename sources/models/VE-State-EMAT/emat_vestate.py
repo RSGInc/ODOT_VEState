@@ -85,7 +85,7 @@ class VEStateModel(FilesCoreModel):
 					join_norm(cwd, f"vestate-{i}.yml"),
 				)
 		else:
-			scope.dump(filename=join_norm(cwd, f"vestate-{i}.yml"))
+			scope.dump(filename=join_norm(cwd, f"vestate-scope.yml"))
 
 		# Initialize a new daatabase if none was given.
 		if db is None:
@@ -122,7 +122,7 @@ class VEStateModel(FilesCoreModel):
 
 		# Create an output directory
 		if not os.path.isdir(join_norm(cwd, self.model_path, self.rel_output_path)):
-			os.mkdir(os.path.exists(join_norm(cwd, self.model_path, self.rel_output_path)))
+			os.mkdir(join_norm(cwd, self.model_path, self.rel_output_path))
 
 		self._hist_datastore_dir = join_norm(self.config['model_hist_datastore'])
 

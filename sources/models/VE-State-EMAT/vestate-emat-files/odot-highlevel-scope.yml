@@ -189,6 +189,16 @@ outputs:
             loc:
             - MetroFwyDvmtPropSevCong
             - 2050
+   LdvAveSpeed:
+        kind: info
+        desc: Average light duty vehicle travel speed in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - LdvAveSpeed
+            - 2050
    AutoFatalUrban:
         kind: info
         desc: Total number of auto fatal crashes in urban area in 2050
