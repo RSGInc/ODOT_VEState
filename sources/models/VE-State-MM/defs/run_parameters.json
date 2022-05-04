@@ -1,0 +1,22 @@
+{
+  "Model": "VE-State-AP2022",
+  "Scenario": "AP2022 MM",
+  "Description": "New AP with updates assembled in 2022",
+  "Region": "Oregon",
+  "BaseYear": "2010",
+  "Years": ["1990", "1995", "2000", "2005", "2010", "2015"],
+  "DatastoreName": "Datastore",
+  "DatastoreType": "RD",
+  "Seed": 1,
+  "RequiredVEPackages": [
+    "VESimHouseholds",
+    "VESimLandUseData",
+    "VESimLandUse",
+    "VESimTransportSupply",
+    "VEHouseholdVehicles",
+    "VEHouseholdTravel",
+    "VETravelDemandMM",
+    "VEPowertrainsAndFuelsAP2022",
+    "VETravelPerformance"
+  ]
+}
