@@ -1,6 +1,6 @@
 
 # CalculateHhVehicleOperatingCosts Module
-### January 23, 2019
+### June 5, 2020
 
 This module calculates vehicle operating costs per mile of travel and uses those costs to determine the proportional split of DVMT among household vehicles. The module also calculates the average out-of-pocket costs per mile of vehicle travel by household, as well as the cost of social and environmental impacts, and road use taxes per mile of vehicle travel.
 
@@ -123,9 +123,9 @@ Model cost parameters are estimated for maintenance, repair, and tire (MRT) cost
 
 A model is developed for calculating vehicle maintenance, repair, and tire cost as a function of the vehicle type and age using data from the American Automobile Association (AAA) and the Bureau of Labor Statistics (BLS). AAA publishes reports yearly on the cost of vehicle use by vehicle type over the first 5 years of the vehicle's life. The AAA vehicle types are small sedan, medium sedan, large sedan, small SUV, medium SUV, minivan, pickup truck, hybrid vehicle, electric vehicle. These reports, in addition to estimating the total cost per mile, split out cost estimates by category. Vehicle maintenance, repair, and tire (MRT) cost is one of the categories. The 2017 report, a copy of which is included as the '17-0013_Your-Driving-Costs-Brochure-2017-FNL-CX-1.pdf' file in the 'inst/extdata/sources' directory of this package, is used to calculate baseline MRT cost for the following vehicle and powertrain types by calculating mean values of corresponding AAA vehicle types as shown in the following table. Cost is shown to the nearest tenth of a cent.
 
-|Vehicle Type | Powertrain | AAA Types | Cents/Mile |
-|-------------|------------|-----------|------------|
-|Auto         |     ICEV   |Small Sedan, Medium Sedan, Large Sedan|7.7|
+|Vehicle Type|Powertrain|AAA Types|Cents/Mile|
+|---|---|---|
+|Auto|ICEV|Small Sedan, Medium Sedan, Large Sedan|7.7|
 |Light Truck|ICEV|Small SUV, Medium SUV, Minivan, Pickup Truck|8.1|
 |Auto, Light Truck|HEV, PHEV|Hybrid Vehicle|7.0|
 |Auto, Light Truck|BEV|Electric Vehicle|6.6|
@@ -255,14 +255,6 @@ UNLIKELY - Values that are unlikely. Values that meet any of the listed conditio
 
 DESCRIPTION - A description of the data.
 
-### azone_vehicle_access_times.csv
-|NAME                 |TYPE |UNITS |PROHIBIT |ISELEMENTOF |UNLIKELY |DESCRIPTION                                                                                                          |
-|:--------------------|:----|:-----|:--------|:-----------|:--------|:--------------------------------------------------------------------------------------------------------------------|
-|Geo                  |     |      |         |Azones      |         |Must contain a record for each Azone and model run year.                                                             |
-|Year                 |     |      |         |            |         |Must contain a record for each Azone and model run year.                                                             |
-|OwnedVehAccessTime   |time |MIN   |NA, < 0  |            |         |Average amount of time in minutes required for access to and egress from a household-owned vehicle for a trip        |
-|HighCarSvcAccessTime |time |MIN   |NA, < 0  |            |         |Average amount of time in minutes required for access to and egress from a high service level car service for a trip |
-|LowCarSvcAccessTime  |time |MIN   |NA, < 0  |            |         |Average amount of time in minutes required for access to and egress from a low service level car service for a trip  |
 ### azone_fuel_power_cost.csv
 |   |NAME      |TYPE     |UNITS |PROHIBIT |ISELEMENTOF |UNLIKELY |DESCRIPTION                                                |
 |:--|:---------|:--------|:-----|:--------|:-----------|:--------|:----------------------------------------------------------|
@@ -278,12 +270,14 @@ DESCRIPTION - A description of the data.
 |6  |FuelTax          |currency |USD        |NA, < 0      |            |         |Tax per gas gallon equivalent of fuel in dollars                                                                                                                           |
 |7  |VmtTax           |currency |USD        |NA, < 0      |            |         |Tax per mile of vehicle travel in dollars                                                                                                                                  |
 |8  |PevSurchgTaxProp |double   |proportion |NA, < 0, > 1 |            |         |Proportion of equivalent gas tax per mile paid by hydrocarbon fuel consuming vehicles to be charged to plug-in electric vehicles per mile of travel powered by electricity |
-### region_prop_externalities_paid.csv
-|   |NAME                 |TYPE   |UNITS      |PROHIBIT     |ISELEMENTOF |UNLIKELY |DESCRIPTION                                                                                           |
-|:--|:--------------------|:------|:----------|:------------|:-----------|:--------|:-----------------------------------------------------------------------------------------------------|
-|1  |Year                 |       |           |             |            |         |Must contain a record for each model run year                                                         |
-|9  |PropClimateCostPaid  |double |proportion |NA, < 0, > 1 |            |         |Proportion of climate change costs paid by users (i.e. ratio of carbon taxes to climate change costs) |
-|10 |PropOtherExtCostPaid |double |proportion |NA, < 0, > 1 |            |         |Proportion of other social costs paid by users                                                        |
+### azone_vehicle_access_times.csv
+|NAME                 |TYPE |UNITS |PROHIBIT |ISELEMENTOF |UNLIKELY |DESCRIPTION                                                                                                          |
+|:--------------------|:----|:-----|:--------|:-----------|:--------|:--------------------------------------------------------------------------------------------------------------------|
+|Geo                  |     |      |         |Azones      |         |Must contain a record for each Azone and model run year.                                                             |
+|Year                 |     |      |         |            |         |Must contain a record for each Azone and model run year.                                                             |
+|OwnedVehAccessTime   |time |MIN   |NA, < 0  |            |         |Average amount of time in minutes required for access to and egress from a household-owned vehicle for a trip        |
+|HighCarSvcAccessTime |time |MIN   |NA, < 0  |            |         |Average amount of time in minutes required for access to and egress from a high service level car service for a trip |
+|LowCarSvcAccessTime  |time |MIN   |NA, < 0  |            |         |Average amount of time in minutes required for access to and egress from a low service level car service for a trip  |
 ### region_co2e_costs.csv
 This input file is OPTIONAL.
 
@@ -291,6 +285,12 @@ This input file is OPTIONAL.
 |:--|:--------|:--------|:-----|:--------|:-----------|:--------|:--------------------------------------------------------------|
 |1  |Year     |         |      |         |            |         |Must contain a record for each model run year                  |
 |11 |CO2eCost |currency |USD   |NA, < 0  |            |         |Environmental and social cost of CO2e emissions per metric ton |
+### region_prop_externalities_paid.csv
+|   |NAME                 |TYPE   |UNITS      |PROHIBIT     |ISELEMENTOF |UNLIKELY |DESCRIPTION                                                                                           |
+|:--|:--------------------|:------|:----------|:------------|:-----------|:--------|:-----------------------------------------------------------------------------------------------------|
+|1  |Year                 |       |           |             |            |         |Must contain a record for each model run year                                                         |
+|9  |PropClimateCostPaid  |double |proportion |NA, < 0, > 1 |            |         |Proportion of climate change costs paid by users (i.e. ratio of carbon taxes to climate change costs) |
+|10 |PropOtherExtCostPaid |double |proportion |NA, < 0, > 1 |            |         |Proportion of other social costs paid by users                                                        |
 
 ## Datasets Used by the Module
 The following table documents each dataset that is retrieved from the datastore and used by the module. Each row in the table describes a dataset. All the datasets must be present in the datastore. One or more of these datasets may be entered into the datastore from the user input files. The table names and their meanings are as follows:
@@ -360,17 +360,17 @@ ISELEMENTOF - Categorical values that are permitted. Values in the datastore are
 |PaysForParking       |Worker    |Year   |integer   |binary     |             |0, 1                       |
 
 ## Datasets Produced by the Module
-The following table documents each dataset that is retrieved from the datastore and used by the module. Each row in the table describes a dataset. All the datasets must be present in the datastore. One or more of these datasets may be entered into the datastore from the user input files. The table names and their meanings are as follows:
+The following table documents each dataset that is placed in the datastore by the module. Each row in the table describes a dataset. All the datasets must be present in the datastore. One or more of these datasets may be entered into the datastore from the user input files. The table names and their meanings are as follows:
 
 NAME - The dataset name.
 
-TABLE - The table in the datastore that the data is retrieved from.
+TABLE - The table in the datastore that the data is placed in.
 
 GROUP - The group in the datastore where the table is located. Note that the datastore has a group named 'Global' and groups for every model run year. For example, if the model run years are 2010 and 2050, then the datastore will have a group named '2010' and a group named '2050'. If the value for 'GROUP' is 'Year', then the dataset will exist in each model run year. If the value for 'GROUP' is 'BaseYear' then the dataset will only exist in the base year group (e.g. '2010'). If the value for 'GROUP' is 'Global' then the dataset will only exist in the 'Global' group.
 
 TYPE - The data type. The framework uses the type to check units and inputs. Refer to the model system design and users guide for information on allowed types.
 
-UNITS - The units that input values need to represent. Some data types have defined units that are represented as abbreviations or combinations of abbreviations. For example 'MI/HR' means miles per hour. Many of these abbreviations are self evident, but the VisionEval model system design and users guide should be consulted.
+UNITS - The native units that are created in the datastore. Some data types have defined units that are represented as abbreviations or combinations of abbreviations. For example 'MI/HR' means miles per hour. Many of these abbreviations are self evident, but the VisionEval model system design and users guide should be consulted.
 
 PROHIBIT - Values that are prohibited. Values in the datastore do not meet any of the listed conditions.
 
@@ -378,12 +378,25 @@ ISELEMENTOF - Categorical values that are permitted. Values in the datastore are
 
 DESCRIPTION - A description of the data.
 
-|NAME            |TABLE     |GROUP |TYPE     |UNITS      |PROHIBIT     |ISELEMENTOF |DESCRIPTION                                                                                |
-|:---------------|:---------|:-----|:--------|:----------|:------------|:-----------|:------------------------------------------------------------------------------------------|
-|AveVehCostPM    |Household |Year  |currency |USD.2010   |NA, < 0      |            |Average out-of-pocket cost in dollars per mile of vehicle travel                           |
-|AveSocEnvCostPM |Household |Year  |currency |USD.2010   |NA, < 0      |            |Average cost in dollars of the social and environmental impacts per mile of vehicle travel |
-|AveRoadUseTaxPM |Household |Year  |currency |USD.2010   |NA, < 0      |            |Average road use taxes in dollars collected per mile of vehicle travel                     |
-|DvmtProp        |Vehicle   |Year  |double   |proportion |NA, < 0, > 1 |            |Proportion of household DVMT allocated to vehicle                                          |
-|AveGPM          |Household |Year  |compound |GGE/MI     |NA, < 0      |            |Average gasoline equivalent gallons per mile of household vehicle travel                   |
-|AveKWHPM        |Household |Year  |compound |KWH/MI     |NA, < 0      |            |Average kilowatt-hours per mile of household vehicle travel                                |
-|AveCO2ePM       |Household |Year  |compound |GM/MI      |NA, < 0      |            |Average grams of carbon-dioxide equivalents produced per mile of household vehicle travel  |
+|NAME               |TABLE     |GROUP |TYPE     |UNITS      |PROHIBIT     |ISELEMENTOF |DESCRIPTION                                                                                        |
+|:------------------|:---------|:-----|:--------|:----------|:------------|:-----------|:--------------------------------------------------------------------------------------------------|
+|AveVehCostPM       |Household |Year  |currency |USD.2010   |< 0          |            |Average out-of-pocket cost in dollars per mile of vehicle travel                                   |
+|AveSocEnvCostPM    |Household |Year  |currency |USD.2010   |< 0          |            |Average cost in dollars of the social and environmental impacts per mile of vehicle travel         |
+|AveEnvCostPM       |Household |Year  |currency |USD.2010   |< 0          |            |Average cost in dollars of the environmental impacts per mile of vehicle travel                    |
+|AveEnvCostPaidPM   |Household |Year  |currency |USD.2010   |< 0          |            |Average out-of-pocket cost paid in dollars of the environmental impacts per mile of vehicle travel |
+|AveSocCostPaidPM   |Household |Year  |currency |USD.2010   |< 0          |            |Average out-of-pocket cost paid in dollars of the social impacts per mile of vehicle travel        |
+|AveRoadUseTaxPM    |Household |Year  |currency |USD.2010   |< 0          |            |Average road use taxes in dollars collected per mile of vehicle travel                             |
+|AveFuelTaxPM       |Household |Year  |currency |USD.2010   |< 0          |            |Average gas tax paid by hydrocarbon fuel consuming vehicles per mile of vehicle travel             |
+|AvePevChrgPM       |Household |Year  |currency |USD.2010   |< 0          |            |Average fuel tax paid by plug-in electric vehicles per mile of travel powered by electricity       |
+|AveCongPricePM     |Household |Year  |currency |USD.2010   |< 0          |            |Average congestion fees in dollars collected per mile of vehicle travel                            |
+|VmtTax             |Household |Year  |currency |USD.2010   |< 0          |            |VMT tax paid by household                                                                          |
+|ExtraVmtTax        |Household |Year  |currency |USD.2010   |< 0          |            |Extra VMT tax paid by household                                                                    |
+|AveMRTCostPM       |Household |Year  |currency |USD.2010   |< 0          |            |Average maintenance, repair, tire cost per mile (only for owned vehicles)                          |
+|AveEnergyCostPM    |Household |Year  |currency |USD.2010   |< 0          |            |Average energy cost rate (fuel and electric power) per mile                                        |
+|AveNonResPkgCostPM |Household |Year  |currency |USD.2010   |< 0          |            |Average non-residential parking cost per mile                                                      |
+|AvePaydInsCostPM   |Household |Year  |currency |USD.2010   |< 0          |            |Average PAYD insurance cost per mile                                                               |
+|AveCarSvcCostPM    |Household |Year  |currency |USD.2010   |< 0          |            |Average car service cost per mile                                                                  |
+|DvmtProp           |Vehicle   |Year  |double   |proportion |NA, < 0, > 1 |            |Proportion of household DVMT allocated to vehicle                                                  |
+|AveGPM             |Household |Year  |compound |GGE/MI     |< 0          |            |Average gasoline equivalent gallons per mile of household vehicle travel                           |
+|AveKWHPM           |Household |Year  |compound |KWH/MI     |< 0          |            |Average kilowatt-hours per mile of household vehicle travel                                        |
+|AveCO2ePM          |Household |Year  |compound |GM/MI      |< 0          |            |Average grams of carbon-dioxide equivalents produced per mile of household vehicle travel          |

@@ -26,4 +26,18 @@ Imports:
     VEHouseholdTravel
 Encoding: UTF-8
 Roxygen: list(load='source')
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
+Collate: 
+    'AdjustHhVehicleMpgMpkwh.R'
+    'BalanceRoadCostsAndRevenues.R'
+    'BudgetHouseholdDvmt.R'
+    'CalculateComEnergyAndEmissions.R'
+    'CalculateMpgMpkwhAdjustments.R'
+    'CalculatePtranEnergyAndEmissions.R'
+    'CalculateRoadDvmt.R'
+    'CalculateRoadPerformance.R'
+    'CalculateSafetyMeasures.R'
+    'CalculateVehicleOperatingCost.R'
+    'LoadDefaultRoadDvmtValues.R'
+    'Initialize.R'
+    'TravelTimeReliability.R'

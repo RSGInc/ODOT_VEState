@@ -84,6 +84,8 @@ Components:
       - splines
       - MASS 
       - pscl
+      - sn
+      - data.table
   VEHouseholdVehicles:
     Type: module
     Path: sources/modules
