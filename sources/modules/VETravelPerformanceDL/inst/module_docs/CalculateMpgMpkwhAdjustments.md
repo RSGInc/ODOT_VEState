@@ -57,7 +57,7 @@ Theoretical maximum improvements in fuel economy with speed-smoothing and eco-dr
 
 | Speed|     LdIce|     HdIce|
 |-----:|---------:|---------:|
-|    20| 0.5118479| 0.9730198|
+|    20| 0.5118479| 0.9730197|
 |    30| 0.5733484| 0.8401800|
 |    40| 0.5490454| 0.7795904|
 |    50| 0.3762066| 0.4492664|

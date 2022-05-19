@@ -290,14 +290,14 @@ visioneval::savePackageDataset(CalculateSafetyMeasuresSpecifications, overwrite 
 #' @return A list containing data produced by the function consistent with the
 #' module specifications.
 #' @name CalculateSafetyMeasures
-#' @import visioneval 
+#' @import visioneval utils
 #' @export
 CalculateSafetyMeasures <- function(L) {
   
   assign("%>%",getFromNamespace("%>%","magrittr"))
   
-  HH_df= data.frame(L$Year$Household)
-  Marea_df= data.frame(L$Year$Marea)
+  HH_df= as.data.frame(L$Year$Household)
+  Marea_df= as.data.frame(L$Year$Marea)
 
 # calcualte Bike and Walk PMT from Houshold table and aggregate all housholds to geth the total Marea PMTs
 # apply the injury and fatal rates to estiamte the crashes by type.  
@@ -307,26 +307,26 @@ CalculateSafetyMeasures <- function(L) {
       dplyr::group_by(Marea) %>%
       dplyr::summarise(BikePMT = sum(BikeMT),
               WalkPMT = sum(WalkMT)) %>%
-      dplyr::mutate(walkfatal = Marea_df$WalkFatal[[1]] *WalkPMT / (10^8),
-             walkinjury = Marea_df$WalkInjur[[1]] *WalkPMT / (10^8),
-             bikefatal = Marea_df$BikeFatal[[1]] *BikePMT / (10^8),
-             bikeinjury = Marea_df$BikeInjur[[1]] *BikePMT / (10^8)
-           
+      dplyr::left_join(Marea_df, "Marea") %>%
+      dplyr::mutate(walkfatal = WalkFatal *WalkPMT / (10^8),
+             walkinjury = Marea_df$WalkInjur *WalkPMT / (10^8),
+             bikefatal = Marea_df$BikeFatal *BikePMT / (10^8),
+             bikeinjury = Marea_df$BikeInjur *BikePMT / (10^8)
            )
   
     Crashes_Marea <- Marea_df %>%
-      dplyr::mutate(AutoFatalCrashRural = AutoFatal[[1]] * RuralHhDvmt[[1]] / (10^8),
-             AutoInjuryCrashRural = AutoInjur[[1]] * RuralHhDvmt[[1]] / (10^8) ,
-             AutoFatalCrashUrban = AutoFatal[[1]] * UrbanHhDvmt[[1]] / (10^8),
-             AutoInjuryCrashUrban= AutoInjur[[1]] * UrbanHhDvmt[[1]] / (10^8),
-             AutoFatalCrashTown = AutoFatal[[1]] * TownHhDvmt[[1]] / (10^8),
-             AutoInjuryCrashTown = AutoInjur[[1]] * TownHhDvmt[[1]] / (10^8),
-             busfatal = BusFatal[[1]] * BusDvmt[[1]] / (10^6), 
-             businjury = BusInjur[[1]] *BusDvmt[[1]] / (10^6),
-             railfatal = RailFatal[[1]] * RailDvmt[[1]] / (10^6), 
-             railinjury = RailInjur[[1]] *RailDvmt[[1]] / (10^6),
-             vanfatal = BusFatal[[1]] * VanDvmt[[1]] / (10^6), 
-             vaninjury = BusInjur[[1]] *VanDvmt[[1]] / (10^6) )
+      dplyr::mutate(AutoFatalCrashRural = AutoFatal * RuralHhDvmt / (10^8),
+             AutoInjuryCrashRural = AutoInjur * RuralHhDvmt / (10^8) ,
+             AutoFatalCrashUrban = AutoFatal * UrbanHhDvmt / (10^8),
+             AutoInjuryCrashUrban= AutoInjur * UrbanHhDvmt / (10^8),
+             AutoFatalCrashTown = AutoFatal * TownHhDvmt / (10^8),
+             AutoInjuryCrashTown = AutoInjur * TownHhDvmt / (10^8),
+             busfatal = BusFatal * BusDvmt / (10^6), 
+             businjury = BusInjur *BusDvmt / (10^6),
+             railfatal = RailFatal * RailDvmt / (10^6), 
+             railinjury = RailInjur *RailDvmt / (10^6),
+             vanfatal = BusFatal * VanDvmt / (10^6), 
+             vaninjury = BusInjur *VanDvmt / (10^6) )
     
       
     Out_ls <- initDataList()

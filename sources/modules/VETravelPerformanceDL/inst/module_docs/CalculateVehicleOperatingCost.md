@@ -306,21 +306,6 @@ UNLIKELY - Values that are unlikely. Values that meet any of the listed conditio
 
 DESCRIPTION - A description of the data.
 
-### azone_vehicle_access_times.csv
-|NAME                  |TYPE |UNITS |PROHIBIT |ISELEMENTOF |UNLIKELY |DESCRIPTION                                                                                                          |
-|:---------------------|:----|:-----|:--------|:-----------|:--------|:--------------------------------------------------------------------------------------------------------------------|
-|Geo                   |     |      |         |Azones      |         |Must contain a record for each Azone and model run year.                                                             |
-|Year                  |     |      |         |            |         |Must contain a record for each Azone and model run year.                                                             |
-|OwnedVehAccessTime    |time |MIN   |NA, < 0  |            |         |Average amount of time in minutes required for access to and egress from a household-owned vehicle for a trip        |
-|HighCarSvcAccessTime  |time |MIN   |NA, < 0  |            |         |Average amount of time in minutes required for access to and egress from a high service level car service for a trip |
-|LowCarSvcAccessTime   |time |MIN   |NA, < 0  |            |         |Average amount of time in minutes required for access to and egress from a low service level car service for a trip  |
-|ShdCarSvcAccessTime   |time |MIN   |NA, < 0  |            |         |Average amount of time in minutes required for access to and egress from a shared car service for a trip             |
-|UnShdCarSvcAccessTime |time |MIN   |NA, < 0  |            |         |Average amount of time in minutes required for access to and egress from a unshared car service for a trip           |
-### region_carsvc_shd_occup.csv
-|   |NAME              |TYPE   |UNITS      |PROHIBIT |ISELEMENTOF |UNLIKELY |DESCRIPTION                                                                                      |
-|:--|:-----------------|:------|:----------|:--------|:-----------|:--------|:------------------------------------------------------------------------------------------------|
-|1  |Year              |       |           |         |            |         |Must contain a record for each model run year                                                    |
-|6  |ShdCarSvcAveOccup |double |multiplier |NA, < 0  |            |         |Proportional increase in passenger destinations for shared car services vs unshared car services |
 ### azone_fuel_power_cost.csv
 |   |NAME      |TYPE     |UNITS |PROHIBIT |ISELEMENTOF |UNLIKELY |DESCRIPTION                                                |
 |:--|:---------|:--------|:-----|:--------|:-----------|:--------|:----------------------------------------------------------|
@@ -336,12 +321,21 @@ DESCRIPTION - A description of the data.
 |9  |FuelTax          |currency |USD        |NA, < 0      |            |         |Tax per gas gallon equivalent of fuel in dollars                                                                                                                           |
 |10 |VmtTax           |currency |USD        |NA, < 0      |            |         |Tax per mile of vehicle travel in dollars                                                                                                                                  |
 |11 |PevSurchgTaxProp |double   |proportion |NA, < 0, > 1 |            |         |Proportion of equivalent gas tax per mile paid by hydrocarbon fuel consuming vehicles to be charged to plug-in electric vehicles per mile of travel powered by electricity |
-### region_prop_externalities_paid.csv
-|   |NAME                 |TYPE   |UNITS      |PROHIBIT     |ISELEMENTOF |UNLIKELY |DESCRIPTION                                                                                           |
-|:--|:--------------------|:------|:----------|:------------|:-----------|:--------|:-----------------------------------------------------------------------------------------------------|
-|1  |Year                 |       |           |             |            |         |Must contain a record for each model run year                                                         |
-|12 |PropClimateCostPaid  |double |proportion |NA, < 0, > 1 |            |         |Proportion of climate change costs paid by users (i.e. ratio of carbon taxes to climate change costs) |
-|13 |PropOtherExtCostPaid |double |proportion |NA, < 0, > 1 |            |         |Proportion of other social costs paid by users                                                        |
+### azone_vehicle_access_times.csv
+|NAME                  |TYPE |UNITS |PROHIBIT |ISELEMENTOF |UNLIKELY |DESCRIPTION                                                                                                          |
+|:---------------------|:----|:-----|:--------|:-----------|:--------|:--------------------------------------------------------------------------------------------------------------------|
+|Geo                   |     |      |         |Azones      |         |Must contain a record for each Azone and model run year.                                                             |
+|Year                  |     |      |         |            |         |Must contain a record for each Azone and model run year.                                                             |
+|OwnedVehAccessTime    |time |MIN   |NA, < 0  |            |         |Average amount of time in minutes required for access to and egress from a household-owned vehicle for a trip        |
+|HighCarSvcAccessTime  |time |MIN   |NA, < 0  |            |         |Average amount of time in minutes required for access to and egress from a high service level car service for a trip |
+|LowCarSvcAccessTime   |time |MIN   |NA, < 0  |            |         |Average amount of time in minutes required for access to and egress from a low service level car service for a trip  |
+|ShdCarSvcAccessTime   |time |MIN   |NA, < 0  |            |         |Average amount of time in minutes required for access to and egress from a shared car service for a trip             |
+|UnShdCarSvcAccessTime |time |MIN   |NA, < 0  |            |         |Average amount of time in minutes required for access to and egress from a unshared car service for a trip           |
+### region_carsvc_shd_occup.csv
+|   |NAME              |TYPE   |UNITS      |PROHIBIT |ISELEMENTOF |UNLIKELY |DESCRIPTION                                                                                      |
+|:--|:-----------------|:------|:----------|:--------|:-----------|:--------|:------------------------------------------------------------------------------------------------|
+|1  |Year              |       |           |         |            |         |Must contain a record for each model run year                                                    |
+|6  |ShdCarSvcAveOccup |double |multiplier |NA, < 0  |            |         |Proportional increase in passenger destinations for shared car services vs unshared car services |
 ### region_co2e_costs.csv
 This input file is OPTIONAL.
 
@@ -360,6 +354,12 @@ This input file is OPTIONAL.
 |17 |RemoteAccessDvmtAdj  |double |multiplier |NA, < 0      |            |         |Adjustment factor that specifies the proportional adjustment to driverless vehicle DVMT assumed to occur as a result of remote vehicle access for convenience, avoiding parking, and/or avoiding/reducing parking charges.   |
 |18 |PropRemoteAccess     |double |proportion |NA, < 0, > 1 |            |         |The proportion of trips in driverless vehicles for which travelers use capabilities of driverless vehicles to remotely control their vehicles to avoid having to park their vehicle and retrieve their vehicle from parking. |
 |19 |PropParkingFeeAvoid  |double |proportion |NA, < 0, > 1 |            |         |The proportion of parking fees avoided for travel in owned driverless vehicles.                                                                                                                                              |
+### region_prop_externalities_paid.csv
+|   |NAME                 |TYPE   |UNITS      |PROHIBIT     |ISELEMENTOF |UNLIKELY |DESCRIPTION                                                                                           |
+|:--|:--------------------|:------|:----------|:------------|:-----------|:--------|:-----------------------------------------------------------------------------------------------------|
+|1  |Year                 |       |           |             |            |         |Must contain a record for each model run year                                                         |
+|12 |PropClimateCostPaid  |double |proportion |NA, < 0, > 1 |            |         |Proportion of climate change costs paid by users (i.e. ratio of carbon taxes to climate change costs) |
+|13 |PropOtherExtCostPaid |double |proportion |NA, < 0, > 1 |            |         |Proportion of other social costs paid by users                                                        |
 
 ## Datasets Used by the Module
 The following table documents each dataset that is retrieved from the datastore and used by the module. Each row in the table describes a dataset. All the datasets must be present in the datastore. One or more of these datasets may be entered into the datastore from the user input files. The table names and their meanings are as follows:
