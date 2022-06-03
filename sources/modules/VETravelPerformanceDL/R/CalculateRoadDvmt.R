@@ -923,8 +923,8 @@ CalculateRoadDvmt <- function(L) {
   )
   
   #Assign values to the output list
-  Out_ls$Year$Marea$HvyTrkDriverlessProp <- unattr(RegionDriverlessProps_["HvyTrk"])
-  Out_ls$Year$Marea$BusDriverlessProp <- unattr(RegionDriverlessProps_["Bus"])
+  Out_ls$Year$Marea$HvyTrkDriverlessProp <- rep(unattr(RegionDriverlessProps_["HvyTrk"]), length(Ma))
+  Out_ls$Year$Marea$BusDriverlessProp <- rep(unattr(RegionDriverlessProps_["Bus"]), length(Ma))
   
 
   #Calculate ComSvc prediction factors and DVMT

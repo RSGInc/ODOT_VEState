@@ -467,17 +467,30 @@ ISELEMENTOF - Categorical values that are permitted. Values in the datastore are
 
 DESCRIPTION - A description of the data.
 
-|NAME                  |TABLE     |GROUP |TYPE     |UNITS      |PROHIBIT     |ISELEMENTOF |DESCRIPTION                                                                                |
-|:---------------------|:---------|:-----|:--------|:----------|:------------|:-----------|:------------------------------------------------------------------------------------------|
-|AveVehCostPM          |Household |Year  |currency |USD.2010   |< 0          |            |Average out-of-pocket cost in dollars per mile of vehicle travel                           |
-|AveSocEnvCostPM       |Household |Year  |currency |USD.2010   |< 0          |            |Average cost in dollars of the social and environmental impacts per mile of vehicle travel |
-|AveRoadUseTaxPM       |Household |Year  |currency |USD.2010   |< 0          |            |Average road use taxes in dollars collected per mile of vehicle travel                     |
-|DriverlessDvmtAdjProp |Household |Year  |double   |proportion |NA, < 0, > 1 |            |Proportion of total DVMT that is the added driverless DVMT                                 |
-|DeadheadDvmtAdjProp   |Household |Year  |double   |proportion |NA, < 0, > 1 |            |Proportion of total DVMT that is the added car service deadhead mileage                    |
-|DriverlessDvmtProp    |Household |Year  |double   |proportion |NA, < 0, > 1 |            |Proportion of total DVMT that is driverless                                                |
-|Dvmt                  |Household |Year  |compound |MI/DAY     |NA, < 0      |            |Total DVMT including the additional driverless DVMT and car service deadhead               |
-|AveGPM                |Household |Year  |compound |GGE/MI     |< 0          |            |Average gasoline equivalent gallons per mile of household vehicle travel                   |
-|AveKWHPM              |Household |Year  |compound |KWH/MI     |< 0          |            |Average kilowatt-hours per mile of household vehicle travel                                |
-|AveCO2ePM             |Household |Year  |compound |GM/MI      |< 0          |            |Average grams of carbon-dioxide equivalents produced per mile of household vehicle travel  |
-|DvmtProp              |Vehicle   |Year  |double   |proportion |NA, < 0, > 1 |            |Proportion of household DVMT allocated to vehicle                                          |
-|HhDriverlessDvmtProp  |Marea     |Year  |double   |proportion |NA, < 0, > 1 |            |Proportion of household DVMT that is driverless                                            |
+|NAME                  |TABLE     |GROUP |TYPE     |UNITS      |PROHIBIT     |ISELEMENTOF |DESCRIPTION                                                                                        |
+|:---------------------|:---------|:-----|:--------|:----------|:------------|:-----------|:--------------------------------------------------------------------------------------------------|
+|AveVehCostPM          |Household |Year  |currency |USD.2010   |< 0          |            |Average out-of-pocket cost in dollars per mile of vehicle travel                                   |
+|AveSocEnvCostPM       |Household |Year  |currency |USD.2010   |< 0          |            |Average cost in dollars of the social and environmental impacts per mile of vehicle travel         |
+|AveEnvCostPM          |Household |Year  |currency |USD.2010   |< 0          |            |Average cost in dollars of the environmental impacts per mile of vehicle travel                    |
+|AveEnvCostPaidPM      |Household |Year  |currency |USD.2010   |< 0          |            |Average out-of-pocket cost paid in dollars of the environmental impacts per mile of vehicle travel |
+|AveSocCostPaidPM      |Household |Year  |currency |USD.2010   |< 0          |            |Average out-of-pocket cost paid in dollars of the social impacts per mile of vehicle travel        |
+|AveRoadUseTaxPM       |Household |Year  |currency |USD.2010   |< 0          |            |Average road use taxes in dollars collected per mile of vehicle travel                             |
+|AveFuelTaxPM          |Household |Year  |currency |USD.2010   |< 0          |            |Average gas tax paid by hydrocarbon fuel consuming vehicles per mile of vehicle travel             |
+|AvePevChrgPM          |Household |Year  |currency |USD.2010   |< 0          |            |Average fuel tax paid by plug-in electric vehicles per mile of travel powered by electricity       |
+|AveCongPricePM        |Household |Year  |currency |USD.2010   |< 0          |            |Average congestion fees in dollars collected per mile of vehicle travel                            |
+|VmtTax                |Household |Year  |currency |USD.2010   |< 0          |            |VMT tax paid by household                                                                          |
+|ExtraVmtTax           |Household |Year  |currency |USD.2010   |< 0          |            |Extra VMT tax paid by household                                                                    |
+|AveMRTCostPM          |Household |Year  |currency |USD.2010   |< 0          |            |Average maintenance, repair, tire cost per mile (only for owned vehicles)                          |
+|AveEnergyCostPM       |Household |Year  |currency |USD.2010   |< 0          |            |Average energy cost rate (fuel and electric power) per mile                                        |
+|AveNonResPkgCostPM    |Household |Year  |currency |USD.2010   |< 0          |            |Average non-residential parking cost per mile                                                      |
+|AvePaydInsCostPM      |Household |Year  |currency |USD.2010   |< 0          |            |Average PAYD insurance cost per mile                                                               |
+|AveCarSvcCostPM       |Household |Year  |currency |USD.2010   |< 0          |            |Average car service cost per mile                                                                  |
+|DriverlessDvmtAdjProp |Household |Year  |double   |proportion |NA, < 0, > 1 |            |Proportion of total DVMT that is the added driverless DVMT                                         |
+|DeadheadDvmtAdjProp   |Household |Year  |double   |proportion |NA, < 0, > 1 |            |Proportion of total DVMT that is the added car service deadhead mileage                            |
+|DriverlessDvmtProp    |Household |Year  |double   |proportion |NA, < 0, > 1 |            |Proportion of total DVMT that is driverless                                                        |
+|Dvmt                  |Household |Year  |compound |MI/DAY     |NA, < 0      |            |Total DVMT including the additional driverless DVMT and car service deadhead                       |
+|AveGPM                |Household |Year  |compound |GGE/MI     |< 0          |            |Average gasoline equivalent gallons per mile of household vehicle travel                           |
+|AveKWHPM              |Household |Year  |compound |KWH/MI     |< 0          |            |Average kilowatt-hours per mile of household vehicle travel                                        |
+|AveCO2ePM             |Household |Year  |compound |GM/MI      |< 0          |            |Average grams of carbon-dioxide equivalents produced per mile of household vehicle travel          |
+|DvmtProp              |Vehicle   |Year  |double   |proportion |NA, < 0, > 1 |            |Proportion of household DVMT allocated to vehicle                                                  |
+|HhDriverlessDvmtProp  |Marea     |Year  |double   |proportion |NA, < 0, > 1 |            |Proportion of household DVMT that is driverless                                                    |

@@ -183,5 +183,9 @@ DESCRIPTION - A description of the data.
 |:--------------|:---------|:-----|:--------|:--------|:--------|:-----------|:------------------------------------------------------------------------------------------------------------------------|
 |OwnCost        |Vehicle   |Year  |currency |USD.2017 |NA, < 0  |            |Annual cost of vehicle ownership including depreciation, financing, insurance, taxes, and residential parking in dollars |
 |OwnCostPerMile |Vehicle   |Year  |currency |USD.2017 |NA, < 0  |            |Annual cost of vehicle ownership per mile of vehicle travel (dollars per mile)                                           |
+|OwnTaxCost     |Vehicle   |Year  |currency |USD.2017 |NA, < 0  |            |Annual taxes of vehicle ownership                                                                                        |
 |InsCost        |Vehicle   |Year  |currency |USD.2017 |NA, < 0  |            |Annual vehicle insurance cost in dollars                                                                                 |
+|DeprCost       |Vehicle   |Year  |currency |USD.2017 |NA, < 0  |            |Annual vehicle depreciation cost in dollars                                                                              |
+|FinCost        |Vehicle   |Year  |currency |USD.2017 |NA, < 0  |            |Annual vehicle financing cost in dollars                                                                                 |
+|ResPkgCost     |Vehicle   |Year  |currency |USD.2017 |NA, < 0  |            |Annual residential parking cost in dollars                                                                               |
 |HasPaydIns     |Household |Year  |integer  |binary   |         |0, 1        |Identifies whether household has pay-as-you-drive insurance for vehicles: 1 = Yes, 0 = no                                |

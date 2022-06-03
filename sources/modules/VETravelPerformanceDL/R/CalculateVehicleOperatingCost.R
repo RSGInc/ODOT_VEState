@@ -1202,6 +1202,42 @@ CalculateVehicleOperatingCostSpecifications <- list(
       DESCRIPTION = "Average cost in dollars of the social and environmental impacts per mile of vehicle travel"
     ),
     item(
+      NAME = "AveEnvCostPM",
+      TABLE = "Household",
+      GROUP = "Year",
+      TYPE = "currency",
+      UNITS = "USD.2010",
+      NAVALUE = -1,
+      PROHIBIT = c("< 0"),
+      ISELEMENTOF = "",
+      SIZE = 0,
+      DESCRIPTION = "Average cost in dollars of the environmental impacts per mile of vehicle travel"
+    ),
+    item(
+      NAME = "AveEnvCostPaidPM",
+      TABLE = "Household",
+      GROUP = "Year",
+      TYPE = "currency",
+      UNITS = "USD.2010",
+      NAVALUE = -1,
+      PROHIBIT = c("< 0"),
+      ISELEMENTOF = "",
+      SIZE = 0,
+      DESCRIPTION = "Average out-of-pocket cost paid in dollars of the environmental impacts per mile of vehicle travel"
+    ),
+    item(
+      NAME = "AveSocCostPaidPM",
+      TABLE = "Household",
+      GROUP = "Year",
+      TYPE = "currency",
+      UNITS = "USD.2010",
+      NAVALUE = -1,
+      PROHIBIT = c("< 0"),
+      ISELEMENTOF = "",
+      SIZE = 0,
+      DESCRIPTION = "Average out-of-pocket cost paid in dollars of the social impacts per mile of vehicle travel"
+    ),
+    item(
       NAME = "AveRoadUseTaxPM",
       TABLE = "Household",
       GROUP = "Year",
@@ -1212,6 +1248,126 @@ CalculateVehicleOperatingCostSpecifications <- list(
       ISELEMENTOF = "",
       SIZE = 0,
       DESCRIPTION = "Average road use taxes in dollars collected per mile of vehicle travel"
+    ),
+	item(
+      NAME = "AveFuelTaxPM",
+      TABLE = "Household",
+      GROUP = "Year",
+      TYPE = "currency",
+      UNITS = "USD.2010",
+      NAVALUE = -1,
+      PROHIBIT = c("< 0"),
+      ISELEMENTOF = "",
+      SIZE = 0,
+      DESCRIPTION = "Average gas tax paid by hydrocarbon fuel consuming vehicles per mile of vehicle travel"
+    ),
+    item(
+      NAME = "AvePevChrgPM",
+      TABLE = "Household",
+      GROUP = "Year",
+      TYPE = "currency",
+      UNITS = "USD.2010",
+      NAVALUE = -1,
+      PROHIBIT = c("< 0"),
+      ISELEMENTOF = "",
+      SIZE = 0,
+      DESCRIPTION = "Average fuel tax paid by plug-in electric vehicles per mile of travel powered by electricity"
+    ),
+    item(
+      NAME = "AveCongPricePM",
+      TABLE = "Household",
+      GROUP = "Year",
+      TYPE = "currency",
+      UNITS = "USD.2010",
+      NAVALUE = -1,
+      PROHIBIT = c("< 0"),
+      ISELEMENTOF = "",
+      SIZE = 0,
+      DESCRIPTION = "Average congestion fees in dollars collected per mile of vehicle travel"
+    ),
+    item(
+      NAME = "VmtTax",
+      TABLE = "Household",
+      GROUP = "Year",
+      TYPE = "currency",
+      UNITS = "USD.2010",
+      NAVALUE = -1,
+      PROHIBIT = c("< 0"),
+      ISELEMENTOF = "",
+      SIZE = 0,
+      DESCRIPTION = "VMT tax paid by household"
+    ),
+    item(
+      NAME = "ExtraVmtTax",
+      TABLE = "Household",
+      GROUP = "Year",
+      TYPE = "currency",
+      UNITS = "USD.2010",
+      NAVALUE = -1,
+      PROHIBIT = c("< 0"),
+      ISELEMENTOF = "",
+      SIZE = 0,
+      DESCRIPTION = "Extra VMT tax paid by household"
+    ),
+    item(
+      NAME = "AveMRTCostPM",
+      TABLE = "Household",
+      GROUP = "Year",
+      TYPE = "currency",
+      UNITS = "USD.2010",
+      NAVALUE = -1,
+      PROHIBIT = c("< 0"),
+      ISELEMENTOF = "",
+      SIZE = 0,
+      DESCRIPTION = "Average maintenance, repair, tire cost per mile (only for owned vehicles)"
+    ),
+    item(
+      NAME = "AveEnergyCostPM",
+      TABLE = "Household",
+      GROUP = "Year",
+      TYPE = "currency",
+      UNITS = "USD.2010",
+      NAVALUE = -1,
+      PROHIBIT = c("< 0"),
+      ISELEMENTOF = "",
+      SIZE = 0,
+      DESCRIPTION = "Average energy cost rate (fuel and electric power) per mile"
+    ),
+    item(
+      NAME = "AveNonResPkgCostPM",
+      TABLE = "Household",
+      GROUP = "Year",
+      TYPE = "currency",
+      UNITS = "USD.2010",
+      NAVALUE = -1,
+      PROHIBIT = c("< 0"),
+      ISELEMENTOF = "",
+      SIZE = 0,
+      DESCRIPTION = "Average non-residential parking cost per mile"
+    ),
+    item(
+      NAME = "AvePaydInsCostPM",
+      TABLE = "Household",
+      GROUP = "Year",
+      TYPE = "currency",
+      UNITS = "USD.2010",
+      NAVALUE = -1,
+      PROHIBIT = c("< 0"),
+      ISELEMENTOF = "",
+      SIZE = 0,
+      DESCRIPTION = "Average PAYD insurance cost per mile"
+    ),
+    item(
+      NAME = "AveCarSvcCostPM",
+      TABLE = "Household",
+      GROUP = "Year",
+      TYPE = "currency",
+      UNITS = "USD.2010",
+      NAVALUE = -1,
+      PROHIBIT = c("< 0"),
+      ISELEMENTOF = "",
+      SIZE = 0,
+      DESCRIPTION = "Average car service cost per mile"
     ),
     item(
       NAME = "DriverlessDvmtAdjProp",
@@ -1758,23 +1914,23 @@ CalculateVehicleOperatingCost <- function(L) {
   DeadheadDvmt_Ve <- local({
     VehAccType_Ve <- L$Year$Vehicle$VehicleAccess
     IsDriverless_ <- (VehAccType_Ve != "Own") & L$Year$Vehicle$Driverless > 0
-    LowCarSvcDeadheadProp <- L$Year$Azone$LowCarSvcDeadheadProp
-    HighCarSvcDeadheadProp <- L$Year$Azone$HighCarSvcDeadheadProp
-    ShdCarSvcDeadheadProp <- L$Year$Azone$ShdCarSvcDeadheadProp
-    UnShdCarSvcDeadheadProp <- L$Year$Azone$UnShdCarSvcDeadheadProp
+    LowCarSvcDeadheadProp <- L$Year$Azone$LowCarSvcDeadheadProp[AzToVehIdx_Ve]
+    HighCarSvcDeadheadProp <- L$Year$Azone$HighCarSvcDeadheadProp[AzToVehIdx_Ve]
+    ShdCarSvcDeadheadProp <- L$Year$Azone$ShdCarSvcDeadheadProp[AzToVehIdx_Ve]
+    UnShdCarSvcDeadheadProp <- L$Year$Azone$UnShdCarSvcDeadheadProp[AzToVehIdx_Ve]
     SharedCarSvcDvmtProp_Ve <- SharedCarSvcDvmtProp_Bz[BzToVehIdx_Ve]
     UnSharedCarSvcDvmtProp_Ve <- UnSharedCarSvcDvmtProp_Bz[BzToVehIdx_Ve]
     ShdDvmt_Ve <- Dvmt_Ve * SharedCarSvcDvmtProp_Ve
     UnShdDvmt_Ve <- Dvmt_Ve * UnSharedCarSvcDvmtProp_Ve
     DeadheadDvmt_Ve <- Dvmt_Ve * 0
     DeadheadDvmt_Ve[VehAccType_Ve == "LowCarSvc"] <-
-      ((ShdDvmt_Ve[VehAccType_Ve == "LowCarSvc"] * ShdCarSvcDeadheadProp) +
-         (UnShdDvmt_Ve[VehAccType_Ve == "LowCarSvc"] * UnShdCarSvcDeadheadProp)) * 
-      LowCarSvcDeadheadProp
+      ((ShdDvmt_Ve[VehAccType_Ve == "LowCarSvc"] * ShdCarSvcDeadheadProp[VehAccType_Ve == "LowCarSvc"]) +
+         (UnShdDvmt_Ve[VehAccType_Ve == "LowCarSvc"] * UnShdCarSvcDeadheadProp[VehAccType_Ve == "LowCarSvc"])) * 
+      LowCarSvcDeadheadProp[VehAccType_Ve == "LowCarSvc"]
     DeadheadDvmt_Ve[VehAccType_Ve == "HighCarSvc"] <-
-      ((ShdDvmt_Ve[VehAccType_Ve == "HighCarSvc"] * ShdCarSvcDeadheadProp) +
-         (UnShdDvmt_Ve[VehAccType_Ve == "HighCarSvc"] * UnShdCarSvcDeadheadProp)) * 
-      HighCarSvcDeadheadProp
+      ((ShdDvmt_Ve[VehAccType_Ve == "HighCarSvc"] * ShdCarSvcDeadheadProp[VehAccType_Ve == "HighCarSvc"]) +
+         (UnShdDvmt_Ve[VehAccType_Ve == "HighCarSvc"] * UnShdCarSvcDeadheadProp[VehAccType_Ve == "HighCarSvc"])) * 
+      HighCarSvcDeadheadProp[VehAccType_Ve == "HighCarSvc"]
     DeadheadDvmt_Ve[!IsDriverless_] <- 0
     DeadheadDvmt_Ve
   })
@@ -1876,6 +2032,68 @@ CalculateVehicleOperatingCost <- function(L) {
       sum(DriverlessDvmt_Hh) / sum(Dvmt_Hh)
     })
   }
+  
+  #Calculate average environmental impacts costs per mile by household
+  AveEnvCostPM_Hh <- 
+    tapply(ClimateImpactsRate_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
+  #Calculate average environmental costs paid per mile by household
+  AveEnvCostPaidPM_Hh <- 
+    tapply(ClimateCostRate_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
+  #Calculate average social costs paid per mile by household
+  AveSocCostPaidPM_Hh <- 
+    tapply(SocialCostRate_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
+  #Calculate average congestion fees per mile
+  AveCongPricePM_Hh <- local({
+	  CongPrice_Ve <- L$Year$Marea$AveCongPrice[MaToVehIdx_Ve] * UrbanVmtProp_Ve
+    tapply(CongPrice_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
+	})
+  #Calculate average fuel tax per mile
+  AveFuelTaxPM_Hh <- local({
+    FuelTax_Ve <- L$Year$Azone$FuelTax[AzToVehIdx_Ve] * L$Year$Vehicle$GPM
+    ElecProp_Ve <- L$Year$Vehicle$ElecDvmtProp
+    FuelTaxPM_Ve <- (1 - ElecProp_Ve) * FuelTax_Ve
+    tapply(FuelTaxPM_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
+  })
+  #Calculate average PEV charge per mile
+  AvePevChrgPM_Hh <- local({
+    FuelTax_Ve <- L$Year$Azone$FuelTax[AzToVehIdx_Ve] * L$Year$Vehicle$GPM
+    ElecProp_Ve <- L$Year$Vehicle$ElecDvmtProp
+    PevChrg <- mean(FuelTax_Ve) * L$Year$Azone$PevSurchgTaxProp[AzToVehIdx_Ve]
+    PevChrgPM_Ve <- ElecProp_Ve * PevChrg
+    tapply(PevChrgPM_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]  
+  })
+  #Get VMT tax at the household level
+  
+  VmtTax_Hh <- local({
+    VmtTax_Ve <- L$Year$Azone$VmtTax[AzToVehIdx_Ve]
+    tapply(VmtTax_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
+  })
+  #Get the extra VMT tax at the household level
+  ExtraVmtTax_Hh <- local({
+    if (!is.null(L$Year$Region$ExtraVmtTax)) {
+      ExtraVmtTax <- L$Year$Region$ExtraVmtTax
+    } else {
+      ExtraVmtTax <- 0
+    }
+    rep(ExtraVmtTax, times = length(L$Year$Household$HhId))
+  })
+  #Calculate maintenance, repair, tire cost (only for owned vehicles) per mile
+  AveMRTCostPM_Hh <-
+    tapply(MRTCostRate_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
+  #Calculate energy cost rate (fuel and electric power) per mile
+  AveEnergyCostPM_Hh <-
+    tapply(EnergyCostRate_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
+  #Calculate parking cost per mile
+  AveNonResPkgCostPM_Hh <-
+    tapply(ParkingCostRate_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
+  #Calculate PAYD insurance cost per mile
+  AvePaydInsCostPM_Hh <-
+    tapply(PaydInsCostRate_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
+  #Calculate car service cost per mile
+  AveCarSvcCostPM_Hh <-
+    tapply(CarSvcCostRate_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
+  
+  
 
   #Return the results
   #------------------
@@ -1887,7 +2105,20 @@ CalculateVehicleOperatingCost <- function(L) {
     DeadheadDvmtAdjProp = DeadheadDvmtAdjProp_Hh,
     AveVehCostPM = AveVehCostPM_Hh,
     AveSocEnvCostPM = AveSocEnvCostPM_Hh,
+	AveEnvCostPM = AveEnvCostPM_Hh,
+    AveEnvCostPaidPM = AveEnvCostPaidPM_Hh,
+    AveSocCostPaidPM = AveSocCostPaidPM_Hh,
     AveRoadUseTaxPM = AveRoadUseTaxPM_Hh,
+	AveFuelTaxPM = AveFuelTaxPM_Hh,
+    AvePevChrgPM = AvePevChrgPM_Hh,
+    AveCongPricePM = AveCongPricePM_Hh,
+    VmtTax = VmtTax_Hh,
+    ExtraVmtTax = ExtraVmtTax_Hh,
+    AveMRTCostPM = AveMRTCostPM_Hh,
+    AveEnergyCostPM = AveEnergyCostPM_Hh,
+    AveNonResPkgCostPM = AveNonResPkgCostPM_Hh,
+    AvePaydInsCostPM = AvePaydInsCostPM_Hh,
+    AveCarSvcCostPM = AveCarSvcCostPM_Hh,
     AveGPM = GPM_Hh,
     AveKWHPM = KWHPM_Hh,
     AveCO2ePM = AveCO2ePM_Hh
