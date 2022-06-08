@@ -66,6 +66,7 @@ for(Year in getYears()) {
   runModule("CalculateComEnergyAndEmissions",   "VETravelPerformanceDL",      RunFor = "AllYears",    RunYear = Year)
   runModule("CalculatePtranEnergyAndEmissions", "VETravelPerformanceDL",      RunFor = "AllYears",    RunYear = Year)
   runModule("CalculateSafetyMeasures",          "VETravelPerformanceDL",      RunFor = "AllYears",    RunYear = Year)
+  runModule("TravelTimeReliability",            "VETravelPerformanceDL",      RunFor = "AllYears",    RunYear = Year)
 }
 
 
@@ -75,25 +76,25 @@ Ma <- unique(readModelState()$Geo$Marea)
 Years <- getYears()
 #Tabulate Metro outputs for all years
 #------------------------------
-#if (file.exists("CalcMetroMeasuresFunction.R")) {
-#  source("CalcMetroMeasuresFunction.R")
-#  
-#  for (Year in getYears()) {
-#    cat(paste0("metro_measures_", Year, ".csv"), "\n")
-#    write.csv(calcMetropolitanMeasures(Year = Year, Ma = Ma,
-#                                       DstoreLocs_ = DatastoreName, DstoreType = DatastoreType),
-#              row.names = FALSE,
-#              file = paste0("metro_measures_", Year, ".csv"))
-#  }
-#  print(paste("Metropolitan measures outputs have been computed for all model",
-#              "run years and are saved in the following files:",
-#              paste(paste0("metro_measures_", Years, ".csv"),
-#                    collapse = ", ")))# can we change this so that it picks up the years itself without user input? (getYears())?
-#} else {
-#  warning(paste("Metropolitan measures outputs were not calculated",
-#                "because the 'CalcMetroMeasuresFunction.R' script is not",
-#                "present in the same directory as the 'run_model.R' script."))
-#}
+if (file.exists("CalcMetroMeasuresFunction.R")) {
+  source("CalcMetroMeasuresFunction.R")
+  
+  for (Year in getYears()) {
+    cat(paste0("metro_measures_", Year, ".csv"), "\n")
+    write.csv(calcMetropolitanMeasures(Year = Year, Ma = Ma,
+                                       DstoreLocs_ = DatastoreName, DstoreType = DatastoreType),
+              row.names = FALSE,
+              file = file.path("output", paste0("metro_measures_", Year, ".csv")))
+  }
+  print(paste("Metropolitan measures outputs have been computed for all model",
+              "run years and are saved in the following files:",
+              paste(paste0("metro_measures_", Years, ".csv"),
+                    collapse = ", ")))# can we change this so that it picks up the years itself without user input? (getYears())?
+} else {
+  warning(paste("Metropolitan measures outputs were not calculated",
+                "because the 'CalcMetroMeasuresFunction.R' script is not",
+                "present in the same directory as the 'run_model.R' script."))
+}
 
 #Tabulate Statewide outputs for all years
 #------------------------------

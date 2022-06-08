@@ -76,21 +76,21 @@ inputs:
                      # MetroLandArea , TownLandArea
         
     # TECHNOLOGY
-    LDVECODRVSCEN:
-        # TMIP - MIXTURE
-        # SCENARIOFOLDER: T1
-        # FILENAME: marea_speed_smooth_ecodrive.csv
-        # MODEL NAME: _manipulate_ldvecodrv
-        shortname: LDV Eco Drive Penetration
-        ptype: exogenour uncertainty
-        dtype: float
-        desc: Fraction of light duty vehicles that Eco-Drive 
-        default: 0 # AP scenario eco-driving input
-                   # marea_speed_smooth_ecodrive: FwySmooth,ArtSmooth,LdvEcoDrive
-        max: 1     # STS scenario eco-driving input
-                   # marea_speed_smooth_ecodrive: FwySmooth,ArtSmooth,LdvEcoDrive
-        min: 0     # AP scenario eco-driving input
-                   # marea_speed_smooth_ecodrive: FwySmooth,ArtSmooth,LdvEcoDrive
+#     LDVECODRVSCEN:
+#         # TMIP - MIXTURE
+#         # SCENARIOFOLDER: T1
+#         # FILENAME: marea_speed_smooth_ecodrive.csv
+#         # MODEL NAME: _manipulate_ldvecodrv
+#         shortname: LDV Eco Drive Penetration
+#         ptype: exogenour uncertainty
+#         dtype: float
+#         desc: Fraction of light duty vehicles that Eco-Drive 
+#         default: 0 # AP scenario eco-driving input
+#                    # marea_speed_smooth_ecodrive: FwySmooth,ArtSmooth,LdvEcoDrive
+#         max: 1     # STS scenario eco-driving input
+#                    # marea_speed_smooth_ecodrive: FwySmooth,ArtSmooth,LdvEcoDrive
+#         min: 0     # AP scenario eco-driving input
+#                    # marea_speed_smooth_ecodrive: FwySmooth,ArtSmooth,LdvEcoDrive
         
     CARSVCAVAILSCEN:
         # TMIP - CATEGORICAL
@@ -354,6 +354,36 @@ outputs:
             loc:
             - HouseholdDvmtPerHhIncOver50K
             - 2050
+    UrbanHouseholdDvmtPerPrsn:
+        kind: info
+        desc: Per capita DVMT for urban households
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - UrbanHouseholdDvmtPerPrsn
+            - 2050
+    TownHouseholdDvmtPerPrsn:
+        kind: info
+        desc: Per capita DVMT for town households
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TownHouseholdDvmtPerPrsn
+            - 2050
+    RuralHouseholdDvmtPerPrsn:
+        kind: info
+        desc: Per capita DVMT for rural households
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - RuralHouseholdDvmtPerPrsn
+            - 2050
 #     HouseholdCarSvcDvmt:
 #         kind: info
 #         desc: Daily vehicle miles traveled in car services by households in 2050
@@ -383,6 +413,66 @@ outputs:
             file: state_validation_measures.csv
             loc:
             - HouseholdCarSvcDvmtPerPrsn
+            - 2050
+    UrbanHouseholdCarSvcDvmtPerPrsn:
+        kind: info
+        desc: Average daily vehicle miles traveled in car services per person for urban households in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - UrbanHouseholdCarSvcDvmtPerPrsn
+            - 2050
+    TownHouseholdCarSvcDvmtPerPrsn:
+        kind: info
+        desc: Average daily vehicle miles traveled in car services per person for town households in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TownHouseholdCarSvcDvmtPerPrsn
+            - 2050
+    RuralHouseholdCarSvcDvmtPerPrsn:
+        kind: info
+        desc: Average daily vehicle miles traveled in car services per person for rural households in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - RuralHouseholdCarSvcDvmtPerPrsn
+            - 2050
+    UrbanHouseholdDriverlessDvmtPerPrsn:
+        kind: info
+        desc: Average daily vehicle miles traveled in driverless vehicles per person for urban households in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - UrbanHouseholdDriverlessDvmtPerPrsn
+            - 2050
+    TownHouseholdDriverlessDvmtPerPrsn:
+        kind: info
+        desc: Average daily vehicle miles traveled in driverless vehicles per person for town households in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TownHouseholdDriverlessDvmtPerPrsn
+            - 2050
+    RuralHouseholdDriverlessDvmtPerPrsn:
+        kind: info
+        desc: Average daily vehicle miles traveled in driverless vehicles per person for rural households in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - RuralHouseholdDriverlessDvmtPerPrsn
             - 2050
     ComSvcDvmt:
         kind: info
@@ -794,7 +884,7 @@ outputs:
             loc:
             - CarSvcDeadheadDvmtPerCapita
             - 2050
-        DriverlessVehicleProp:
+    DriverlessVehicleProp:
         kind: info
         desc: Proportion of household vehicles that are driverless
         transform: none
@@ -804,6 +894,126 @@ outputs:
             loc:
             - DriverlessVehicleProp
             - 2050
+    FwyDvmtPropExtCong:
+        kind: info
+        desc: Average freeway speed (miles per hour) when congestion is extreme in Metro area in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - FwyDvmtPropExtCong
+            - Metro
+    ArtDvmtPropExtCong:
+        kind: info
+        desc: Average arterial speed (miles per hour) when congestion is extreme in Metro area in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - ArtDvmtPropExtCong
+            - Metro
+    LdvAveSpeed:
+        kind: info
+        desc: Average speed (miles per hour) of light-duty vehicle travel in Metro area in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - LdvAveSpeed
+            - Metro
+    HvyTrkAveSpeed:
+        kind: info
+        desc: Average speed (miles per hour) of heavy truck travel in Metro area in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - HvyTrkAveSpeed
+            - Metro
+    BusAveSpeed:
+        kind: info
+        desc: Average speed (miles per hour) of bus travel in Metro area in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - BusAveSpeed
+            - Metro
+    NonUrbanAveSpeed:
+        kind: info
+        desc: Average speed (miles per hour) of vehicle travel on non-urban area roads in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - NonUrbanAveSpeed
+            - Metro
+    AutoFatalCrash:
+        kind: info
+        desc: Number of yearly auto fatal crashes in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - AutoFatalCrash
+            - Metro
+    AutoInjuryCrash:
+        kind: info
+        desc: Number of yearly auto injury crashes in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - AutoInjuryCrash
+            - Metro
+    BikeFatalCrash:
+        kind: info
+        desc: Number of yearly bike fatal crashes in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - BikeFatalCrash
+            - Metro
+    BikeInjuryCrash:
+        kind: info
+        desc: Number of yearly bike injury crashes in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - BikeInjuryCrash
+            - Metro
+    WalkFatalCrash:
+        kind: info
+        desc: Number of yearly walk fatal crashes in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - WalkFatalCrash
+            - Metro
+    WalkInjuryCrash:
+        kind: info
+        desc: Number of yearly walk injury crashes in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - WalkInjuryCrash
+            - Metro
     # MetroHhDvmt:
     #     kind: info
     #     desc: Household Dvmt in Metro area in 2050
