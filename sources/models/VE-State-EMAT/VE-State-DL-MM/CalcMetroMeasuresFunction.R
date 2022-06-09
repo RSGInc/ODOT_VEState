@@ -1702,9 +1702,9 @@ calcMetropolitanMeasures <-
     )
 
 
-    #===========================================================        
-    #FUEL CONSUMPTION AND CO2E PRODUCTION OF LIGHT-DUTY VEHICLES
-    #===========================================================
+    #================================================
+    #FUEL CONSUMPTION AND CO2E PRODUCTION OF VEHICLES
+    #================================================
 
     #Household fuel consumption for Marea
     #------------------------------------
@@ -1895,6 +1895,41 @@ calcMetropolitanMeasures <-
       Description = "Average annual production of greenhouse gas emissions from public transit van travel in the urbanized area"
     )
     
+    #Bus CO2e rate for urbanized area
+    #--------------------------------
+    BusCO2eRate_Ma <- summarizeDatasets(
+      Expr = "sum(BusCO2eRate) * 1000",
+      Units = c(
+        BusCO2eRate = "KG/MI",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Marea",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(BusCO2eRate_Ma) <- list(
+      Units = "Grams CO2e per mile",
+      Description = "Average greenhouse gas emissions per mile of public transit bus travel in the urbanized area"
+    )
+    
+    #Heavy truck CO2e rate for urbanized area
+    #----------------------------------------
+    HvyTrkAveUrbanCO2eRate_Ma <- summarizeDatasets(
+      Expr = "sum(HvyTrkAveUrbanCO2eRate) * 1000",
+      Units = c(
+        HvyTrkAveUrbanCO2eRate = "KG/MI",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Marea",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(HvyTrkAveUrbanCO2eRate_Ma) <- list(
+      Units = "Grams CO2e per mile",
+      Description = "Average greenhouse gas emissions per mile of heavy truck travel in the urbanized area"
+    )
     #Light-duty vehicle CO2e for urbanized area
     #------------------------------------------
     LdvCO2e_Ma <- HhCO2e_Ma + VanCO2e_Ma + ComSvcCO2e_Ma
@@ -1959,6 +1994,8 @@ calcMetropolitanMeasures <-
         "HhCO2e_Ma",
         "ComSvcCO2e_Ma",
         "VanCO2e_Ma",
+        "BusCO2eRate_Ma",
+        "HvyTrkAveUrbanCO2eRate_Ma",
         "LdvCO2e_Ma",
         "LdvCO2ePerPrsn_Ma",
         "HhCO2eRate_Ma",
@@ -2006,6 +2043,40 @@ calcMetropolitanMeasures <-
     attributes(ArtDvmtPropExtCong) <- list(
       Units = "proportion",
       Description = "Average arterial speed (miles per hour) when congestion is extreme"
+    )
+    #Travel time reliability with extreme congestion on freeways
+    #----------------------------------------------------------
+    FwyExtCongTTI <- summarizeDatasets(
+      Expr = "FwyExtCong_TTI",
+      Units_ = c(
+        FwyExtCong_TTI = "proportion",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Marea",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(FwyExtCongTTI) <- list(
+      Units = "proportion",
+      Description = "Average freeway travel time index when congestion is extreme"
+    )
+    #Travel time reliability with extreme congestion on arterials
+    #------------------------------------------------------------
+    ArtExtCongTTI <- summarizeDatasets(
+      Expr = "ArtExtCong_TTI",
+      Units_ = c(
+        ArtExtCong_TTI = "proportion",
+        Marea = ""
+      ),
+      By_ = "Marea",
+      Table = "Marea",
+      Group = Year,
+      QueryPrep_ls = QPrep_ls
+    )[Ma]
+    attributes(ArtExtCongTTI) <- list(
+      Units = "proportion",
+      Description = "Average arterial travel time index when congestion is extreme"
     )
     #Light-duty vehicle average speed
     #--------------------------------
@@ -2082,6 +2153,8 @@ calcMetropolitanMeasures <-
       DataNames_ = c(
         "FwyDvmtPropExtCong",
         "ArtDvmtPropExtCong",
+        "FwyExtCongTTI",
+        "ArtExtCongTTI",
         "LdvAveSpeed",
         "HvyTrkAveSpeed",
         "BusAveSpeed",

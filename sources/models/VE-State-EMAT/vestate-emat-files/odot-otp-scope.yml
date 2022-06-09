@@ -222,7 +222,7 @@ inputs:
 #                    # HvyTrkPropIcev,HvyTrkPropHev,HvyTrkPropBev
 #                    #
 #                    # region_comsvc_powertrain_prop - Commercial servce ICE proportion close to 90% for 2050
-#                    # ComSvcAutoPropIcev,ComSvcAutoPropHev,ComSvcAutoPropBev,ComSvcLtTrkPropIcev,ComSvcLtTrkPropHev,ComSvcLtTrkPropBev
+#                    # ComSvcAutoPropIcev,ComSvcAutoPropHev,ComSvcAutoPropBev,ComSvcLtTrkPropIcev,FcLtTrkPropHev,ComSvcLtTrkPropBev
 #                    #
 #                    # marea_transit_fuel - default
 #                    # VanPropDiesel,VanPropGasoline,VanPropCng,BusPropGasoline,BusPropDiesel,BusPropCng,RailPropGasoline,RailPropDiesel
@@ -314,6 +314,16 @@ outputs:
             loc:
             - HouseholdDvmtPerPrsn
             - 2050
+    # HouseholdDvmtPerPrsn:
+    #     kind: info
+    #     desc: Average daily vehicle miles traveled per person in 2050
+    #     transform: none
+    #     metamodeltype: linear
+    #     parser:
+    #         file: county_measures_2050.csv
+    #         loc:
+    #         - HouseholdDvmtPerPrsn
+    #         - 2050
     # HouseholdDvmtPerVeh:
     #     kind: info
     #     desc: Average daily vehicle miles traveled in a household vehicle in 2050
@@ -354,7 +364,7 @@ outputs:
             loc:
             - HouseholdDvmtPerHhIncOver50K
             - 2050
-    UrbanHouseholdDvmtPerPrsn:
+    HouseholdDvmtPerPrsnUrban:
         kind: info
         desc: Per capita DVMT for urban households
         transform: none
@@ -362,9 +372,9 @@ outputs:
         parser:
             file: state_validation_measures.csv
             loc:
-            - UrbanHouseholdDvmtPerPrsn
+            - HouseholdDvmtPerPrsnUrban
             - 2050
-    TownHouseholdDvmtPerPrsn:
+    HouseholdDvmtPerPrsnTown:
         kind: info
         desc: Per capita DVMT for town households
         transform: none
@@ -372,9 +382,9 @@ outputs:
         parser:
             file: state_validation_measures.csv
             loc:
-            - TownHouseholdDvmtPerPrsn
+            - HouseholdDvmtPerPrsnTown
             - 2050
-    RuralHouseholdDvmtPerPrsn:
+    HouseholdDvmtPerPrsnRural:
         kind: info
         desc: Per capita DVMT for rural households
         transform: none
@@ -382,7 +392,7 @@ outputs:
         parser:
             file: state_validation_measures.csv
             loc:
-            - RuralHouseholdDvmtPerPrsn
+            - HouseholdDvmtPerPrsnRural
             - 2050
 #     HouseholdCarSvcDvmt:
 #         kind: info
@@ -414,7 +424,7 @@ outputs:
             loc:
             - HouseholdCarSvcDvmtPerPrsn
             - 2050
-    UrbanHouseholdCarSvcDvmtPerPrsn:
+    HouseholdCarSvcDvmtPerPrsnUrban:
         kind: info
         desc: Average daily vehicle miles traveled in car services per person for urban households in 2050
         transform: none
@@ -422,9 +432,9 @@ outputs:
         parser:
             file: state_validation_measures.csv
             loc:
-            - UrbanHouseholdCarSvcDvmtPerPrsn
+            - HouseholdCarSvcDvmtPerPrsnUrban
             - 2050
-    TownHouseholdCarSvcDvmtPerPrsn:
+    HouseholdCarSvcDvmtPerPrsnTown:
         kind: info
         desc: Average daily vehicle miles traveled in car services per person for town households in 2050
         transform: none
@@ -432,9 +442,9 @@ outputs:
         parser:
             file: state_validation_measures.csv
             loc:
-            - TownHouseholdCarSvcDvmtPerPrsn
+            - HouseholdCarSvcDvmtPerPrsnTown
             - 2050
-    RuralHouseholdCarSvcDvmtPerPrsn:
+    HouseholdCarSvcDvmtPerPrsnRural:
         kind: info
         desc: Average daily vehicle miles traveled in car services per person for rural households in 2050
         transform: none
@@ -442,9 +452,9 @@ outputs:
         parser:
             file: state_validation_measures.csv
             loc:
-            - RuralHouseholdCarSvcDvmtPerPrsn
+            - HouseholdCarSvcDvmtPerPrsnRural
             - 2050
-    UrbanHouseholdDriverlessDvmtPerPrsn:
+    HouseholdDriverlessDvmtPerPrsnUrban:
         kind: info
         desc: Average daily vehicle miles traveled in driverless vehicles per person for urban households in 2050
         transform: none
@@ -452,9 +462,9 @@ outputs:
         parser:
             file: state_validation_measures.csv
             loc:
-            - UrbanHouseholdDriverlessDvmtPerPrsn
+            - HouseholdDriverlessDvmtPerPrsnUrban
             - 2050
-    TownHouseholdDriverlessDvmtPerPrsn:
+    HouseholdDriverlessDvmtPerPrsnTown:
         kind: info
         desc: Average daily vehicle miles traveled in driverless vehicles per person for town households in 2050
         transform: none
@@ -462,9 +472,9 @@ outputs:
         parser:
             file: state_validation_measures.csv
             loc:
-            - TownHouseholdDriverlessDvmtPerPrsn
+            - HouseholdDriverlessDvmtPerPrsnTown
             - 2050
-    RuralHouseholdDriverlessDvmtPerPrsn:
+    HouseholdDriverlessDvmtPerPrsnRural:
         kind: info
         desc: Average daily vehicle miles traveled in driverless vehicles per person for rural households in 2050
         transform: none
@@ -472,7 +482,7 @@ outputs:
         parser:
             file: state_validation_measures.csv
             loc:
-            - RuralHouseholdDriverlessDvmtPerPrsn
+            - HouseholdDriverlessDvmtPerPrsnRural
             - 2050
     ComSvcDvmt:
         kind: info
@@ -594,7 +604,7 @@ outputs:
 #             loc:
 #             - HouseholdCO2e
 #             - 2050
-    HouseholdCO2ePerCapita:
+    HouseholdCO2ePerPrsn:
         kind: minimize
         desc: Total CO2 equivalent green house gas emission by households per capita in 2050
         transform: none
@@ -602,8 +612,78 @@ outputs:
         parser:
             file: state_validation_measures.csv
             loc:
-            - HouseholdCO2ePerCapita
+            - HouseholdCO2ePerPrsn
+            - 2050
+    HouseholdCO2ePerMile:
+        kind: minimize
+        desc: Total CO2 equivalent green house gas emission by households per mile in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdCO2ePerMile
             - 2050    
+    HouseholdCO2ePerMileUrban:
+        kind: minimize
+        desc: Total CO2 equivalent green house gas emission by urban households per mile in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdCO2ePerMileUrban
+            - 2050    
+    HouseholdCO2ePerMileTown:
+        kind: minimize
+        desc: Total CO2 equivalent green house gas emission by town households per mile in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdCO2ePerMileTown
+            - 2050    
+    HouseholdCO2ePerMileRural:
+        kind: minimize
+        desc: Total CO2 equivalent green house gas emission by rural households per mile in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdCO2ePerMileRural
+            - 2050    
+#    ComSvcCO2eRate:
+#        kind: minimize
+#        desc: Average greenhouse gas emissions per mile of commercial service vehicle travel attributable to households and businesses in the urbanized area
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: metro_measures_2050.csv
+#            loc:
+#            - ComSvcCO2eRate
+#            - 2050    
+#    BusCO2eRate:
+#        kind: minimize
+#        desc: Average greenhouse gas emissions per mile of public transit bus travel in the urbanized area
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: metro_measures_2050.csv
+#            loc:
+#            - BusCO2eRate
+#            - 2050    
+#    HvyTrkAveUrbanCO2eRate:
+#        kind: minimize
+#        desc: Average greenhouse gas emissions per mile of heavy truck travel in the urbanized area
+#        transform: none
+#        metamodeltype: log
+#        parser:
+#            file: metro_measures_2050.csv
+#            loc:
+#            - HvyTrkAveUrbanCO2eRate
+#            - 2050    
 #     TransitTrips:
 #         kind: info
 #         desc: Total number of transit trips
@@ -623,6 +703,36 @@ outputs:
             file: state_validation_measures.csv
             loc:
             - TransitTripsPerCapita
+            - 2050
+    TransitPMTPerPrsnUrban:
+        kind: info
+        desc: Transit PMT per capita by urban households in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TransitPMTPerPrsnUrban
+            - 2050
+    TransitPMTPerPrsnTown:
+        kind: info
+        desc: Transit PMT per capita by town households in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TransitPMTPerPrsnTown
+            - 2050
+    TransitPMTPerPrsnRural:
+        kind: info
+        desc: Transit PMT per capita by rural households in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TransitPMTPerPrsnRural
             - 2050
 #     TransitTripsHHLess25K:
 #         kind: info
@@ -664,6 +774,36 @@ outputs:
             loc:
             - BikeTripsPerCapita
             - 2050
+    BikePMTPerPrsnUrban:
+        kind: info
+        desc: Bike PMT per capita by urban households in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - BikePMTPerPrsnUrban
+            - 2050
+    BikePMTPerPrsnTown:
+        kind: info
+        desc: Bike PMT per capita by town households in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - BikePMTPerPrsnTown
+            - 2050
+    BikePMTPerPrsnRural:
+        kind: info
+        desc: Bike PMT per capita by rural households in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - BikePMTPerPrsnRural
+            - 2050
 #     BikeTripsHHLess25K:
 #         kind: info
 #         desc: Total number of bike trips by households earning less than 25K
@@ -703,6 +843,36 @@ outputs:
             file: state_validation_measures.csv
             loc:
             - WalkTripsPerCapita
+            - 2050
+    WalkPMTPerPrsnUrban:
+        kind: info
+        desc: Walk PMT per capita by urban households in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - WalkPMTPerPrsnUrban
+            - 2050
+    WalkPMTPerPrsnTown:
+        kind: info
+        desc: Walk PMT per capita by town households in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - WalkPMTPerPrsnTown
+            - 2050
+    WalkPMTPerPrsnRural:
+        kind: info
+        desc: Walk PMT per capita by rural households in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - WalkPMTPerPrsnRural
             - 2050
 #     WalkTripsHHLess25K:
 #         kind: info
@@ -854,7 +1024,7 @@ outputs:
             loc:
             - TotalVehUseCost
             - 2050
-    DriverlessDvmtPerHH:
+    HouseholdDriverlessDvmtPerHh:
         kind: info
         desc: DVMT consumed in driverless vehicles per household
         transform: none
@@ -862,9 +1032,9 @@ outputs:
         parser:
             file: state_validation_measures.csv
             loc:
-            - DriverlessDvmtPerHH
+            - HouseholdDriverlessDvmtPerHh
             - 2050
-    AdjDriverlessDvmtPerHH:
+    AdjDriverlessDvmtPerHh:
         kind: info
         desc: Extra dvmt in driverless vehicles due to remote access and added passenger travel per household
         transform: none
@@ -872,9 +1042,9 @@ outputs:
         parser:
             file: state_validation_measures.csv
             loc:
-            - AdjDriverlessDvmtPerHH
+            - AdjDriverlessDvmtPerHh
             - 2050
-    CarSvcDeadheadDvmtPerCapita:
+    CarSvcDeadheadDvmtPerPrsn:
         kind: info
         desc: Car service deadhead DVMT per capita
         transform: none
@@ -882,7 +1052,7 @@ outputs:
         parser:
             file: state_validation_measures.csv
             loc:
-            - CarSvcDeadheadDvmtPerCapita
+            - CarSvcDeadheadDvmtPerPerPrsn
             - 2050
     DriverlessVehicleProp:
         kind: info
@@ -913,6 +1083,26 @@ outputs:
             file: metro_measures_2050.csv
             loc:
             - ArtDvmtPropExtCong
+            - Metro
+    FwyExtCongTTI:
+        kind: info
+        desc: Average freeway travel time index when congestion is extreme
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - FwyExtCongTTI
+            - Metro
+    ArtExtCongTTI:
+        kind: info
+        desc: Average arterial travel time index when congestion is extreme
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - ArtExtCongTTI
             - Metro
     LdvAveSpeed:
         kind: info
@@ -1183,4 +1373,114 @@ outputs:
              file: state_validation_measures.csv
              loc:
              - AutoInjuryRural
+             - 2050
+    NumHouseholdVehicles:
+         kind: info
+         desc: Number of vehicles owned or leased by households
+         transform: none
+         metamodeltype: log
+         parser:
+             file: county_measures_2050.csv
+             loc:
+             - NumHouseholdVehicles
+             - 2050
+    OwnCostProp:
+         kind: info
+         desc: Vehicle ownership cost as a proportion of household income
+         transform: none
+         metamodeltype: log
+         parser:
+             file: state_validation_measures.csv
+             loc:
+             - OwnCostProp
+             - 2050
+    OwnCostPropHhLess25K:
+         kind: info
+         desc: Vehicle ownerhsip cost as a proportion of household income for households earning between 25K to 50K in 2050
+         transform: none
+         metamodeltype: log
+         parser:
+             file: state_validation_measures.csv
+             loc:
+             - OwnCostPropHhLess25K
+             - 2050
+    OwnCostPropHh25Kto50K:
+         kind: info
+         desc: Vehicle ownerhsip cost as a proportion of household income for households earning less than 25K
+         transform: none
+         metamodeltype: log
+         parser:
+             file: state_validation_measures.csv
+             loc:
+             - OwnCostPropHh25Kto50K
+             - 2050
+    OwnCostPropHhOver50K:
+         kind: info
+         desc: Vehicle ownerhsip cost as a proportion of household income for households earning over 50K in 2050
+         transform: none
+         metamodeltype: log
+         parser:
+             file: state_validation_measures.csv
+             loc:
+             - OwnCostPropHhOver50K
+             - 2050
+    OwnCostPropUrban:
+         kind: info
+         desc: Vehicle ownerhsip cost as a proportion of household income for urban households
+         transform: none
+         metamodeltype: log
+         parser:
+             file: state_validation_measures.csv
+             loc:
+             - OwnCostPropUrban
+             - 2050
+    OwnCostPropTown:
+         kind: info
+         desc: Vehicle ownerhsip cost as a proportion of household income for town households
+         transform: none
+         metamodeltype: log
+         parser:
+             file: state_validation_measures.csv
+             loc:
+             - OwnCostPropTown
+             - 2050
+    OwnCostPropRural:
+         kind: info
+         desc: Vehicle ownerhsip cost as a proportion of household income for rural households
+         transform: none
+         metamodeltype: log
+         parser:
+             file: state_validation_measures.csv
+             loc:
+             - OwnCostPropRural
+             - 2050
+    VehCostProp:
+         kind: info
+         desc: Vehicle operating cost as a proportion of household income
+         transform: none
+         metamodeltype: log
+         parser:
+             file: state_validation_measures.csv
+             loc:
+             - VehCostProp
+             - 2050
+    VehCostPropHhLess25K:
+         kind: info
+         desc: Vehicle operating cost as a proportion of household income for households earning less than 25K
+         transform: none
+         metamodeltype: log
+         parser:
+             file: state_validation_measures.csv
+             loc:
+             - VehCostPropHhLess25K
+             - 2050
+    VehCostPropHhAge65Plus:
+         kind: info
+         desc: Vehicle operating cost as a proportion of household income for households with residents age 65 and older
+         transform: none
+         metamodeltype: log
+         parser:
+             file: state_validation_measures.csv
+             loc:
+             - VehCostPropHhAge65Plus
              - 2050
