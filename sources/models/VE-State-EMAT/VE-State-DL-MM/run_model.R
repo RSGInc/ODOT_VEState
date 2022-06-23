@@ -85,7 +85,7 @@ if (file.exists("CalcMetroMeasuresFunction.R")) {
     write.csv(calcMetropolitanMeasures(Year = Year, Ma = Ma,
                                        DstoreLocs_ = DatastoreName, DstoreType = DatastoreType),
               row.names = FALSE,
-              file = paste0("metro_measures_", Year, ".csv"))
+              file = file.path("output", paste0("metro_measures_", Year, ".csv")))
   }
   print(paste("Metropolitan measures outputs have been computed for all model",
               "run years and are saved in the following files:",
@@ -107,7 +107,7 @@ if (file.exists("CalcCountyMeasuresFunction.R")) {
     write.csv(calcCountyMeasures(Year = Year, Az = Az,
                                        DstoreLocs_ = DatastoreName, DstoreType = DatastoreType),
               row.names = FALSE,
-              file = paste0("county_measures_", Year, ".csv"))
+              file = file.path("output", paste0("county_measures_", Year, ".csv")))
   }
   print(paste("County measures outputs have been computed for all model",
               "run years and are saved in the following files:",
@@ -129,7 +129,7 @@ if (file.exists("CalcCountyLocMeasuresFunction.R")) {
     write.csv(calcCountyLocMeasures(Year = Year, Az = Az,
                                     DstoreLocs_ = DatastoreName, DstoreType = DatastoreType),
               row.names = FALSE,
-              file = paste0("county_location_measures_", Year, ".csv"))
+              file = file.path("output", paste0("county_location_measures_", Year, ".csv")))
   }
   print(paste("County-location-type measures outputs have been computed for all model",
               "run years and are saved in the following files:",
@@ -152,14 +152,14 @@ if (file.exists("CalcStateValidationMeasuresFunction.R")) {
   write.csv(calcStateValidationMeasures(Years, BaseYear,
                                         DstoreLocs_ = DatastoreName, DstoreType = DatastoreType),
             row.names = FALSE,
-            file = "state_validation_measures.csv")
+            file = file.path("output", "state_validation_measures.csv"))
 }else{
   warning(paste("State Validation measures outputs were not calculated",
                 "because the 'CalcOregonValidationMeasures.R' script is not",
                 "present in the same directory as the 'run_model.R' script."))
 }
 
-source("Combine_metro_measures.R")
+#source("Combine_metro_measures.R")
 # #Tabulate DataStore Inventory
 # #------------------------------
 # documentDatastoreTables <- function(SaveArchiveName, QueryPrep_ls) {

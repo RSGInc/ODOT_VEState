@@ -646,67 +646,74 @@ calcStateValidationMeasures <-
         Description = "Total DVMT of commercial service vehicles"
       )
       
-      # #Public Transit Van DVMT
-      # PTVanDvmt <- summarizeDatasets(
-      #   Expr = "sum(VanDvmt)",
-      #   Units = c(
-      #     VanDvmt = "MI/DAY"
-      #   ),
-      #   Table = "Marea",
-      #   Group = Year,
-      #   QueryPrep_ls = QPrep_ls
-      # )
-      # attributes(PTVanDvmt) <- list(
-      #   Units = "miles per day",
-      #   Description = "Total DVMT of public transit vans"
-      # )
-      # #Light-duty Vehicle DVMT
-      # LdvDvmt <- HouseholdDvmt + ComSvcDvmt + PTVanDvmt
-      # attributes(LdvDvmt) <- list(
-      #   Units = "miles per day",
-      #   Description = "Total DVMT of household vehicles, commercial service vehicles, and public transit vans"
-      # )
-      # #Heavy truck DVMT
-      # HvyTruckDvmt <- summarizeDatasets(
-      #   Expr = "sum(HvyTrkUrbanDvmt) + sum(HvyTrkNonUrbanDvmt)",
-      #   Units = c(
-      #     HvyTrkUrbanDvmt = "MI/DAY",
-      #     HvyTrkNonUrbanDvmt = "MI/DAY"
-      #   ),
-      #   Table = "Region",
-      #   Group = Year,
-      #   QueryPrep_ls = QPrep_ls
-      # )
-      # attributes(HvyTruckDvmt) <- list(
-      #   Units = "miles per day",
-      #   Description = "Total DVMT of heavy trucks"
-      # )
-      # #Bus DVMT
-      # BusDvmt <- summarizeDatasets(
-      #   Expr = "sum(BusDvmt)",
-      #   Units = c(
-      #     BusDvmt = "MI/DAY"
-      #   ),
-      #   Table = "Marea",
-      #   Group = Year,
-      #   QueryPrep_ls = QPrep_ls
-      # )
-      # attributes(BusDvmt) <- list(
-      #   Units = "miles per day",
-      #   Description = "Total DVMT of public transit busses"
-      # )
-      # #Heavy duty vehicle DVMT
-      # HdvDvmt <- HvyTruckDvmt + BusDvmt
-      # attributes(HdvDvmt) <- list(
-      #   Units = "miles per day",
-      #   Description = "Total DVMT of heavy trucks and public transit busses"
-      # )
-      # #Total DVMT
-      # TotalDvmt <- LdvDvmt + HdvDvmt
-      # attributes(HdvDvmt) <- list(
-      #   Units = "miles per day",
-      #   Description = "Total DVMT of light-duty vehicles and heavy duty vehicles"
-      # )
+      #Public Transit Van DVMT
+      PTVanDvmt <- summarizeDatasets(
+        Expr = "sum(VanDvmt)",
+        Units = c(
+          VanDvmt = "MI/DAY"
+        ),
+        Table = "Marea",
+        Group = Year,
+        QueryPrep_ls = QPrep_ls
+      )
+      attributes(PTVanDvmt) <- list(
+        Units = "miles per day",
+        Description = "Total DVMT of public transit vans"
+      )
+      #Light-duty Vehicle DVMT
+      LdvDvmt <- HouseholdDvmt + ComSvcDvmt + PTVanDvmt
+      attributes(LdvDvmt) <- list(
+        Units = "miles per day",
+        Description = "Total DVMT of household vehicles, commercial service vehicles, and public transit vans"
+      )
+      #Heavy truck DVMT
+      HvyTruckDvmt <- summarizeDatasets(
+        Expr = "sum(HvyTrkUrbanDvmt) + sum(HvyTrkNonUrbanDvmt)",
+        Units = c(
+          HvyTrkUrbanDvmt = "MI/DAY",
+          HvyTrkNonUrbanDvmt = "MI/DAY"
+        ),
+        Table = "Region",
+        Group = Year,
+        QueryPrep_ls = QPrep_ls
+      )
+      attributes(HvyTruckDvmt) <- list(
+        Units = "miles per day",
+        Description = "Total DVMT of heavy trucks"
+      )
+      #Bus DVMT
+      BusDvmt <- summarizeDatasets(
+        Expr = "sum(BusDvmt)",
+        Units = c(
+          BusDvmt = "MI/DAY"
+        ),
+        Table = "Marea",
+        Group = Year,
+        QueryPrep_ls = QPrep_ls
+      )
+      attributes(BusDvmt) <- list(
+        Units = "miles per day",
+        Description = "Total DVMT of public transit busses"
+      )
+      #Heavy duty vehicle DVMT
+      HdvDvmt <- HvyTruckDvmt + BusDvmt
+      attributes(HdvDvmt) <- list(
+        Units = "miles per day",
+        Description = "Total DVMT of heavy trucks and public transit busses"
+      )
+      #Total DVMT
+      TotalDvmt <- LdvDvmt + HdvDvmt
+      attributes(TotalDvmt) <- list(
+        Units = "miles per day",
+        Description = "Total DVMT of light-duty vehicles and heavy duty vehicles"
+      )
+      
+      #Total DVMT per capita
+      TotalDvmtPerPrsn <- TotalDvmt/Population
+      attributes(TotalDvmtPerPrsn) <- list(
+        Units = "miles per day",
+        Description = "Per capita DVMT of light-duty vehicles and heavy duty vehicles"
+      )
       
       #----------------
       #Gasoline Gallons
@@ -1269,41 +1276,83 @@ calcStateValidationMeasures <-
         Units = "grams per day",
         Description = "Per mile greenhousehouse gas emissions of household vehicles in rural area"
       )
-      # #Commercial Service Vehicle CO2e
-      # ComSvcCO2e <- summarizeDatasets(
-      #   Expr = "sum(ComSvcNonUrbanCO2e) + sum(ComSvcUrbanCO2e)",
-      #   Units_ = c(
-      #     ComSvcNonUrbanCO2e = "GM/DAY",
-      #     ComSvcUrbanCO2e = "GM/DAY"
-      #   ),
-      #   Table = "Marea",
-      #   Group = Year,
-      #   QueryPrep_ls = QPrep_ls
-      # )
-      # attributes(ComSvcCO2e) <- list(
-      #   Units = "grams per day",
-      #   Description = "Daily greenhousehouse gas emissions of commercial service vehicles"
-      # )
-      # #Public Transit Van CO2e
-      # PTVanCO2e <- summarizeDatasets(
-      #   Expr = "sum(VanCO2e)",
-      #   Units_ = c(
-      #     VanCO2e = "GM/DAY"
-      #   ),
-      #   Table = "Marea",
-      #   Group = Year,
-      #   QueryPrep_ls = QPrep_ls
-      # )
-      # attributes(PTVanCO2e) <- list(
-      #   Units = "grams per day",
-      #   Description = "Daily greenhousehouse gas emissions of public transit vans"
-      # )
-      # #Light-duty Vehicle CO2e
-      # LdvCO2e <- HouseholdCO2e + ComSvcCO2e + PTVanCO2e
-      # attributes(LdvCO2e) <- list(
-      #   Units = "grams per day",
-      #   Description = "Daily greenhousehouse gas emissions of light-duty vehicles"
-      # )
+      #Commercial Service Vehicle CO2e
+      ComSvcCO2e <- summarizeDatasets(
+        Expr = "sum(ComSvcNonUrbanCO2e) + sum(ComSvcUrbanCO2e)",
+        Units_ = c(
+          ComSvcNonUrbanCO2e = "GM/DAY",
+          ComSvcUrbanCO2e = "GM/DAY"
+        ),
+        Table = "Marea",
+        Group = Year,
+        QueryPrep_ls = QPrep_ls
+      )
+      attributes(ComSvcCO2e) <- list(
+        Units = "grams per day",
+        Description = "Daily greenhousehouse gas emissions of commercial service vehicles"
+      )
+      #Public Transit Van CO2e
+      PTVanCO2e <- summarizeDatasets(
+        Expr = "sum(VanCO2e)",
+        Units_ = c(
+          VanCO2e = "GM/DAY"
+        ),
+        Table = "Marea",
+        Group = Year,
+        QueryPrep_ls = QPrep_ls
+      )
+      attributes(PTVanCO2e) <- list(
+        Units = "grams per day",
+        Description = "Daily greenhousehouse gas emissions of public transit vans"
+      )
+      #Light-duty Vehicle CO2e
+      LdvCO2e <- HouseholdCO2e + ComSvcCO2e + PTVanCO2e
+      attributes(LdvCO2e) <- list(
+        Units = "grams per day",
+        Description = "Daily greenhousehouse gas emissions of light-duty vehicles"
+      )
+      #Heavy truck CO2e
+      HvyTruckCO2e <- summarizeDatasets(
+        Expr = "sum(HvyTrkUrbanCO2e) + sum(HvyTrkNonUrbanCO2e)",
+        Units = c(
+          HvyTrkUrbanCO2e = "MI/DAY",
+          HvyTrkNonUrbanCO2e = "MI/DAY"
+        ),
+        Table = "Region",
+        Group = Year,
+        QueryPrep_ls = QPrep_ls
+      )
+      attributes(HvyTruckCO2e) <- list(
+        Units = "miles per day",
+        Description = "Total CO2e of heavy trucks"
+      )
+      #Bus CO2e
+      BusCO2e <- summarizeDatasets(
+        Expr = "sum(BusCO2e)",
+        Units = c(
+          BusCO2e = "MI/DAY"
+        ),
+        Table = "Marea",
+        Group = Year,
+        QueryPrep_ls = QPrep_ls
+      )
+      attributes(BusCO2e) <- list(
+        Units = "miles per day",
+        Description = "Total CO2e of public transit busses"
+      )
+      #Heavy duty vehicle CO2e
+      HdvCO2e <- HvyTruckCO2e + BusCO2e
+      attributes(HdvCO2e) <- list(
+        Units = "miles per day",
+        Description = "Total CO2e of heavy trucks and public transit busses"
+      )
+      #Total CO2e
+      TotalCO2e <- LdvCO2e + HdvCO2e
+      attributes(TotalCO2e) <- list(
+        Units = "miles per day",
+        Description = "Total CO2e of light-duty vehicles and heavy duty vehicles"
+      )
+      #
       # #HouseholdCO2eRate
       # HouseholdCO2eRate <- HouseholdCO2e / HouseholdDvmt
       # attributes(HouseholdCO2eRate) <- list(
@@ -1956,6 +2005,21 @@ calcStateValidationMeasures <-
       #---------------------------
       # Cost and Revenue Summaries
       #---------------------------
+      RoadUseTax <- summarizeDatasets(
+        Expr = "sum(AveRoadUseTaxPM * Dvmt)",
+        Units = c(
+          AveRoadUseTaxPM = "USD",
+          Dvmt = "MI/DAY"
+        ),
+        Table = "Household",
+        Group = Year,
+        QueryPrep_ls = QPrep_ls
+      )
+      attributes(RoadUseTax) <- list(
+        Units = "dollars",
+        Description = "Total taxes collected per mile of household fuel tax, VMT tax, and congestion fees"
+      )
+      
       #Annual household fuel taxes
       #---------------------------
       HhFuelTax <- summarizeDatasets(
@@ -2395,7 +2459,8 @@ calcStateValidationMeasures <-
           # "HvyTruckDvmt",
           # "BusDvmt",
           # "HdvDvmt",
-          # "TotalDvmt",
+          "TotalDvmt",
+          "TotalDvmtPerPrsn",
           # "HouseholdGGE",
           # "ComSvcGGE",
           # "PTVanGGE",
@@ -2445,6 +2510,7 @@ calcStateValidationMeasures <-
           # "ComSvcCO2eRate",
           # "PTVanCO2eRate",
           # "LdvCO2eRate",
+          "TotalCO2e",
           "TransitTrips",
           "TransitTripsPerCapita",
           "TransitPMTPerPrsnUrban",
@@ -2476,6 +2542,7 @@ calcStateValidationMeasures <-
           "VehCostProp",
           "VehCostPropHhLess25K",
           "VehCostPropHhAge65Plus",
+          "RoadUseTax",
           "HhFuelTax",
           "HhPevFuelTax",
           "ComSvcFuelTax", 

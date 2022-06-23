@@ -179,6 +179,36 @@ class VEStateModel(FilesCoreModel):
 				index_col=0,
 			)
 		)
+		# CalcCountyMeasuresFunction.R
+		instructions = {}
+		for measure in scope.get_measures():
+			if measure.parser and measure.parser.get('file') == 'county_location_measures_2050.csv':
+				if measure.parser.get('loc'):
+					instructions[measure.name] = loc[(str(j) for j in measure.parser.get('loc'))]
+				elif measure.parser.get('eval'):
+					instructions[measure.name] = eval(measure.parser.get('eval'))
+		self.add_parser(
+			TableParser(
+				"county_location_measures_2050.csv",
+				instructions,
+				index_col=0,
+			)
+		)
+		# CalcCountyLocMeasuresFunction.R
+		instructions = {}
+		for measure in scope.get_measures():
+			if measure.parser and measure.parser.get('file') == 'county_measures_2050.csv':
+				if measure.parser.get('loc'):
+					instructions[measure.name] = loc[(str(j) for j in measure.parser.get('loc'))]
+				elif measure.parser.get('eval'):
+					instructions[measure.name] = eval(measure.parser.get('eval'))
+		self.add_parser(
+			TableParser(
+				"county_measures_2050.csv",
+				instructions,
+				index_col=0,
+			)
+		)
 
 
 	def setup(self, params: dict):
@@ -267,7 +297,7 @@ class VEStateModel(FilesCoreModel):
 			self._manipulate_intdensity(params)
 			self._manipulate_population(params)
 			# self._manipulate_income(params)
-			self._manipulate_ldvecodrv(params)
+			# self._manipulate_ldvecodrv(params)
 			self._manipulate_carsvcavail(params)
 			self._manipulate_shdcarsvc(params)
 			self._manipulate_drvlessadj(params)

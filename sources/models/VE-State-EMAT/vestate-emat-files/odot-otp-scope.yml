@@ -284,16 +284,6 @@ inputs:
             - PV
 
 outputs:
-#     HouseholdDvmt:
-#         kind: info
-#         desc: Daily vehicle miles traveled by households in 2050
-#         transform: none
-#         metamodeltype: log
-#         parser:
-#             file: state_validation_measures.csv
-#             loc:
-#             - HouseholdDvmt
-#             - 2050
     HouseholdDvmtPerHh:
         kind: info
         desc: Average daily vehicle miles traveled by households in 2050
@@ -408,7 +398,7 @@ outputs:
         kind: info
         desc: Average daily vehicle miles traveled in car services by households in 2050
         transform: none
-        metamodeltype: log
+        metamodeltype: linear
         parser:
             file: state_validation_measures.csv
             loc:
@@ -418,7 +408,7 @@ outputs:
         kind: info
         desc: Average daily vehicle miles traveled in car services per person in 2050
         transform: none
-        metamodeltype: log
+        metamodeltype: linear
         parser:
             file: state_validation_measures.csv
             loc:
@@ -428,7 +418,7 @@ outputs:
         kind: info
         desc: Average daily vehicle miles traveled in car services per person for urban households in 2050
         transform: none
-        metamodeltype: log
+        metamodeltype: linear
         parser:
             file: state_validation_measures.csv
             loc:
@@ -438,7 +428,7 @@ outputs:
         kind: info
         desc: Average daily vehicle miles traveled in car services per person for town households in 2050
         transform: none
-        metamodeltype: log
+        metamodeltype: linear
         parser:
             file: state_validation_measures.csv
             loc:
@@ -448,7 +438,7 @@ outputs:
         kind: info
         desc: Average daily vehicle miles traveled in car services per person for rural households in 2050
         transform: none
-        metamodeltype: log
+        metamodeltype: linear
         parser:
             file: state_validation_measures.csv
             loc:
@@ -458,7 +448,7 @@ outputs:
         kind: info
         desc: Average daily vehicle miles traveled in driverless vehicles per person for urban households in 2050
         transform: none
-        metamodeltype: log
+        metamodeltype: linear
         parser:
             file: state_validation_measures.csv
             loc:
@@ -468,7 +458,7 @@ outputs:
         kind: info
         desc: Average daily vehicle miles traveled in driverless vehicles per person for town households in 2050
         transform: none
-        metamodeltype: log
+        metamodeltype: linear
         parser:
             file: state_validation_measures.csv
             loc:
@@ -478,22 +468,22 @@ outputs:
         kind: info
         desc: Average daily vehicle miles traveled in driverless vehicles per person for rural households in 2050
         transform: none
-        metamodeltype: log
+        metamodeltype: linear
         parser:
             file: state_validation_measures.csv
             loc:
             - HouseholdDriverlessDvmtPerPrsnRural
             - 2050
-    ComSvcDvmt:
-        kind: info
-        desc: Daily vehicle miles in commercial services in 2050
-        transform: none
-        metamodeltype: log
-        parser:
-            file: state_validation_measures.csv
-            loc:
-            - ComSvcDvmt
-            - 2050
+    #ComSvcDvmt:
+    #    kind: info
+    #    desc: Daily vehicle miles in commercial services in 2050
+    #    transform: none
+    #    metamodeltype: log
+    #    parser:
+    #        file: state_validation_measures.csv
+    #        loc:
+    #        - ComSvcDvmt
+    #        - 2050
     # PTVanDvmt:
     #     kind: info
     #     desc: Daily vehicle miles traveled in public transit vans in 2050
@@ -534,25 +524,45 @@ outputs:
 #             loc:
 #             - BusDvmt
 #             - 2050
-#     TotalDvmt:
-#         kind: info
-#         desc: Total daily vehicle miles traveled by households in 2050
-#         transform: none
-#         metamodeltype: log
-#         parser:
-#             file: state_validation_measures.csv
-#             loc:
-#             - TotalDvmt
-#             - 2050
-    TotalGGEPerCapita:
-        kind: minimize
-        desc: Total gasoline equivalent gallon consumption per capita in 2050
+    TotalDvmt:
+        kind: info
+        desc: Total daily vehicle miles traveled all vehicles in 2050
         transform: none
         metamodeltype: log
         parser:
             file: state_validation_measures.csv
             loc:
+            - TotalDvmt
+            - 2050
+    TotalDvmtPerPrsn:
+        kind: info
+        desc: Total per capita daily vehicle miles traveled by all vehicles in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalDvmtPerPrsn
+            - 2050
+    TotalGGEPerCapita:
+        kind: minimize
+        desc: Total gasoline equivalent gallon consumption per capita in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
             - TotalGGEPerCapita
+            - 2050
+    TotalCO2e:
+        kind: info
+        desc: Total daily CO2e from all vehicles in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalCO2e
             - 2050
 #     TotalGGE:
 #         kind: minimize
@@ -608,7 +618,7 @@ outputs:
         kind: minimize
         desc: Total CO2 equivalent green house gas emission by households per capita in 2050
         transform: none
-        metamodeltype: log
+        metamodeltype: linear
         parser:
             file: state_validation_measures.csv
             loc:
@@ -618,7 +628,7 @@ outputs:
         kind: minimize
         desc: Total CO2 equivalent green house gas emission by households per mile in 2050
         transform: none
-        metamodeltype: log
+        metamodeltype: linear
         parser:
             file: state_validation_measures.csv
             loc:
@@ -628,7 +638,7 @@ outputs:
         kind: minimize
         desc: Total CO2 equivalent green house gas emission by urban households per mile in 2050
         transform: none
-        metamodeltype: log
+        metamodeltype: linear
         parser:
             file: state_validation_measures.csv
             loc:
@@ -638,7 +648,7 @@ outputs:
         kind: minimize
         desc: Total CO2 equivalent green house gas emission by town households per mile in 2050
         transform: none
-        metamodeltype: log
+        metamodeltype: linear
         parser:
             file: state_validation_measures.csv
             loc:
@@ -648,52 +658,82 @@ outputs:
         kind: minimize
         desc: Total CO2 equivalent green house gas emission by rural households per mile in 2050
         transform: none
-        metamodeltype: log
+        metamodeltype: linear
         parser:
             file: state_validation_measures.csv
             loc:
             - HouseholdCO2ePerMileRural
             - 2050    
-#    ComSvcCO2eRate:
-#        kind: minimize
-#        desc: Average greenhouse gas emissions per mile of commercial service vehicle travel attributable to households and businesses in the urbanized area
-#        transform: none
-#        metamodeltype: log
-#        parser:
-#            file: metro_measures_2050.csv
-#            loc:
-#            - ComSvcCO2eRate
-#            - 2050    
-#    BusCO2eRate:
-#        kind: minimize
-#        desc: Average greenhouse gas emissions per mile of public transit bus travel in the urbanized area
-#        transform: none
-#        metamodeltype: log
-#        parser:
-#            file: metro_measures_2050.csv
-#            loc:
-#            - BusCO2eRate
-#            - 2050    
-#    HvyTrkAveUrbanCO2eRate:
-#        kind: minimize
-#        desc: Average greenhouse gas emissions per mile of heavy truck travel in the urbanized area
-#        transform: none
-#        metamodeltype: log
-#        parser:
-#            file: metro_measures_2050.csv
-#            loc:
-#            - HvyTrkAveUrbanCO2eRate
-#            - 2050    
-#     TransitTrips:
-#         kind: info
-#         desc: Total number of transit trips
-#         transform: none
-#         metamodeltype: log
-#         parser:
-#             file: state_validation_measures.csv
-#             loc:
-#             - TransitTrips
-#             - 2050
+    ComSvcCO2eRate_Metro:
+        kind: minimize
+        desc: Average greenhouse gas emissions per mile of commercial service vehicle travel attributable to households and businesses in Metro area in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - ComSvcCO2eRate
+            - Metro    
+    ComSvcCO2eRate_SalemKeizer:
+        kind: minimize
+        desc: Average greenhouse gas emissions per mile of commercial service vehicle travel attributable to households and businesses in SalemKeizer area in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - ComSvcCO2eRate
+            - SalemKeizer    
+    BusCO2eRate_Metro:
+        kind: minimize
+        desc: Average greenhouse gas emissions per mile of public transit bus travel in Metro area in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - BusCO2eRate
+            - Metro  
+    BusCO2eRate_SalemKeizer:
+        kind: minimize
+        desc: Average greenhouse gas emissions per mile of public transit bus travel in SalemKeizer area in 2050
+        transform: none
+        metamodeltype: lolinearg
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - BusCO2eRate
+            - SalemKeizer  
+    HvyTrkAveUrbanCO2eRate_Metro:
+        kind: minimize
+        desc: Average greenhouse gas emissions per mile of heavy truck travel in Metro area in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - HvyTrkAveUrbanCO2eRate
+            - Metro    
+    BusCO2eRate_SalemKeizer:
+        kind: minimize
+        desc: Average greenhouse gas emissions per mile of public transit bus travel in SalemKeizer area in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - BusCO2eRate
+            - SalemKeizer  
+    TransitTrips:
+        kind: info
+        desc: Total number of transit trips
+        transform: none
+        metamodeltype: log
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TransitTrips
+            - 2050
     TransitTripsPerCapita:
         kind: info
         desc: Transit trips per capita
@@ -1052,7 +1092,7 @@ outputs:
         parser:
             file: state_validation_measures.csv
             loc:
-            - CarSvcDeadheadDvmtPerPerPrsn
+            - CarSvcDeadheadDvmtPerPrsn
             - 2050
     DriverlessVehicleProp:
         kind: info
@@ -1064,7 +1104,7 @@ outputs:
             loc:
             - DriverlessVehicleProp
             - 2050
-    FwyDvmtPropExtCong:
+    FwyDvmtPropExtCong_Metro:
         kind: info
         desc: Average freeway speed (miles per hour) when congestion is extreme in Metro area in 2050
         transform: none
@@ -1074,7 +1114,17 @@ outputs:
             loc:
             - FwyDvmtPropExtCong
             - Metro
-    ArtDvmtPropExtCong:
+    FwyDvmtPropExtCong_SalemKeizer:
+        kind: info
+        desc: Average freeway speed (miles per hour) when congestion is extreme in SalemKeizer area in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - FwyDvmtPropExtCong
+            - SalemKeizer
+    ArtDvmtPropExtCong_Metro:
         kind: info
         desc: Average arterial speed (miles per hour) when congestion is extreme in Metro area in 2050
         transform: none
@@ -1084,9 +1134,19 @@ outputs:
             loc:
             - ArtDvmtPropExtCong
             - Metro
-    FwyExtCongTTI:
+    ArtDvmtPropExtCong_SalemKeizer:
         kind: info
-        desc: Average freeway travel time index when congestion is extreme
+        desc: Average arterial speed (miles per hour) when congestion is extreme in SalemKeizer area in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - ArtDvmtPropExtCong
+            - SalemKeizer
+    FwyExtCongTTI_Metro:
+        kind: info
+        desc: Average freeway travel time index when congestion is extreme in Metro area in 2050
         transform: none
         metamodeltype: log
         parser:
@@ -1094,9 +1154,19 @@ outputs:
             loc:
             - FwyExtCongTTI
             - Metro
-    ArtExtCongTTI:
+    FwyExtCongTTI_SalemKeizer:
         kind: info
-        desc: Average arterial travel time index when congestion is extreme
+        desc: Average freeway travel time index when congestion is extreme in SalemKeizer area in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - FwyExtCongTTI
+            - SalemKeizer
+    ArtExtCongTTI_Metro:
+        kind: info
+        desc: Average arterial travel time index when congestion is extreme in Metro area in 2050
         transform: none
         metamodeltype: log
         parser:
@@ -1104,7 +1174,17 @@ outputs:
             loc:
             - ArtExtCongTTI
             - Metro
-    LdvAveSpeed:
+    ArtExtCongTTI_SalemKeizer:
+        kind: info
+        desc: Average arterial travel time index when congestion is extreme in SalemKeizer area in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - ArtExtCongTTI
+            - SalemKeizer
+    LdvAveSpeed_Metro:
         kind: info
         desc: Average speed (miles per hour) of light-duty vehicle travel in Metro area in 2050
         transform: none
@@ -1114,7 +1194,17 @@ outputs:
             loc:
             - LdvAveSpeed
             - Metro
-    HvyTrkAveSpeed:
+    LdvAveSpeed_SalemKeizer:
+        kind: info
+        desc: Average speed (miles per hour) of light-duty vehicle travel in SalemKeizer area in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - LdvAveSpeed
+            - SalemKeizer
+    HvyTrkAveSpeed_Metro:
         kind: info
         desc: Average speed (miles per hour) of heavy truck travel in Metro area in 2050
         transform: none
@@ -1124,7 +1214,17 @@ outputs:
             loc:
             - HvyTrkAveSpeed
             - Metro
-    BusAveSpeed:
+    HvyTrkAveSpeed_SalemKeizer:
+        kind: info
+        desc: Average speed (miles per hour) of heavy truck travel in SalemKeizer area in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - HvyTrkAveSpeed
+            - SalemKeizer
+    BusAveSpeed_Metro:
         kind: info
         desc: Average speed (miles per hour) of bus travel in Metro area in 2050
         transform: none
@@ -1134,7 +1234,17 @@ outputs:
             loc:
             - BusAveSpeed
             - Metro
-    NonUrbanAveSpeed:
+    BusAveSpeed_SalemKeizer:
+        kind: info
+        desc: Average speed (miles per hour) of bus travel in SalemKeizer area in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - BusAveSpeed
+            - SalemKeizer
+    NonUrbanAveSpeed_Metro:
         kind: info
         desc: Average speed (miles per hour) of vehicle travel on non-urban area roads in 2050
         transform: none
@@ -1144,7 +1254,17 @@ outputs:
             loc:
             - NonUrbanAveSpeed
             - Metro
-    AutoFatalCrash:
+    NonUrbanAveSpeed_SalemKeizer:
+        kind: info
+        desc: Average speed (miles per hour) of vehicle travel on non-urban area roads in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - NonUrbanAveSpeed
+            - SalemKeizer
+    AutoFatalCrash_Metro:
         kind: info
         desc: Number of yearly auto fatal crashes in 2050
         transform: none
@@ -1154,7 +1274,17 @@ outputs:
             loc:
             - AutoFatalCrash
             - Metro
-    AutoInjuryCrash:
+    AutoFatalCrash_SalemKeizer:
+        kind: info
+        desc: Number of yearly auto fatal crashes in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - AutoFatalCrash
+            - SalemKeizer
+    AutoInjuryCrash_Metro:
         kind: info
         desc: Number of yearly auto injury crashes in 2050
         transform: none
@@ -1164,7 +1294,17 @@ outputs:
             loc:
             - AutoInjuryCrash
             - Metro
-    BikeFatalCrash:
+    AutoInjuryCrash_SalemKeizer:
+        kind: info
+        desc: Number of yearly auto injury crashes in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - AutoInjuryCrash
+            - SalemKeizer
+    BikeFatalCrash_Metro:
         kind: info
         desc: Number of yearly bike fatal crashes in 2050
         transform: none
@@ -1174,7 +1314,17 @@ outputs:
             loc:
             - BikeFatalCrash
             - Metro
-    BikeInjuryCrash:
+    BikeFatalCrash_SalemKeizer:
+        kind: info
+        desc: Number of yearly bike fatal crashes in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - BikeFatalCrash
+            - SalemKeizer
+    BikeInjuryCrash_Metro:
         kind: info
         desc: Number of yearly bike injury crashes in 2050
         transform: none
@@ -1184,7 +1334,17 @@ outputs:
             loc:
             - BikeInjuryCrash
             - Metro
-    WalkFatalCrash:
+    BikeInjuryCrash_SalemKeizer:
+        kind: info
+        desc: Number of yearly bike injury crashes in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - BikeInjuryCrash
+            - SalemKeizer
+    WalkFatalCrash_Metro:
         kind: info
         desc: Number of yearly walk fatal crashes in 2050
         transform: none
@@ -1194,7 +1354,17 @@ outputs:
             loc:
             - WalkFatalCrash
             - Metro
-    WalkInjuryCrash:
+    WalkFatalCrash_SalemKeizer:
+        kind: info
+        desc: Number of yearly walk fatal crashes in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - WalkFatalCrash
+            - SalemKeizer
+    WalkInjuryCrash_Metro:
         kind: info
         desc: Number of yearly walk injury crashes in 2050
         transform: none
@@ -1204,6 +1374,16 @@ outputs:
             loc:
             - WalkInjuryCrash
             - Metro
+    WalkInjuryCrash_SalemKeizer:
+        kind: info
+        desc: Number of yearly walk injury crashes in 2050
+        transform: none
+        metamodeltype: log
+        parser:
+            file: metro_measures_2050.csv
+            loc:
+            - WalkInjuryCrash
+            - SalemKeizer
     # MetroHhDvmt:
     #     kind: info
     #     desc: Household Dvmt in Metro area in 2050
@@ -1324,16 +1504,16 @@ outputs:
     #         loc:
     #         - MareaHhCO2e
     #         - NonMetro
-    LdvAveSpeed:
-         kind: info
-         desc: Average light duty vehicle travel speed in 2050
-         transform: none
-         metamodeltype: log
-         parser:
-             file: state_validation_measures.csv
-             loc:
-             - LdvAveSpeed
-             - 2050
+    #LdvAveSpeed:
+    #     kind: info
+    #     desc: Average light duty vehicle travel speed in 2050
+    #     transform: none
+    #     metamodeltype: log
+    #     parser:
+    #         file: state_validation_measures.csv
+    #         loc:
+    #         - LdvAveSpeed
+    #         - 2050
     AutoFatalUrban:
          kind: info
          desc: Total number of auto fatal crashes in urban area in 2050
@@ -1374,16 +1554,16 @@ outputs:
              loc:
              - AutoInjuryRural
              - 2050
-    NumHouseholdVehicles:
-         kind: info
-         desc: Number of vehicles owned or leased by households
-         transform: none
-         metamodeltype: log
-         parser:
-             file: county_measures_2050.csv
-             loc:
-             - NumHouseholdVehicles
-             - 2050
+    #NumHouseholdVehicles:
+    #     kind: info
+    #     desc: Number of vehicles owned or leased by households
+    #     transform: none
+    #     metamodeltype: log
+    #     parser:
+    #         file: county_measures_2050.csv
+    #         loc:
+    #         - NumHouseholdVehicles
+    #         - 2050
     OwnCostProp:
          kind: info
          desc: Vehicle ownership cost as a proportion of household income
@@ -1483,4 +1663,14 @@ outputs:
              file: state_validation_measures.csv
              loc:
              - VehCostPropHhAge65Plus
+             - 2050
+    RoadUseTax:
+         kind: info
+         desc: otal taxes collected from household fuel tax, VMT tax, and congestion fees
+         transform: none
+         metamodeltype: log
+         parser:
+             file: state_validation_measures.csv
+             loc:
+             - RoadUseTax
              - 2050
