@@ -85,7 +85,7 @@ Coefficients:
 (Intercept)  4.09804    0.46071   8.895 2.35e-06 ***
 LogInc      -0.56182    0.04363 -12.876 5.62e-08 ***
 ---
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Residual standard error: 0.1878 on 11 degrees of freedom
 Multiple R-squared:  0.9378,	Adjusted R-squared:  0.9321 
@@ -190,16 +190,23 @@ ISELEMENTOF - Categorical values that are permitted. Values in the datastore are
 
 DESCRIPTION - A description of the data.
 
-|NAME         |TABLE     |GROUP |TYPE     |UNITS    |PROHIBIT |ISELEMENTOF |DESCRIPTION                                                                                                          |
-|:------------|:---------|:-----|:--------|:--------|:--------|:-----------|:--------------------------------------------------------------------------------------------------------------------|
-|Dvmt         |Household |Year  |compound |MI/DAY   |NA, < 0  |            |Average daily vehicle miles traveled by the household in autos or light trucks                                       |
-|UrbanHhDvmt  |Marea     |Year  |compound |MI/DAY   |NA, < 0  |            |Average daily vehicle miles traveled in autos or light trucks by households residing in urban locations of the Marea |
-|RuralHhDvmt  |Marea     |Year  |compound |MI/DAY   |NA, < 0  |            |Average daily vehicle miles traveled in autos or light trucks by households residing in rural locations of the Marea |
-|TownHhDvmt   |Marea     |Year  |compound |MI/DAY   |NA, < 0  |            |Average daily vehicle miles traveled in autos or light trucks by households residing in town locations of the Marea  |
-|DailyGGE     |Household |Year  |compound |GGE/DAY  |NA, < 0  |            |Gasoline equivalent gallons consumed per day by household vehicle travel                                             |
-|DailyKWH     |Household |Year  |compound |KWH/DAY  |NA, < 0  |            |Kilowatt-hours consumed per day by household vehicle travel                                                          |
-|DailyCO2e    |Household |Year  |compound |GM/DAY   |NA, < 0  |            |Grams of carbon-dioxide equivalents produced per day by household vehicle travel                                     |
-|WalkTrips    |Household |Year  |compound |TRIP/YR  |NA, < 0  |            |Average number of walk trips per year by household members                                                           |
-|BikeTrips    |Household |Year  |compound |TRIP/YR  |NA, < 0  |            |Average number of bicycle trips per year by household members                                                        |
-|TransitTrips |Household |Year  |compound |TRIP/YR  |NA, < 0  |            |Average number of public transit trips per year by household members                                                 |
-|VehicleTrips |Household |Year  |compound |TRIP/DAY |NA, < 0  |            |Average number of vehicle trips per day by household members                                                         |
+|NAME               |TABLE     |GROUP |TYPE     |UNITS    |PROHIBIT |ISELEMENTOF |DESCRIPTION                                                                                                          |
+|:------------------|:---------|:-----|:--------|:--------|:--------|:-----------|:--------------------------------------------------------------------------------------------------------------------|
+|Dvmt               |Household |Year  |compound |MI/DAY   |NA, < 0  |            |Average daily vehicle miles traveled by the household in autos or light trucks                                       |
+|UrbanHhDvmt        |Marea     |Year  |compound |MI/DAY   |NA, < 0  |            |Average daily vehicle miles traveled in autos or light trucks by households residing in urban locations of the Marea |
+|RuralHhDvmt        |Marea     |Year  |compound |MI/DAY   |NA, < 0  |            |Average daily vehicle miles traveled in autos or light trucks by households residing in rural locations of the Marea |
+|TownHhDvmt         |Marea     |Year  |compound |MI/DAY   |NA, < 0  |            |Average daily vehicle miles traveled in autos or light trucks by households residing in town locations of the Marea  |
+|DailyGGE           |Household |Year  |compound |GGE/DAY  |NA, < 0  |            |Gasoline equivalent gallons consumed per day by household vehicle travel                                             |
+|DailyKWH           |Household |Year  |compound |KWH/DAY  |NA, < 0  |            |Kilowatt-hours consumed per day by household vehicle travel                                                          |
+|DailyCO2e          |Household |Year  |compound |GM/DAY   |NA, < 0  |            |Grams of carbon-dioxide equivalents produced per day by household vehicle travel                                     |
+|WalkTrips          |Household |Year  |compound |TRIP/YR  |NA, < 0  |            |Average number of walk trips per year by household members                                                           |
+|BikeTrips          |Household |Year  |compound |TRIP/YR  |NA, < 0  |            |Average number of bicycle trips per year by household members                                                        |
+|TransitTrips       |Household |Year  |compound |TRIP/YR  |NA, < 0  |            |Average number of public transit trips per year by household members                                                 |
+|VehicleTrips       |Household |Year  |compound |TRIP/DAY |NA, < 0  |            |Average number of vehicle trips per day by household members                                                         |
+|WalkAvgTripDist    |Household |Year  |double   |MI       |NA, < 0  |            |Daily walking average trip length                                                                                    |
+|BikeAvgTripDist    |Household |Year  |double   |MI       |NA, < 0  |            |Daily biking average trip length                                                                                     |
+|TransitAvgTripDist |Household |Year  |double   |MI       |NA, < 0  |            |Daily transit average trip length                                                                                    |
+|WalkPMT            |Household |Year  |distance |MI       |NA, < 0  |            |Daily walking person miles traveled by all members of the household                                                  |
+|BikePMT            |Household |Year  |distance |MI       |NA, < 0  |            |Daily biking person miles traveled by all members of the household                                                   |
+|TransitPMT         |Household |Year  |distance |MI       |NA, < 0  |            |Daily transit person miles traveled by all members of the household                                                  |
+|SovToBikeTrip      |Household |Year  |compound |TRIP/YR  |NA, < 0  |            |Annual extra trips allocated to bicycle model as a result of SOV diversion                                           |

@@ -4,8 +4,7 @@
 \alias{calcNumHhByLocType}
 \title{Calculate number of households by location type}
 \usage{
-calcNumHhByLocType(NumHh_Az, PropRuralHh_Az, PropTownHh_Az, PropMetroHh_Az,
-  Az)
+calcNumHhByLocType(NumHh_Az, PropRuralHh_Az, PropTownHh_Az, PropMetroHh_Az, Az)
 }
 \arguments{
 \item{NumHh_Az}{A numeric vector of the total number of households in each

@@ -4,9 +4,16 @@
 \alias{calcNumJobsByLocType}
 \title{Calculate number of jobs by location type}
 \usage{
-calcNumJobsByLocType(NumWkr_Az, PropWkrInRuralJobs_Az,
-  PropWkrInTownJobs_Az, PropWkrInMetroJobs_Az, PropMetroJobs_Az,
-  TownJobWkrRatio_Az, Marea_Az, Az)
+calcNumJobsByLocType(
+  NumWkr_Az,
+  PropWkrInRuralJobs_Az,
+  PropWkrInTownJobs_Az,
+  PropWkrInMetroJobs_Az,
+  PropMetroJobs_Az,
+  TownJobWkrRatio_Az,
+  Marea_Az,
+  Az
+)
 }
 \arguments{
 \item{NumWkr_Az}{A numeric vector of the total number of workers residing in

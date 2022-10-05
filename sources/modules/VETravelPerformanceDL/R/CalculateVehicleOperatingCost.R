@@ -826,14 +826,24 @@ CalculateVehicleOperatingCostSpecifications <- list(
       NAME =
         items(
           "LowCarSvcDeadheadProp",
-          "HighCarSvcDeadheadProp",
-          "ShdCarSvcDeadheadProp",
-          "UnShdCarSvcDeadheadProp"),
+          "HighCarSvcDeadheadProp"),
       TABLE = "Azone",
       GROUP = "Year",
       TYPE = "double",
       UNITS = "proportion",
       PROHIBIT = c("NA", "< 0", "> 1"),
+      ISELEMENTOF = ""
+    ),
+    item(
+      NAME =
+        items(
+          "ShdCarSvcDeadheadFactor",
+          "UnShdCarSvcDeadheadFactor"),
+      TABLE = "Azone",
+      GROUP = "Year",
+      TYPE = "double",
+      UNITS = "multiplier",
+      PROHIBIT = c("NA", "< 0"),
       ISELEMENTOF = ""
     ),
     item(
@@ -1687,23 +1697,43 @@ CalculateVehicleOperatingCost <- function(L) {
   # Calculate shared car service cost rate by bzone
   SharedCarSvcCostRate_Bz <- local({
     VehAccType_Ve <- L$Year$Vehicle$VehicleAccess
+    #Access time equivalent rate of travel
+    TripsPerDvmt_Ve <- with(L$Year$Household, VehicleTrips / Dvmt)[HhToVehIdx_Ve]
+    MaxTripsPerDvmt <- quantile(TripsPerDvmt_Ve, probs = 0.99)
+    TripsPerDvmt_Ve[TripsPerDvmt_Ve > MaxTripsPerDvmt] <- MaxTripsPerDvmt
+    TripsPerDvmt_Ve[VehAccType_Ve=="Own"] <- 0
     SharedCarSvcCostRate_Ve <- rep(0, length(VehAccType_Ve))
-    SharedCarSvcCostRate_Ve <- L$Year$Azone$ShdCarSvcAccessTime[AzToVehIdx_Ve]
+    SharedCarSvcCostRate_Ve <- (L$Year$Azone$ShdCarSvcAccessTime/60)[AzToVehIdx_Ve] * 
+      TripsPerDvmt_Ve * L$Global$Model$ValueOfTime
     SharedCarSvcCostRate_Ve[VehAccType_Ve=="Own"] <- 0
     SharedCarSvcCostRate_Bz <- tapply(SharedCarSvcCostRate_Ve, BzToVehIdx_Ve, sum)
     SharedCarSvcCostRate_Bz <- SharedCarSvcCostRate_Bz[L$Year$Bzone$Bzone] *
       L$Year$Bzone$ShdSvcAvail
+    #SharedCarSvcCostRate_Bz <- 1/SharedCarSvcCostRate_Bz
+    #SharedCarSvcCostRate_Bz[is.infinite(SharedCarSvcCostRate_Bz)] <- 0
+    SharedCarSvcCostRate_Bz[is.na(SharedCarSvcCostRate_Bz)] <- 0
+    SharedCarSvcCostRate_Bz
   })
   
   # Calculate unshared car service cost rate by bzone
   UnSharedCarSvcCostRate_Bz <- local({
     VehAccType_Ve <- L$Year$Vehicle$VehicleAccess
+    #Access time equivalent rate of travel
+    TripsPerDvmt_Ve <- with(L$Year$Household, VehicleTrips / Dvmt)[HhToVehIdx_Ve]
+    MaxTripsPerDvmt <- quantile(TripsPerDvmt_Ve, probs = 0.99)
+    TripsPerDvmt_Ve[TripsPerDvmt_Ve > MaxTripsPerDvmt] <- MaxTripsPerDvmt
+    TripsPerDvmt_Ve[VehAccType_Ve=="Own"] <- 0
     UnSharedCarSvcCostRate_Ve <- rep(0, length(VehAccType_Ve))
-    UnSharedCarSvcCostRate_Ve <- L$Year$Azone$UnShdCarSvcAccessTime[AzToVehIdx_Ve]
+    UnSharedCarSvcCostRate_Ve <- L$Year$Azone$UnShdCarSvcAccessTime[AzToVehIdx_Ve] * 
+      TripsPerDvmt_Ve * L$Global$Model$ValueOfTime
     UnSharedCarSvcCostRate_Ve[VehAccType_Ve=="Own"] <- 0
     UnSharedCarSvcCostRate_Bz <- tapply(UnSharedCarSvcCostRate_Ve, BzToVehIdx_Ve, sum)
     UnSharedCarSvcCostRate_Bz <- UnSharedCarSvcCostRate_Bz[L$Year$Bzone$Bzone] *
       L$Year$Bzone$ShdSvcAvail
+    #UnSharedCarSvcCostRate_Bz <- 1/UnSharedCarSvcCostRate_Bz
+    #UnSharedCarSvcCostRate_Bz[is.infinite(UnSharedCarSvcCostRate_Bz)] <- 0
+    UnSharedCarSvcCostRate_Bz[is.na(UnSharedCarSvcCostRate_Bz)] <- 0
+    UnSharedCarSvcCostRate_Bz
   })
   
   # Calculate shared vs unshared DVMT split by bzone
@@ -1727,23 +1757,14 @@ CalculateVehicleOperatingCost <- function(L) {
     CarSvcCostRate_Ve[VehAccType_Ve == "HighCarSvc"] <-
       L$Year$Azone$HighCarSvcCost[AzToVehIdx_Ve][VehAccType_Ve == "HighCarSvc"]
     # Add average shared / unshared car service cost
-    CarSvcCostRate_Ve[VehAccType_Ve != "Own"] <- CarSvcCostRate_Ve[VehAccType_Ve != "Own"] +
+    CarSvcCostRate_Ve <- (CarSvcCostRate_Ve +
       (L$Year$Azone$UnShdCarSvcCost[AzToVehIdx_Ve] * 
-         UnSharedCarSvcDvmtProp_Bz[BzToVehIdx_Ve] + L$Year$Azone$ShdCarSvcCost[AzToVehIdx_Ve] * 
-         SharedCarSvcDvmtProp_Bz[BzToVehIdx_Ve])[VehAccType_Ve != "Own"]
+         UnSharedCarSvcDvmtProp_Bz[BzToVehIdx_Ve] + 
+         L$Year$Azone$ShdCarSvcCost[AzToVehIdx_Ve] * 
+         SharedCarSvcDvmtProp_Bz[BzToVehIdx_Ve]))/2
+    CarSvcCostRate_Ve[VehAccType_Ve == "Own"] <- 0
     unname(CarSvcCostRate_Ve)
   })
-
-  # #Car service cost
-  # CarSvcCostRate_Ve <- local({
-  #   VehAccType_Ve <- L$Year$Vehicle$VehicleAccess
-  #   CarSvcCostRate_Ve <- rep(0, length(VehAccType_Ve))
-  #   CarSvcCostRate_Ve[VehAccType_Ve == "LowCarSvc"] <-
-  #     L$Year$Azone$LowCarSvcCost[AzToVehIdx_Ve][VehAccType_Ve == "LowCarSvc"]
-  #   CarSvcCostRate_Ve[VehAccType_Ve == "HighCarSvc"] <-
-  #     L$Year$Azone$HighCarSvcCost[AzToVehIdx_Ve][VehAccType_Ve == "HighCarSvc"]
-  #   unname(CarSvcCostRate_Ve)
-  # })
 
   #Calculate value of time per mile
   #Function to calculate TTCostRate for household vehicles
@@ -1903,7 +1924,7 @@ CalculateVehicleOperatingCost <- function(L) {
     IsDriverless_ <- L$Year$Vehicle$VehicleAccess == "Own" & L$Year$Vehicle$Driverless == 1
     PropRemoteAccess <- L$Year$Region$PropRemoteAccess
     RemoteAccessDvmtAdj <- L$Year$Region$RemoteAccessDvmtAdj
-    DvmtAdj_Ve <- array(PropRemoteAccess * RemoteAccessDvmtAdj, length(Dvmt_Ve))
+    DvmtAdj_Ve <- pmin(array(PropRemoteAccess * RemoteAccessDvmtAdj, length(Dvmt_Ve)),1)
     DvmtAdj_Ve[!IsDriverless_] <- 0
     DvmtAdj_Ve
   })
@@ -1916,37 +1937,22 @@ CalculateVehicleOperatingCost <- function(L) {
     IsDriverless_ <- (VehAccType_Ve != "Own") & L$Year$Vehicle$Driverless > 0
     LowCarSvcDeadheadProp <- L$Year$Azone$LowCarSvcDeadheadProp[AzToVehIdx_Ve]
     HighCarSvcDeadheadProp <- L$Year$Azone$HighCarSvcDeadheadProp[AzToVehIdx_Ve]
-    ShdCarSvcDeadheadProp <- L$Year$Azone$ShdCarSvcDeadheadProp[AzToVehIdx_Ve]
-    UnShdCarSvcDeadheadProp <- L$Year$Azone$UnShdCarSvcDeadheadProp[AzToVehIdx_Ve]
+    ShdCarSvcDeadheadFactor <- L$Year$Azone$ShdCarSvcDeadheadFactor[AzToVehIdx_Ve]
+    UnShdCarSvcDeadheadFactor <- L$Year$Azone$UnShdCarSvcDeadheadFactor[AzToVehIdx_Ve]
     SharedCarSvcDvmtProp_Ve <- SharedCarSvcDvmtProp_Bz[BzToVehIdx_Ve]
     UnSharedCarSvcDvmtProp_Ve <- UnSharedCarSvcDvmtProp_Bz[BzToVehIdx_Ve]
     ShdDvmt_Ve <- Dvmt_Ve * SharedCarSvcDvmtProp_Ve
     UnShdDvmt_Ve <- Dvmt_Ve * UnSharedCarSvcDvmtProp_Ve
     DeadheadDvmt_Ve <- Dvmt_Ve * 0
     DeadheadDvmt_Ve[VehAccType_Ve == "LowCarSvc"] <-
-      ((ShdDvmt_Ve[VehAccType_Ve == "LowCarSvc"] * ShdCarSvcDeadheadProp[VehAccType_Ve == "LowCarSvc"]) +
-         (UnShdDvmt_Ve[VehAccType_Ve == "LowCarSvc"] * UnShdCarSvcDeadheadProp[VehAccType_Ve == "LowCarSvc"])) * 
-      LowCarSvcDeadheadProp[VehAccType_Ve == "LowCarSvc"]
+      (((ShdDvmt_Ve * ShdCarSvcDeadheadFactor) + (UnShdDvmt_Ve * UnShdCarSvcDeadheadFactor)) * 
+      LowCarSvcDeadheadProp)[VehAccType_Ve == "LowCarSvc"]
     DeadheadDvmt_Ve[VehAccType_Ve == "HighCarSvc"] <-
-      ((ShdDvmt_Ve[VehAccType_Ve == "HighCarSvc"] * ShdCarSvcDeadheadProp[VehAccType_Ve == "HighCarSvc"]) +
-         (UnShdDvmt_Ve[VehAccType_Ve == "HighCarSvc"] * UnShdCarSvcDeadheadProp[VehAccType_Ve == "HighCarSvc"])) * 
-      HighCarSvcDeadheadProp[VehAccType_Ve == "HighCarSvc"]
+      (((ShdDvmt_Ve * ShdCarSvcDeadheadFactor) + (UnShdDvmt_Ve * UnShdCarSvcDeadheadFactor)) * 
+      HighCarSvcDeadheadProp)[VehAccType_Ve == "HighCarSvc"]
     DeadheadDvmt_Ve[!IsDriverless_] <- 0
     DeadheadDvmt_Ve
   })
-  # DeadheadDvmt_Ve <- local({
-  #   VehAccType_Ve <- L$Year$Vehicle$VehicleAccess
-  #   IsDriverless_ <- (VehAccType_Ve != "Own") & L$Year$Vehicle$Driverless > 0
-  #   LowCarSvcDeadheadProp <- L$Year$Azone$LowCarSvcDeadheadProp
-  #   HighCarSvcDeadheadProp <- L$Year$Azone$HighCarSvcDeadheadProp
-  #   DeadheadDvmt_Ve <- Dvmt_Ve * 0
-  #   DeadheadDvmt_Ve[VehAccType_Ve == "LowCarSvc"] <-
-  #     Dvmt_Ve[VehAccType_Ve == "LowCarSvc"] * LowCarSvcDeadheadProp
-  #   DeadheadDvmt_Ve[VehAccType_Ve == "HighCarSvc"] <-
-  #     Dvmt_Ve[VehAccType_Ve == "HighCarSvc"] * HighCarSvcDeadheadProp
-  #   DeadheadDvmt_Ve[!IsDriverless_] <- 0
-  #   DeadheadDvmt_Ve
-  # })
 
   #Recalculate DVMT allocation amongst household vehicles and total household DVMT
   #-------------------------------------------------------------------------------
@@ -1977,34 +1983,26 @@ CalculateVehicleOperatingCost <- function(L) {
     tapply(SocEnvCostPM_Ve * DvmtProp_Ve * CarSvcDvmtAdjFactor_Ve, 
            L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
   })
-  # AveSocEnvCostPM_Hh <- local({
-  #   SocEnvCostPM_Ve <- ClimateImpactsRate_Ve + SocialImpactsRate_Ve
-  #   tapply(SocEnvCostPM_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
-  # })
+  
   #Calculate average road use taxes per mile
   AveRoadUseTaxPM_Hh <-
     tapply(RoadUseCostRate_Ve * DvmtProp_Ve * CarSvcDvmtAdjFactor_Ve, 
            L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
-  # AveRoadUseTaxPM_Hh <-
-  #   tapply(RoadUseCostRate_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
+  
   #Calculate average fuel consumption per mile
   GPM_Hh <-
     tapply(NetGPM_Ve * DvmtProp_Ve * CarSvcDvmtAdjFactor_Ve, 
            L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
-  # GPM_Hh <-
-  #   tapply(NetGPM_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
+  
   #Calculate average electricity consumption per mile
   KWHPM_Hh <-
     tapply(NetKWHPM_Ve * DvmtProp_Ve * CarSvcDvmtAdjFactor_Ve, 
            L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
-  # KWHPM_Hh <-
-  #   tapply(NetKWHPM_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
+  
   #Calculate average greenhouse gas emissions per mile
   AveCO2ePM_Hh <-
     tapply(CO2ePM_Ve * DvmtProp_Ve * CarSvcDvmtAdjFactor_Ve, 
            L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
-  # AveCO2ePM_Hh <-
-  #   tapply(CO2ePM_Ve * DvmtProp_Ve, L$Year$Vehicle$HhId, sum)[L$Year$Household$HhId]
 
   #Recalculate total household DVMT
   Dvmt_Hh <- local({

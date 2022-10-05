@@ -49,6 +49,10 @@ DESCRIPTION - A description of the data.
 |InnerPropHighCarSvc  |double |proportion |< 0, > 1 |            |         |Proportion of activity in inner area type that is served by high level car service (i.e. service competitive with household owned car)  |
 |OuterPropHighCarSvc  |double |proportion |< 0, > 1 |            |         |Proportion of activity in outer area type that is served by high level car service (i.e. service competitive with household owned car)  |
 |FringePropHighCarSvc |double |proportion |< 0, > 1 |            |         |Proportion of activity in fringe area type that is served by high level car service (i.e. service competitive with household owned car) |
+|CenterPropShdCarSvc  |double |proportion |< 0, > 1 |            |         |Proportion of activity in center area type that is served by shared car service (i.e. service competitive with household owned car)     |
+|InnerPropShdCarSvc   |double |proportion |< 0, > 1 |            |         |Proportion of activity in inner area type that is served by shared car service (i.e. service competitive with household owned car)      |
+|OuterPropShdCarSvc   |double |proportion |< 0, > 1 |            |         |Proportion of activity in outer area type that is served by shared car service (i.e. service competitive with household owned car)      |
+|FringePropShdCarSvc  |double |proportion |< 0, > 1 |            |         |Proportion of activity in fringe area type that is served by shared car service (i.e. service competitive with household owned car)     |
 
 ## Datasets Used by the Module
 The following table documents each dataset that is retrieved from the datastore and used by the module. Each row in the table describes a dataset. All the datasets must be present in the datastore. One or more of these datasets may be entered into the datastore from the user input files. The table names and their meanings are as follows:
@@ -74,6 +78,10 @@ ISELEMENTOF - Categorical values that are permitted. Values in the datastore are
 |InnerPropHighCarSvc  |Marea     |Year  |double     |proportion |< 0, > 1 |                             |
 |OuterPropHighCarSvc  |Marea     |Year  |double     |proportion |< 0, > 1 |                             |
 |FringePropHighCarSvc |Marea     |Year  |double     |proportion |< 0, > 1 |                             |
+|CenterPropShdCarSvc  |Marea     |Year  |double     |proportion |< 0, > 1 |                             |
+|InnerPropShdCarSvc   |Marea     |Year  |double     |proportion |< 0, > 1 |                             |
+|OuterPropShdCarSvc   |Marea     |Year  |double     |proportion |< 0, > 1 |                             |
+|FringePropShdCarSvc  |Marea     |Year  |double     |proportion |< 0, > 1 |                             |
 |Bzone                |Bzone     |Year  |character  |ID         |         |                             |
 |Marea                |Bzone     |Year  |character  |ID         |         |                             |
 |NumHh                |Bzone     |Year  |households |HH         |NA, < 0  |                             |
@@ -83,17 +91,17 @@ ISELEMENTOF - Categorical values that are permitted. Values in the datastore are
 |Bzone                |Household |Year  |character  |ID         |         |                             |
 
 ## Datasets Produced by the Module
-The following table documents each dataset that is retrieved from the datastore and used by the module. Each row in the table describes a dataset. All the datasets must be present in the datastore. One or more of these datasets may be entered into the datastore from the user input files. The table names and their meanings are as follows:
+The following table documents each dataset that is placed in the datastore by the module. Each row in the table describes a dataset. All the datasets must be present in the datastore. One or more of these datasets may be entered into the datastore from the user input files. The table names and their meanings are as follows:
 
 NAME - The dataset name.
 
-TABLE - The table in the datastore that the data is retrieved from.
+TABLE - The table in the datastore that the data is placed in.
 
 GROUP - The group in the datastore where the table is located. Note that the datastore has a group named 'Global' and groups for every model run year. For example, if the model run years are 2010 and 2050, then the datastore will have a group named '2010' and a group named '2050'. If the value for 'GROUP' is 'Year', then the dataset will exist in each model run year. If the value for 'GROUP' is 'BaseYear' then the dataset will only exist in the base year group (e.g. '2010'). If the value for 'GROUP' is 'Global' then the dataset will only exist in the 'Global' group.
 
 TYPE - The data type. The framework uses the type to check units and inputs. Refer to the model system design and users guide for information on allowed types.
 
-UNITS - The units that input values need to represent. Some data types have defined units that are represented as abbreviations or combinations of abbreviations. For example 'MI/HR' means miles per hour. Many of these abbreviations are self evident, but the VisionEval model system design and users guide should be consulted.
+UNITS - The native units that are created in the datastore. Some data types have defined units that are represented as abbreviations or combinations of abbreviations. For example 'MI/HR' means miles per hour. Many of these abbreviations are self evident, but the VisionEval model system design and users guide should be consulted.
 
 PROHIBIT - Values that are prohibited. Values in the datastore do not meet any of the listed conditions.
 
@@ -101,7 +109,8 @@ ISELEMENTOF - Categorical values that are permitted. Values in the datastore are
 
 DESCRIPTION - A description of the data.
 
-|NAME        |TABLE     |GROUP |TYPE      |UNITS    |PROHIBIT |ISELEMENTOF |DESCRIPTION                                                                                                           |
-|:-----------|:---------|:-----|:---------|:--------|:--------|:-----------|:---------------------------------------------------------------------------------------------------------------------|
-|CarSvcLevel |Bzone     |Year  |character |category |         |Low, High   |Level of car service availability. High means access is competitive with household owned car. Low is not competitive. |
-|CarSvcLevel |Household |Year  |character |category |         |Low, High   |Level of car service availability. High means access is competitive with household owned car. Low is not competitive. |
+|NAME        |TABLE     |GROUP |TYPE      |UNITS    |PROHIBIT |ISELEMENTOF |DESCRIPTION                                                                                                                    |
+|:-----------|:---------|:-----|:---------|:--------|:--------|:-----------|:------------------------------------------------------------------------------------------------------------------------------|
+|CarSvcLevel |Bzone     |Year  |character |category |         |Low, High   |Level of car service availability. High means access is competitive with household owned car. Low is not competitive.          |
+|ShdSvcAvail |Bzone     |Year  |integer   |binary   |NA       |0, 1        |Availability of shared car services. A value of 1 specifies that shared car services is available in the Bzone and 0 otherwise |
+|CarSvcLevel |Household |Year  |character |category |         |Low, High   |Level of car service availability. High means access is competitive with household owned car. Low is not competitive.          |

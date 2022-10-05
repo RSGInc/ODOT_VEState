@@ -567,6 +567,55 @@ BudgetHouseholdDvmtSpecifications <- list(
       ISELEMENTOF = "",
       SIZE = 0,
       DESCRIPTION = "Average number of vehicle trips per day by household members"
+    ),
+    item(
+      NAME =
+        list("WalkAvgTripDist",
+             "BikeAvgTripDist",
+             "TransitAvgTripDist"),
+      TABLE = "Household",
+      GROUP = "Year",
+      TYPE = "double",
+      UNITS = "MI",
+      PROHIBIT = c("NA", "< 0"),
+      ISELEMENTOF = "",
+      SIZE = 0,
+      DESCRIPTION = list(
+        "Daily walking average trip length",
+        "Daily biking average trip length",
+        "Daily transit average trip length"
+      )
+    ),
+    item(
+      NAME =
+        list("WalkPMT",
+             "BikePMT",
+             "TransitPMT"),
+      TABLE = "Household",
+      GROUP = "Year",
+      TYPE = "distance",
+      UNITS = "MI",
+      NAVALUE = -1,
+      PROHIBIT = c("NA", "< 0"),
+      ISELEMENTOF = "",
+      SIZE = 0,
+      DESCRIPTION = list(
+        "Daily walking person miles traveled by all members of the household",
+        "Daily biking person miles traveled by all members of the household",
+        "Daily transit person miles traveled by all members of the household"
+      )   
+    ),
+    item(
+      NAME = "SovToBikeTrip",
+      TABLE = "Household",
+      GROUP = "Year",
+      TYPE = "compound",
+      UNITS = "TRIP/YR",
+      NAVALUE = -1,
+      PROHIBIT = c("NA", "< 0"),
+      ISELEMENTOF = "",
+      SIZE = 0,
+      DESCRIPTION = "Annual extra trips allocated to bicycle model as a result of SOV diversion"
     )
   ),
   #Specify call status of module
@@ -692,7 +741,9 @@ BudgetHouseholdDvmt <- function(L, M) {
     AdjDvmt_Hh[AdjDvmt_Hh < MinDvmt] <- MinDvmt
     #Reduce DVMT to account for TDM and SOV reductions
     L$ReduceDvmt$Year$Household$Dvmt <- AdjDvmt_Hh
-    AdjDvmt_Hh <- M$ReduceDvmt(L$ReduceDvmt)$Year$Household$Dvmt
+    ReduceDvmt_ls <- M$ReduceDvmt(L$ReduceDvmt)
+    AdjDvmt_Hh <- ReduceDvmt_ls$Year$Household$Dvmt
+    SovToBikeTrip_Hh <- ReduceDvmt_ls$Year$Household$SovToBikeTrip
     #Calculate adjusted urban and rural DVMT by Marea and location type
     AdjDvmt_MaLt <- array(0, dim = c(length(Ma), length(Lt)), dimnames = list(Ma, Lt))
     AdjDvmt_MxLx <- tapply(
@@ -707,7 +758,8 @@ BudgetHouseholdDvmt <- function(L, M) {
       UrbanDvmt = unname(AdjDvmt_MaLt[,"Urban"]),
       TownDvmt = unname(AdjDvmt_MaLt[,"Town"]),
       RuralDvmt = unname(AdjDvmt_MaLt[,"Rural"]),
-      NoDhDvmt_Hh = AdjDvmt_Hh
+      NoDhDvmt_Hh = AdjDvmt_Hh,
+      SovToBikeTrip_Hh = SovToBikeTrip_Hh
     )
   })
 
@@ -719,6 +771,25 @@ BudgetHouseholdDvmt <- function(L, M) {
   #Calculate alternative mode trips
   L$CalcAltTrips$Year$Household$Dvmt <- Adj_ls$NoDhDvmt_Hh
   AltTrips_ls <- M$CalcAltTrips(L$CalcAltTrips)$Year$Household
+  
+  if(is.null(AltTrips_ls$WalkAvgTripDist)){
+    AltTrips_ls$WalkAvgTripDist <- numeric(length = length(AltTrips_ls$BikeTrips))
+  }
+  if(is.null(AltTrips_ls$BikeAvgTripDist)){
+    AltTrips_ls$BikeAvgTripDist <- numeric(length = length(AltTrips_ls$BikeTrips))
+  }
+  if(is.null(AltTrips_ls$TransitAvgTripDist)){
+    AltTrips_ls$TransitAvgTripDist <- numeric(length = length(AltTrips_ls$BikeTrips))
+  }
+  if(is.null(AltTrips_ls$WalkPMT)){
+    AltTrips_ls$WalkPMT <- numeric(length = length(AltTrips_ls$BikeTrips))
+  }
+  if(is.null(AltTrips_ls$BikePMT)){
+    AltTrips_ls$BikePMT <- numeric(length = length(AltTrips_ls$BikeTrips))
+  }
+  if(is.null(AltTrips_ls$TransitPMT)){
+    AltTrips_ls$TransitPMT <- numeric(length = length(AltTrips_ls$BikeTrips))
+  }
 
   #Calculate DailyGGE, DailyKWH, DailyCO2e
   #---------------------------------------
@@ -741,7 +812,15 @@ BudgetHouseholdDvmt <- function(L, M) {
     VehicleTrips = VehicleTrips_Hh,
     WalkTrips = AltTrips_ls$WalkTrips,
     BikeTrips = AltTrips_ls$BikeTrips,
-    TransitTrips = AltTrips_ls$TransitTrips)
+    SovToBikeTrip = Adj_ls$SovToBikeTrip_Hh,
+    TransitTrips = AltTrips_ls$TransitTrips,
+    WalkAvgTripDist = AltTrips_ls$WalkAvgTripDist,
+    BikeAvgTripDist = AltTrips_ls$BikeAvgTripDist,
+    TransitAvgTripDist = AltTrips_ls$TransitAvgTripDist,
+    WalkPMT = AltTrips_ls$WalkPMT,
+    BikePMT = AltTrips_ls$BikePMT,
+    TransitPMT = AltTrips_ls$TransitPMT
+    )
   Out_ls$Year$Marea <- list(
     UrbanHhDvmt = Adj_ls$UrbanDvmt,
     TownHhDvmt = Adj_ls$TownDvmt,

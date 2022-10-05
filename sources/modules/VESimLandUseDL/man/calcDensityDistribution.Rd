@@ -5,8 +5,13 @@
 \title{Determine the activity density (households and jobs per acre) for a set of
 SimBzones assigned to a location type in an Azone.}
 \usage{
-calcDensityDistribution(Bz_df, LocType, TargetArea = NULL,
-  TargetDensity = NULL, UzaProfileName = NULL)
+calcDensityDistribution(
+  Bz_df,
+  LocType,
+  TargetArea = NULL,
+  TargetDensity = NULL,
+  UzaProfileName = NULL
+)
 }
 \arguments{
 \item{Bz_df}{A data frame containing synthetic Bzone data for Bzones for

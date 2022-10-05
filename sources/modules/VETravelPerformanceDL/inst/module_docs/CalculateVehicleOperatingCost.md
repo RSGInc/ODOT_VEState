@@ -378,75 +378,75 @@ PROHIBIT - Values that are prohibited. Values in the datastore do not meet any o
 
 ISELEMENTOF - Categorical values that are permitted. Values in the datastore are one or more of the listed values.
 
-|NAME                    |TABLE     |GROUP  |TYPE      |UNITS       |PROHIBIT     |ISELEMENTOF                |
-|:-----------------------|:---------|:------|:---------|:-----------|:------------|:--------------------------|
-|ValueOfTime             |Model     |Global |currency  |USD.2010    |<= 0         |                           |
-|CO2eCost                |Region    |Year   |currency  |USD         |NA, < 0      |                           |
-|RunTimeUtilityAdj       |Region    |Year   |double    |multiplier  |NA, < 0      |                           |
-|AccessTimeUtilityAdj    |Region    |Year   |double    |multiplier  |NA, < 0      |                           |
-|RemoteAccessDvmtAdj     |Region    |Year   |double    |multiplier  |NA, < 0      |                           |
-|PropRemoteAccess        |Region    |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|PropParkingFeeAvoid     |Region    |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|PropClimateCostPaid     |Region    |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|PropOtherExtCostPaid    |Region    |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|ExtraVmtTax             |Region    |Year   |currency  |USD         |NA, < 0      |                           |
-|Marea                   |Marea     |Year   |character |ID          |             |                           |
-|LdvAveSpeed             |Marea     |Year   |compound  |MI/HR       |< 0          |                           |
-|NonUrbanAveSpeed        |Marea     |Year   |compound  |MI/HR       |< 0          |                           |
-|AveCongPrice            |Marea     |Year   |currency  |USD.2010    |< 0          |                           |
-|Azone                   |Azone     |Year   |character |ID          |             |                           |
-|LowCarSvcDeadheadProp   |Azone     |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|HighCarSvcDeadheadProp  |Azone     |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|ShdCarSvcDeadheadProp   |Azone     |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|UnShdCarSvcDeadheadProp |Azone     |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|OwnedVehAccessTime      |Azone     |Year   |time      |MIN         |NA, < 0      |                           |
-|HighCarSvcAccessTime    |Azone     |Year   |time      |MIN         |NA, < 0      |                           |
-|LowCarSvcAccessTime     |Azone     |Year   |time      |MIN         |NA, < 0      |                           |
-|ShdCarSvcAccessTime     |Azone     |Year   |time      |MIN         |NA, < 0      |                           |
-|UnShdCarSvcAccessTime   |Azone     |Year   |time      |MIN         |NA, < 0      |                           |
-|ShdCarSvcAveOccup       |Region    |Year   |double    |multiplier  |NA, < 0      |                           |
-|FuelCost                |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|PowerCost               |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|FuelTax                 |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|VmtTax                  |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|PevSurchgTaxProp        |Azone     |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|HighCarSvcCost          |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|LowCarSvcCost           |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|ShdCarSvcCost           |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|UnShdCarSvcCost         |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|Marea                   |Household |Year   |character |ID          |             |                           |
-|Azone                   |Household |Year   |character |ID          |             |                           |
-|HhId                    |Household |Year   |character |ID          |             |                           |
-|Income                  |Household |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|Dvmt                    |Household |Year   |compound  |MI/DAY      |NA, < 0      |                           |
-|UrbanDvmtProp           |Household |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|DriverlessDvmtAdjProp   |Household |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|DeadheadDvmtAdjProp     |Household |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|HasPaydIns              |Household |Year   |integer   |binary      |             |0, 1                       |
-|VehicleTrips            |Household |Year   |compound  |TRIP/DAY    |NA, < 0      |                           |
-|OtherParkingCost        |Household |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|Azone                   |Vehicle   |Year   |character |ID          |NA           |                           |
-|Marea                   |Vehicle   |Year   |character |ID          |NA           |                           |
-|HhId                    |Vehicle   |Year   |character |ID          |NA           |                           |
-|VehId                   |Vehicle   |Year   |character |ID          |NA           |                           |
-|Type                    |Vehicle   |Year   |character |category    |NA           |Auto, LtTrk                |
-|Age                     |Vehicle   |Year   |time      |YR          |NA, < 0      |                           |
-|VehicleAccess           |Vehicle   |Year   |character |category    |             |Own, LowCarSvc, HighCarSvc |
-|Powertrain              |Vehicle   |Year   |character |category    |             |ICEV, HEV, PHEV, BEV, NA   |
-|Driverless              |Vehicle   |Year   |double    |proportions |NA, < 0, > 1 |                           |
-|GPM                     |Vehicle   |Year   |compound  |GGE/MI      |NA, < 0      |                           |
-|KWHPM                   |Vehicle   |Year   |compound  |KWH/MI      |NA, < 0      |                           |
-|ElecDvmtProp            |Vehicle   |Year   |double    |proportion  |NA, < 0, > 1 |                           |
-|FuelCO2ePM              |Vehicle   |Year   |compound  |GM/MI       |NA, < 0      |                           |
-|ElecCO2ePM              |Vehicle   |Year   |compound  |GM/MI       |NA, < 0      |                           |
-|InsCost                 |Vehicle   |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|HhId                    |Worker    |Year   |character |ID          |             |                           |
-|ParkingCost             |Worker    |Year   |currency  |USD.2010    |NA, < 0      |                           |
-|IsCashOut               |Worker    |Year   |integer   |binary      |             |0, 1                       |
-|PaysForParking          |Worker    |Year   |integer   |binary      |             |0, 1                       |
-|Bzone                   |Vehicle   |Year   |character |ID          |             |                           |
-|Bzone                   |Bzone     |Year   |character |ID          |             |                           |
-|ShdSvcAvail             |Bzone     |Year   |integer   |binary      |NA           |0, 1                       |
+|NAME                      |TABLE     |GROUP  |TYPE      |UNITS       |PROHIBIT     |ISELEMENTOF                |
+|:-------------------------|:---------|:------|:---------|:-----------|:------------|:--------------------------|
+|ValueOfTime               |Model     |Global |currency  |USD.2010    |<= 0         |                           |
+|CO2eCost                  |Region    |Year   |currency  |USD         |NA, < 0      |                           |
+|RunTimeUtilityAdj         |Region    |Year   |double    |multiplier  |NA, < 0      |                           |
+|AccessTimeUtilityAdj      |Region    |Year   |double    |multiplier  |NA, < 0      |                           |
+|RemoteAccessDvmtAdj       |Region    |Year   |double    |multiplier  |NA, < 0      |                           |
+|PropRemoteAccess          |Region    |Year   |double    |proportion  |NA, < 0, > 1 |                           |
+|PropParkingFeeAvoid       |Region    |Year   |double    |proportion  |NA, < 0, > 1 |                           |
+|PropClimateCostPaid       |Region    |Year   |double    |proportion  |NA, < 0, > 1 |                           |
+|PropOtherExtCostPaid      |Region    |Year   |double    |proportion  |NA, < 0, > 1 |                           |
+|ExtraVmtTax               |Region    |Year   |currency  |USD         |NA, < 0      |                           |
+|Marea                     |Marea     |Year   |character |ID          |             |                           |
+|LdvAveSpeed               |Marea     |Year   |compound  |MI/HR       |< 0          |                           |
+|NonUrbanAveSpeed          |Marea     |Year   |compound  |MI/HR       |< 0          |                           |
+|AveCongPrice              |Marea     |Year   |currency  |USD.2010    |< 0          |                           |
+|Azone                     |Azone     |Year   |character |ID          |             |                           |
+|LowCarSvcDeadheadProp     |Azone     |Year   |double    |proportion  |NA, < 0, > 1 |                           |
+|HighCarSvcDeadheadProp    |Azone     |Year   |double    |proportion  |NA, < 0, > 1 |                           |
+|ShdCarSvcDeadheadFactor   |Azone     |Year   |double    |multiplier  |NA, < 0      |                           |
+|UnShdCarSvcDeadheadFactor |Azone     |Year   |double    |multiplier  |NA, < 0      |                           |
+|OwnedVehAccessTime        |Azone     |Year   |time      |MIN         |NA, < 0      |                           |
+|HighCarSvcAccessTime      |Azone     |Year   |time      |MIN         |NA, < 0      |                           |
+|LowCarSvcAccessTime       |Azone     |Year   |time      |MIN         |NA, < 0      |                           |
+|ShdCarSvcAccessTime       |Azone     |Year   |time      |MIN         |NA, < 0      |                           |
+|UnShdCarSvcAccessTime     |Azone     |Year   |time      |MIN         |NA, < 0      |                           |
+|ShdCarSvcAveOccup         |Region    |Year   |double    |multiplier  |NA, < 0      |                           |
+|FuelCost                  |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
+|PowerCost                 |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
+|FuelTax                   |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
+|VmtTax                    |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
+|PevSurchgTaxProp          |Azone     |Year   |double    |proportion  |NA, < 0, > 1 |                           |
+|HighCarSvcCost            |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
+|LowCarSvcCost             |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
+|ShdCarSvcCost             |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
+|UnShdCarSvcCost           |Azone     |Year   |currency  |USD.2010    |NA, < 0      |                           |
+|Marea                     |Household |Year   |character |ID          |             |                           |
+|Azone                     |Household |Year   |character |ID          |             |                           |
+|HhId                      |Household |Year   |character |ID          |             |                           |
+|Income                    |Household |Year   |currency  |USD.2010    |NA, < 0      |                           |
+|Dvmt                      |Household |Year   |compound  |MI/DAY      |NA, < 0      |                           |
+|UrbanDvmtProp             |Household |Year   |double    |proportion  |NA, < 0, > 1 |                           |
+|DriverlessDvmtAdjProp     |Household |Year   |double    |proportion  |NA, < 0, > 1 |                           |
+|DeadheadDvmtAdjProp       |Household |Year   |double    |proportion  |NA, < 0, > 1 |                           |
+|HasPaydIns                |Household |Year   |integer   |binary      |             |0, 1                       |
+|VehicleTrips              |Household |Year   |compound  |TRIP/DAY    |NA, < 0      |                           |
+|OtherParkingCost          |Household |Year   |currency  |USD.2010    |NA, < 0      |                           |
+|Azone                     |Vehicle   |Year   |character |ID          |NA           |                           |
+|Marea                     |Vehicle   |Year   |character |ID          |NA           |                           |
+|HhId                      |Vehicle   |Year   |character |ID          |NA           |                           |
+|VehId                     |Vehicle   |Year   |character |ID          |NA           |                           |
+|Type                      |Vehicle   |Year   |character |category    |NA           |Auto, LtTrk                |
+|Age                       |Vehicle   |Year   |time      |YR          |NA, < 0      |                           |
+|VehicleAccess             |Vehicle   |Year   |character |category    |             |Own, LowCarSvc, HighCarSvc |
+|Powertrain                |Vehicle   |Year   |character |category    |             |ICEV, HEV, PHEV, BEV, NA   |
+|Driverless                |Vehicle   |Year   |double    |proportions |NA, < 0, > 1 |                           |
+|GPM                       |Vehicle   |Year   |compound  |GGE/MI      |NA, < 0      |                           |
+|KWHPM                     |Vehicle   |Year   |compound  |KWH/MI      |NA, < 0      |                           |
+|ElecDvmtProp              |Vehicle   |Year   |double    |proportion  |NA, < 0, > 1 |                           |
+|FuelCO2ePM                |Vehicle   |Year   |compound  |GM/MI       |NA, < 0      |                           |
+|ElecCO2ePM                |Vehicle   |Year   |compound  |GM/MI       |NA, < 0      |                           |
+|InsCost                   |Vehicle   |Year   |currency  |USD.2010    |NA, < 0      |                           |
+|HhId                      |Worker    |Year   |character |ID          |             |                           |
+|ParkingCost               |Worker    |Year   |currency  |USD.2010    |NA, < 0      |                           |
+|IsCashOut                 |Worker    |Year   |integer   |binary      |             |0, 1                       |
+|PaysForParking            |Worker    |Year   |integer   |binary      |             |0, 1                       |
+|Bzone                     |Vehicle   |Year   |character |ID          |             |                           |
+|Bzone                     |Bzone     |Year   |character |ID          |             |                           |
+|ShdSvcAvail               |Bzone     |Year   |integer   |binary      |NA           |0, 1                       |
 
 ## Datasets Produced by the Module
 The following table documents each dataset that is placed in the datastore by the module. Each row in the table describes a dataset. All the datasets must be present in the datastore. One or more of these datasets may be entered into the datastore from the user input files. The table names and their meanings are as follows:

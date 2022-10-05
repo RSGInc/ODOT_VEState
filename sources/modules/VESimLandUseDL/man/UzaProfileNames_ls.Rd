@@ -4,11 +4,13 @@
 \name{UzaProfileNames_ls}
 \alias{UzaProfileNames_ls}
 \title{Urbanized area profile names list}
-\format{A list containing 2 components:
+\format{
+A list containing 2 components:
 \describe{
  \item{Names}{a sorted vector of urbanized area names}
  \item{Inp}{a 3-column data frame of the names to include in documentation}
-}}
+}
+}
 \source{
 Initialize.R script.
 }

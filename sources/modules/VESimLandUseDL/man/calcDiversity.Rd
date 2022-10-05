@@ -4,8 +4,14 @@
 \alias{calcDiversity}
 \title{Assign diversity group and numbers of jobs and households}
 \usage{
-calcDiversity(Act_Bz, ActDenLvl_Bz, TotEmp, D2ActProp_D1D2, EmpProp_D2_ls,
-  LocTyD2ActProp_D1D2)
+calcDiversity(
+  Act_Bz,
+  ActDenLvl_Bz,
+  TotEmp,
+  D2ActProp_D1D2,
+  EmpProp_D2_ls,
+  LocTyD2ActProp_D1D2
+)
 }
 \arguments{
 \item{Act_Bz}{A numeric vector of the total activity assigned to each

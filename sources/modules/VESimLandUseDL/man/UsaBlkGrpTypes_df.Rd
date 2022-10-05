@@ -4,7 +4,8 @@
 \name{UsaBlkGrpTypes_df}
 \alias{UsaBlkGrpTypes_df}
 \title{Measures of land use types and levels for block groups}
-\format{A data frame having the following components:
+\format{
+A data frame having the following components:
 \describe{
   \item{GEOID10}{a string that identifies the unique block group ID}
   \item{LocType}{a string that identifies the location type}
@@ -13,7 +14,8 @@
   \item{D5Grp}{a factor that identifies the destination accessibility level}
   \item{AreaType}{a string that identifies the area type}
   \item{DevType}{a string that identifies the development type}
-}}
+}
+}
 \source{
 CreateSimBzoneModels.R script.
 }

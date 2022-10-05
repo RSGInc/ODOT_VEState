@@ -4,7 +4,8 @@
 \name{SimBzone_ls}
 \alias{SimBzone_ls}
 \title{SimBzone model parameters}
-\format{A list having the following components:
+\format{
+A list having the following components:
 \describe{
   \item{UaProfiles}{a list containing profiles for urbanized areas}
   \item{TnProfiles}{a list containing profiles for towns}
@@ -13,7 +14,8 @@
   \item{Docs}{a list containing miscellaneous model documentation objects}
   \item{EmpSplit}{a list containing two matrices of employment proportions by placetype and quantile}
   \item{HousingSplit}{a list containing a matrix of multi-family dwelling unit proportions by placetype and quantile}
-}}
+}
+}
 \source{
 CreateSimBzoneModels.R script.
 }

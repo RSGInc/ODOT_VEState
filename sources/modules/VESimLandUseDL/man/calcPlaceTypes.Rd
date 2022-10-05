@@ -26,7 +26,7 @@ SimBzone.
 }
 \details{
 Place types simplify the characterization of land use patterns. They are used
-in the VESimLandUse package modules to simplify the management of inputs for
+in the VESimLandUseDL package modules to simplify the management of inputs for
 land use related policies. There are three dimensions to the place type
 system. Location type identifies whether the SimBzone is located in an
 urbanized area (Metropolitan), a smaller urban-type area (Town), or a

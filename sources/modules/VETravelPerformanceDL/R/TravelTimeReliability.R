@@ -358,14 +358,14 @@ TravelTimeReliability <- function(L) {
  #Calculate Travel Time Index by congestion level for metropolitan areas
  #---------------------------------------------
  TTR_df <- Marea_df %>%
-   dplyr::mutate(FwyModCong_TTI = FwyNoneCongSpeed[[1]]/FwyModCongSpeed[[1]],
-                 FwyHvyCong_TTI = FwyNoneCongSpeed[[1]]/FwyHvyCongSpeed[[1]],
-                 FwySevCong_TTI = FwyNoneCongSpeed[[1]]/FwySevCongSpeed[[1]],
-                 FwyExtCong_TTI = FwyNoneCongSpeed[[1]]/FwyExtCongSpeed[[1]],
-                 ArtModCong_TTI = ArtNoneCongSpeed[[1]]/ArtModCongSpeed[[1]],
-                 ArtHvyCong_TTI = ArtNoneCongSpeed[[1]]/ArtHvyCongSpeed[[1]],
-                 ArtSevCong_TTI = ArtNoneCongSpeed[[1]]/ArtSevCongSpeed[[1]],
-                 ArtExtCong_TTI = ArtNoneCongSpeed[[1]]/ArtExtCongSpeed[[1]])
+   dplyr::mutate(FwyModCong_TTI = FwyNoneCongSpeed/FwyModCongSpeed,
+                 FwyHvyCong_TTI = FwyNoneCongSpeed/FwyHvyCongSpeed,
+                 FwySevCong_TTI = FwyNoneCongSpeed/FwySevCongSpeed,
+                 FwyExtCong_TTI = FwyNoneCongSpeed/FwyExtCongSpeed,
+                 ArtModCong_TTI = ArtNoneCongSpeed/ArtModCongSpeed,
+                 ArtHvyCong_TTI = ArtNoneCongSpeed/ArtHvyCongSpeed,
+                 ArtSevCong_TTI = ArtNoneCongSpeed/ArtSevCongSpeed,
+                 ArtExtCong_TTI = ArtNoneCongSpeed/ArtExtCongSpeed)
  
  TTR_df <- TTR_df %>%
    dplyr::mutate(FwyModCong_PTI = 1+3.67*log(mean(FwyModCong_TTI)),

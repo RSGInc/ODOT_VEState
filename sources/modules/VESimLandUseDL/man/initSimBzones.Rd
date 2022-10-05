@@ -4,8 +4,13 @@
 \alias{initSimBzones}
 \title{Creates SimBzones to accommodate the activity assigned to a set of Azones.}
 \usage{
-initSimBzones(RuralActivity_Az, TownActivity_Az, UrbanActivity_Az, Az,
-  Marea_Az)
+initSimBzones(
+  RuralActivity_Az,
+  TownActivity_Az,
+  UrbanActivity_Az,
+  Az,
+  Marea_Az
+)
 }
 \arguments{
 \item{RuralActivity_Az}{a numeric vector identifying the amount of activity

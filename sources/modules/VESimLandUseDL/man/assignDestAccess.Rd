@@ -5,8 +5,13 @@
 \title{Calculate destination accessibility value and level.
 \code{assignDestAccess} assign destination accessibility level and value.}
 \usage{
-assignDestAccess(D1Lvl_Bz, LocType, AreaD5ActProp_D1D5,
-  LocTypeD5ActProp_D1D5, D5Ave_D5)
+assignDestAccess(
+  D1Lvl_Bz,
+  LocType,
+  AreaD5ActProp_D1D5,
+  LocTypeD5ActProp_D1D5,
+  D5Ave_D5
+)
 }
 \arguments{
 \item{D1Lvl_Bz}{A numeric vector of activity density level by SimBzone.}
