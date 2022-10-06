@@ -126,7 +126,7 @@ class VEStateModel(FilesCoreModel):
 
 		self._hist_datastore_dir = join_norm(self.config['model_hist_datastore'])
 
-		self.model_base_year = 2010
+		self.model_base_year = 2015
 		self.model_future_year = 2050
 
 		# Ensure that R libraries can be found.
@@ -137,17 +137,17 @@ class VEStateModel(FilesCoreModel):
 		# Add parsers to instruct the load_measures function
 		# how to parse the outputs and get the measure values.
 
-		# # ComputedMeasures.json
-		# instructions = {}
-		# for measure in scope.get_measures():
-		# 	if measure.parser and measure.parser.get('file') == 'ComputedMeasures.json':
-		# 		instructions[measure.name] = key[measure.parser.get('key')]
-		# self.add_parser(
-		# 	MappingParser(
-		# 		"ComputedMeasures.json",
-		# 		instructions,
-		# 	)
-		# )
+		## ComputedMeasures.json
+		#instructions = {}
+		#for measure in scope.get_measures():
+		#	if measure.parser and measure.parser.get('file') == 'ComputedMeasures.json':
+		#		instructions[measure.name] = key[measure.parser.get('key')]
+		#self.add_parser(
+		#	MappingParser(
+		#		"ComputedMeasures.json",
+		#		instructions,
+		#	)
+		#)
 
 		# CalcStateValidationMeasuresFunction.R
 		instructions = {}
@@ -205,6 +205,22 @@ class VEStateModel(FilesCoreModel):
 		self.add_parser(
 			TableParser(
 				"county_measures_2050.csv",
+				instructions,
+				index_col=0,
+			)
+		)
+		
+		# Measures
+		instructions = {}
+		for measure in scope.get_measures():
+			if measure.parser and measure.parser.get('file') == 'output_measures.csv':
+				if measure.parser.get('loc'):
+					instructions[measure.name] = loc[(str(j) for j in measure.parser.get('loc'))]
+				elif measure.parser.get('eval'):
+					instructions[measure.name] = eval(measure.parser.get('eval'))
+		self.add_parser(
+			TableParser(
+				"output_measures.csv",
 				instructions,
 				index_col=0,
 			)
@@ -293,19 +309,49 @@ class VEStateModel(FilesCoreModel):
 		# and having separate methods makes this clearer.
 		if not self._run_hlt:
 			#self._manipulate_model_parameters_json(params)
-			self._manipulate_ludensity(params)
-			self._manipulate_intdensity(params)
-			self._manipulate_population(params)
-			# self._manipulate_income(params)
-			# self._manipulate_ldvecodrv(params)
-			self._manipulate_carsvcavail(params)
-			self._manipulate_shdcarsvc(params)
-			self._manipulate_drvlessadj(params)
-			self._manipulate_drvless_param(params)
-			self._manipulate_drvlessvehsales(params)
-			# self._manipulate_cichange(params)
-			self._manipulate_inv(params)
-		
+			tmip_vars = [var_name.upper() for var_name in params.keys()]
+			if 'LUDENSITYMIX' in tmip_vars:
+				self._manipulate_ludensity(params)
+			if 'INTDENSITYSCEN' in tmip_vars:
+				self._manipulate_intdensity(params)
+			if 'HHPOPGROWTHRATE' in tmip_vars:
+				self._manipulate_population(params)
+			if 'INCOMEGROWTH' in tmip_vars:
+				self._manipulate_income(params)
+			if 'LDVECODRVSCEN' in tmip_vars:
+				self._manipulate_ldvecodrv(params)
+			if 'CARSVCAVAILSCEN' in tmip_vars:
+				self._manipulate_carsvcavail(params)
+			if 'SHDCARSVCOCCUPRATE' in tmip_vars:
+				self._manipulate_shdcarsvc(params)
+			if 'DRVLESSADJSCEN' in tmip_vars:
+				self._manipulate_drvlessadj(params)
+			if 'DRVLESSPROPREMOTEACC' in tmip_vars and 'PROPPARKINGFEEAVOID' in tmip_vars:
+				self._manipulate_drvless_param(params)
+			if 'AVVEHSALESGROWTHSCEN' in tmip_vars:
+				self._manipulate_drvlessvehsales(params)
+			if 'CARCHARGEAVAILSCEN' in tmip_vars:
+				self._manipulate_carchargeavailscen(params)
+			if 'CICHANGERATESCEN' in tmip_vars:
+				self._manipulate_cichange(params)
+			if 'INVESTMENTSCEN' in tmip_vars:
+				self._manipulate_inv(params)
+			if 'SOVDIVIVERTSCEN' in tmip_vars:
+				self._manipulate_sovdivert(params)
+			if 'TAXSCEN' in tmip_vars:
+				self._manipulate_taxes(params)
+			if 'LANEMILESCEN' in tmip_vars:
+				self._manipulate_mlanemiles(params)
+			if 'OPSDEPLOYSCEN' in tmip_vars:
+				self._manipulate_opsdeployment(params)
+			if 'TRANSITSERVICESCEN' in tmip_vars:
+				self._manipulate_transitservice(params)
+			if 'TDMINVESTMENTSCEN' in tmip_vars:
+				self._manipulate_tdmareatype(params)
+			if 'TRANSITSCEN' in tmip_vars:
+				self._manipulate_transitscen(params)
+			if 'POWERTRAINSCEN' in tmip_vars:
+				self._manipulate_powertrainscen(params)
 
 		# High Level Tool Scenarios
 		if self._run_hlt:
@@ -316,7 +362,7 @@ class VEStateModel(FilesCoreModel):
 		_logger.info("ODOT OTP VEState SETUP complete")
 
 
-	def _manipulate_by_mixture(self, params, weight_param, ve_scenario_dir, no_mix_cols=('Year', 'Geo',)):
+	def _manipulate_by_mixture(self, params, weight_param, ve_scenario_dir, no_mix_cols=('Year', 'Geo',), float_dtypes=False):
 		"""
 		Prepare files by interpolating parameters between two files.
 
@@ -349,9 +395,14 @@ class VEStateModel(FilesCoreModel):
 
 		for filename in filenames:
 			df1 = pd.read_csv(scenario_input(ve_scenario_dir,'1',filename))
+			isna_ = (df1.isnull().values).any()
+			df1.fillna(0, inplace=True)
 			df2 = pd.read_csv(scenario_input(ve_scenario_dir,'2',filename))
+			df2.fillna(0, inplace=True)
 
 			float_mix_cols = list(df1.select_dtypes('float').columns)
+			if float_dtypes:
+				float_mix_cols = float_mix_cols+list(df1.select_dtypes('int').columns)
 			for j in no_mix_cols:
 				if j in float_mix_cols:
 					float_mix_cols.remove(j)
@@ -362,6 +413,8 @@ class VEStateModel(FilesCoreModel):
 				df1[float_mix_cols] = df1_float * weight_1 + df2_float * weight_2
 
 			int_mix_cols = list(df1.select_dtypes('int').columns)
+			if float_dtypes:
+				int_mix_cols = list()
 			for j in no_mix_cols:
 				if j in int_mix_cols:
 					int_mix_cols.remove(j)
@@ -370,6 +423,72 @@ class VEStateModel(FilesCoreModel):
 				df1_int = df1[int_mix_cols]
 				df2_int = df2[int_mix_cols]
 				df_int_mix = df1_int * weight_1 + df2_int * weight_2
+				df1[int_mix_cols] = np.round(df_int_mix).astype(int)
+
+			out_filename = join_norm(
+				self.resolved_model_path, 'inputs', filename
+			)
+			if isna_:
+				df1.replace(0, np.nan, inplace=True)
+			df1.to_csv(out_filename, index=False, float_format="%.5f", na_rep='NA')
+
+	def _manipulate_by_delta(self, params, weight_param, ve_scenario_dir, no_mix_cols=('Year', 'Geo',)):
+		"""
+		Prepare files by interpolating parameters between two files.
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+			weight_param:
+				The name of the parameters that is generated from the
+				scope file
+			ve_scenario_dir:
+				The name of the directory that contains the two set
+				of folder/files that need to be interpolated
+			no_mix_cols:
+				Columns that should not be interpolated
+		"""
+
+		# weight_2 = params[weight_param]
+		# weight_1 = 1.0-weight_2
+		weight_ = params[weight_param]
+
+		# Gather list of all files in directory "1", and confirm they
+		# are also in directory "2"
+		filenames = []
+		for i in os.scandir(scenario_input(ve_scenario_dir,'1')):
+			if i.is_file():
+				filenames.append(i.name)
+				f2 = scenario_input(ve_scenario_dir,'2', i.name)
+				if not os.path.exists(f2):
+					raise FileNotFoundError(f2)
+
+		for filename in filenames:
+			df1 = pd.read_csv(scenario_input(ve_scenario_dir,'1',filename))
+			df2 = pd.read_csv(scenario_input(ve_scenario_dir,'2',filename))
+
+			float_mix_cols = list(df1.select_dtypes('float').columns)
+			for j in no_mix_cols:
+				if j in float_mix_cols:
+					float_mix_cols.remove(j)
+
+			if float_mix_cols:
+				df1_float = df1[float_mix_cols]
+				df2_float = df2[float_mix_cols]
+				delta_float = df2_float - df1_float
+				df1[float_mix_cols] = df1_float + (delta_float * weight_)
+
+			int_mix_cols = list(df1.select_dtypes('int').columns)
+			for j in no_mix_cols:
+				if j in int_mix_cols:
+					int_mix_cols.remove(j)
+
+			if int_mix_cols:
+				df1_int = df1[int_mix_cols]
+				df2_int = df2[int_mix_cols]
+				delta_int = df2_int - df1_int
+				df_int_mix = df1_int + (delta_int * weight_)
 				df1[int_mix_cols] = np.round(df_int_mix).astype(int)
 
 			out_filename = join_norm(
@@ -443,7 +562,8 @@ class VEStateModel(FilesCoreModel):
 			'PVOP': '2',
 			'MM': '3',
 		}
-		return self._manipulate_by_categorical_drop_in(params, 'LUDENSITYMIX', cat_mapping, 'L1')
+		# return self._manipulate_by_categorical_drop_in(params, 'LUDENSITYMIX', cat_mapping, 'L1')
+		return self._manipulate_by_mixture(params, 'LUDENSITYMIX', 'L1')
 
 	def _manipulate_intdensity(self, params):
 		"""
@@ -618,6 +738,18 @@ class VEStateModel(FilesCoreModel):
 
 		return self._manipulate_by_categorical_drop_in(params, 'AVVEHSALESGROWTHSCEN', cat_mapping, 'T6')
 
+	def _manipulate_carchargeavailscen(self, params):
+		"""
+		Prepare the azone_charging_availability.csv
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		return self._manipulate_by_mixture(params, 'CARCHARGEAVAILSCEN', 'T7')
+
 	def _manipulate_cichange(self, params):
 		"""
 		Prepare the carbon emissions related files
@@ -654,6 +786,146 @@ class VEStateModel(FilesCoreModel):
 		}
 
 		return self._manipulate_by_categorical_drop_in(params, 'INVESTMENTSCEN', cat_mapping, 'I1')
+
+	def _manipulate_sovdivert(self, params):
+		"""
+		Prepare the azone_prop_sov_dvmt_diverted.csv
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		return self._manipulate_by_mixture(params, 'SOVDIVIVERTSCEN', 'I2')
+
+	def _manipulate_taxes(self, params):
+		"""
+		Prepare the azone_veh_use_taxes.csv file.
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		cat_mapping = {
+			'AP': '1',
+			'NONAP': '2'
+		}
+
+		# return self._manipulate_by_categorical_drop_in(params, 'TAXSCEN', cat_mapping, 'I3')
+		return self._manipulate_by_mixture(params, 'TAXSCEN', 'I3',  no_mix_cols=('Year', 'Geo', 'FuelTax.2005'))
+
+	def _manipulate_mlanemiles(self, params):
+		"""
+		Prepare the marea_lane_miles.csv file
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		cat_mapping = {
+			'APMMPV': '1',
+			'OP': '2'
+		}
+
+		# return self._manipulate_by_categorical_drop_in(params, 'LANEMILESCEN', cat_mapping, 'I4')
+		return self._manipulate_by_delta(params, 'LANEMILESCEN', 'I4')
+
+	def _manipulate_opsdeployment(self, params):
+		"""
+		Prepare the marea_operations_deployment.csv file
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		cat_mapping = {
+			'AP': '1',
+			'MMPV': '2',
+			'OP': '3'
+		}
+
+		# return self._manipulate_by_categorical_drop_in(params, 'OPSDEPLOYSCEN', cat_mapping, 'I5')
+		return self._manipulate_by_mixture(params, 'OPSDEPLOYSCEN', 'I5')
+
+	def _manipulate_transitservice(self, params):
+		"""
+		Prepare the marea_transit_service.csv file
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		cat_mapping = {
+			'AP': '1',
+			'MM': '2',
+			'OPPV': '3'
+		}
+
+		# return self._manipulate_by_categorical_drop_in(params, 'TRANSITSERVICESCEN', cat_mapping, 'I6')
+		return self._manipulate_by_mixture(params, 'TRANSITSERVICESCEN', 'I6')
+
+	def _manipulate_tdmareatype(self, params):
+		"""
+		Prepare the marea_travel-demand-mgt_by_area-type.csv
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		cat_mapping = {
+			'APOPPV': '1',
+			'MM': '2'
+		}
+
+		return self._manipulate_by_mixture(params, 'TDMINVESTMENTSCEN', 'I7')
+		# return self._manipulate_by_categorical_drop_in(params, 'TDMINVESTMENTSCEN', cat_mapping, 'I7')
+
+	def _manipulate_transitscen(self, params):
+		"""
+		Prepare the transit mix scenario
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		return self._manipulate_by_mixture(params, 'TRANSITSCEN', 'T8', float_dtypes=True)
+
+	def _manipulate_powertrainscen(self, params):
+		"""
+		Prepare the run model script so that approprate PowertrainAndFuelsPackage is used
+
+		Args:
+			params (dict):
+				The parameters for this experiment, including both
+				exogenous uncertainties and policy levers.
+		"""
+
+		cat_mapping = {
+			'LOWEV': '1',
+			'MEDHH': '2'
+		}
+
+		scenario_dir = cat_mapping.get(params['POWERTRAINSCEN'])
+		ve_scenario_dir = 'T9'
+		for i in os.scandir(scenario_input(ve_scenario_dir,scenario_dir)):
+			if i.is_file():
+				shutil.copyfile(
+					scenario_input(ve_scenario_dir,scenario_dir,i.name),
+					join_norm(self.resolved_model_path, i.name)
+				)
 
 	def _manipulate_expand_roads(self, params):
 		"""
@@ -692,7 +964,6 @@ class VEStateModel(FilesCoreModel):
 
 		return self._manipulate_by_categorical_drop_in(params, 'TRANSIT', cat_mapping, 'HLT1')
 
-
 	def _manipulate_bikewalk(self, params):
 		"""
 		Prepare the population files
@@ -711,7 +982,6 @@ class VEStateModel(FilesCoreModel):
 
 		return self._manipulate_by_categorical_drop_in(params, 'BIKEWALK', cat_mapping, 'HLB1')
 
-
 	def _manipulate_operations(self, params):
 		"""
 		Prepare the population files
@@ -729,8 +999,6 @@ class VEStateModel(FilesCoreModel):
 		}
 
 		return self._manipulate_by_categorical_drop_in(params, 'OPERATIONS', cat_mapping, 'HLO1')
-
-
 
 
 	def run(self):
@@ -782,10 +1050,10 @@ class VEStateModel(FilesCoreModel):
 			self._hist_datastore_dir,
 			join_norm(self.local_directory, self.model_path),
 		)
-		# shutil.copyfile(
-		# 	join_norm(this_directory, 'ModelState.Rda'),
-		# 	join_norm(self.local_directory, self.model_path, 'ModelState.Rda'),
-		# )
+		shutil.copyfile(
+			join_norm(this_directory, 'ModelState.Rda'),
+			join_norm(self.local_directory, self.model_path, 'ModelState.Rda'),
+		)
 		_logger.info('VE-STATE Finished copying the historical datastore ...')
 
 
@@ -795,15 +1063,44 @@ class VEStateModel(FilesCoreModel):
 			require(visioneval)
 			source("{r_join_norm(self.config['r_runtime_path'], 'VisionEval.R')}", chdir = TRUE)
 			source("{r_join_norm(self.local_directory, self.model_path, 'run_model.R')}", echo=TRUE, chdir = TRUE)
-			#cwd <- setwd("{r_join_norm(self.local_directory, self.model_path)}")
-			#on.exit(setwd(cwd))
-			#source("run_model.R", echo=TRUE)
-			#thismodel <- openModel("{r_join_norm(self.local_directory, self.model_path)}")
-			#thismodel$run()
+			thismodel <- openModel("{r_join_norm(self.local_directory, self.model_path)}")
+			##thismodel$run()
+			library(data.table)
+			output_ls <- thismodel$extract(groups='2050', otables=c('Household', 'Vehicle'), saveTo=FALSE)
+			output_ls <- lapply(output_ls, data.table::data.table)
+			names(output_ls) <- c('Household', 'Vehicle')
+			output_ls$Vehicle[output_ls$Household,Dvmt:=DvmtProp*i.Dvmt,on=.(HhId)]
+			output_ls$Vehicle[,ElecDvmt:=ElecDvmtProp*Dvmt]
+			marea_dt <- output_ls$Vehicle[Marea!='None',.(Dvmt=sum(Dvmt),ElecDvmt=sum(ElecDvmt)),.(Marea)]
+			marea_dt[,ElecDvmtProp:=ElecDvmt/Dvmt]
+			outputenv <- new.env()
+			outputfile <- file.path("{r_join_norm(self.local_directory, self.model_path)}",'output', 'output_measures.csv')
+			outputenv$TotalDvmtVehOwned <- sum(output_ls$Vehicle$Dvmt)
+			outputenv$TotalElecDvmtVehOwned <- sum(output_ls$Vehicle$ElecDvmt)
+			outputenv$ElecDvmtProp <- outputenv$TotalElecDvmtVehOwned/outputenv$TotalDvmtVehOwned
+			for(ma_ in marea_dt[,Marea]){{
+				outputenv[[paste0(ma_,'_', 'VehDvmt')]] <- marea_dt[Marea == ma_, Dvmt]
+				outputenv[[paste0(ma_,'_', 'VehElecDvmt')]] <- marea_dt[Marea == ma_, ElecDvmt]
+				outputenv[[paste0(ma_,'_', 'VehElecDvmtProp')]] <- marea_dt[Marea == ma_, ElecDvmtProp]
+			}}
+			output_dt <- data.table(Measures=ls(outputenv))
+			output_dt[,Value:=sapply(Measures, get, envir=outputenv)]
+			fwrite(output_dt, file = outputfile)
 			#thismodel$extract()
-			#thismodel$query(Geography=c(Type='Marea',Value='RVMPO'))
-			#Add source script
 			""")
+			#r_script.write(f"""
+			#require(visioneval)
+			#source("{r_join_norm(self.config['r_runtime_path'], 'VisionEval.R')}", chdir = TRUE)
+			#source("{r_join_norm(self.local_directory, self.model_path, 'run_model.R')}", echo=TRUE, chdir = TRUE)
+			##cwd <- setwd("{r_join_norm(self.local_directory, self.model_path)}")
+			##on.exit(setwd(cwd))
+			##source("run_model.R", echo=TRUE)
+			##thismodel <- openModel("{r_join_norm(self.local_directory, self.model_path)}")
+			##thismodel$run()
+			##thismodel$extract()
+			##thismodel$query(Geography=c(Type='Marea',Value='RVMPO'))
+			##Add source script
+			#""")
 
 		# Ensure that R paths are set correctly.
 		r_lib = self.config['r_library_path']

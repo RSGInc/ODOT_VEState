@@ -1,0 +1,440 @@
+---
+# VEState Scope Definition
+
+scope:
+    name: VEState
+    desc: VisionEval State Strategic Planning Model
+
+inputs:
+
+    DriverlessSalesRate:
+        # Manipulation
+        # (region_driverless_vehicle_prop.csv: AutoSalesDriverlessProp, LtTrkSalesDriverlessProp)
+        shortname: HH Driverless Sales Growth
+        ptype: uncertainty
+        dtype: float
+        desc: Increase in sales of driverless auto/light truck vehicles each year
+        default: .2
+        max: 1
+        min: -1
+        dist:
+            name: pert
+            peak: .2
+        corr:
+            DriverlessCarSvcShareGrowthRate: -.2
+            HHIncomePCGrowthRate: .1
+    DriverlessCarSvcShareGrowthRate:
+        # Manipulation
+        # (region_driverless_vehicle_prop.csv: LowCarSvcDriverlessProp, HighCarSvcDriverlessProp)
+        shortname: CarSvc Driverless Share Growth
+        ptype: uncertainty
+        dtype: float
+        desc: Increase in driverless car service share growth each year
+        default: .2
+        max: 1
+        min: -1
+        dist:
+            name: pert
+            peak: .2
+        corr:
+            DriverlessSalesRate: -.2
+            HHIncomePCGrowthRate: -.1
+    HHIncomePCGrowthRate:
+        # Manipulation
+        # (azone_per_cap_inc.csv: HHIncomePC.2005)
+        shortname: HH Income Per Capita Growth Rate
+        ptype: uncertainty
+        dtype: float
+        desc: Household Income Per Capita Growth Rate each year
+        default: .01
+        max: .1
+        min: -.1
+        dist:
+            name: pert
+            peak: .1
+        corr:
+            DriverlessSalesRate: .1
+            DriverlessCarSvcShareGrowthRate: -.1
+
+    Bicycles:
+        # MIXTURE
+        # This parameter uses a template file to create a new input file
+        # in the `B` group by injecting the relevant value directly
+        # into the file being manipulated.
+        desc: Network improvements, incentives, and technologies that encourage
+          bicycling and other light-weight vehicle travel.
+        ptype: policy lever
+        dtype: float
+        default: 0.0
+        min: 0.0 # SOV diversion rates from AP scenario
+        max: 1.0 # SOV diversion rates from STS scenario
+        dist:
+            name: pert
+            peak: 0.1
+
+    VMTFees:
+        # CATEGORICAL
+        # This parameter accepts the same two sets of scenario input files
+        # as the usual VisionEval scenario manager for `F`, and uses one or
+        # the other explicitly, defining a categorical input.
+        shortname: VMT Fees
+        desc: Extend of fees that can be levied for VMT
+        ptype: policy level
+        dtype: cat
+        default: ap
+        values:
+            - ap    # VMT fees from AP scenario
+            - sts  # VMT fees from STS scenario
+
+outputs:
+
+    StateDvmt2020:
+        kind: info
+        desc: Daily vehicle miles traveled by households in 2020
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdDvmt
+            - 2020
+    StateDvmt2025:
+        kind: info
+        desc: Daily vehicle miles traveled by households in 2025
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdDvmt
+            - 2025
+    StateDvmt2030:
+        kind: info
+        desc: Daily vehicle miles traveled by households in 2030
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdDvmt
+            - 2030
+    StateDvmt2035:
+        kind: info
+        desc: Daily vehicle miles traveled by households in 2035
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdDvmt
+            - 2035
+    StateDvmt2040:
+        kind: info
+        desc: Daily vehicle miles traveled by households in 2040
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdDvmt
+            - 2040
+    StateDvmt2045:
+        kind: info
+        desc: Daily vehicle miles traveled by households in 2045
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdDvmt
+            - 2045
+    StateDvmt2050:
+        kind: info
+        desc: Daily vehicle miles traveled by households in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdDvmt
+            - 2050
+    StateHhCarSvcDvmt2020:
+        kind: info
+        desc: Daily vehicle miles traveled by households in car service 2020
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdCarSvcDvmt
+            - 2020
+    StateHhCarSvcDvmt2025:
+        kind: info
+        desc: Daily vehicle miles traveled by households in car service 2025
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdCarSvcDvmt
+            - 2025
+    StateHhCarSvcDvmt2030:
+        kind: info
+        desc: Daily vehicle miles traveled by households in car service 2030
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdCarSvcDvmt
+            - 2030
+    StateHhCarSvcDvmt2035:
+        kind: info
+        desc: Daily vehicle miles traveled by households in car service 2035
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdCarSvcDvmt
+            - 2035
+    StateHhCarSvcDvmt2040:
+        kind: info
+        desc: Daily vehicle miles traveled by households in car service 2040
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdCarSvcDvmt
+            - 2040
+    StateHhCarSvcDvmt2045:
+        kind: info
+        desc: Daily vehicle miles traveled by households in car service 2045
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdCarSvcDvmt
+            - 2045
+    StateHhCarSvcDvmt2050:
+        kind: info
+        desc: Daily vehicle miles traveled by households in car service 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - HouseholdCarSvcDvmt
+            - 2050
+    StateTotalDvmt2020:
+        kind: info
+        desc: Daily vehicle miles traveled by households in total - vehicles, com service, and public transit 2020
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalDvmt
+            - 2020
+    StateTotalDvmt2025:
+        kind: info
+        desc: Daily vehicle miles traveled by households in total - vehicles, com service, and public transit 2025
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalDvmt
+            - 2025
+    StateTotalDvmt2030:
+        kind: info
+        desc: Daily vehicle miles traveled by households in total - vehicles, com service, and public transit 2030
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalDvmt
+            - 2030
+    StateTotalDvmt2035:
+        kind: info
+        desc: Daily vehicle miles traveled by households in total - vehicles, com service, and public transit 2035
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalDvmt
+            - 2035
+    StateTotalDvmt2040:
+        kind: info
+        desc: Daily vehicle miles traveled by households in total - vehicles, com service, and public transit 2040
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalDvmt
+            - 2040
+    StateTotalDvmt2045:
+        kind: info
+        desc: Daily vehicle miles traveled by households in total - vehicles, com service, and public transit 2045
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalDvmt
+            - 2045
+    StateTotalDvmt2050:
+        kind: info
+        desc: Daily vehicle miles traveled by households in total - vehicles, com service, and public transit 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalDvmt
+            - 2050
+    StateTotalGGE2020:
+        kind: info
+        desc: Total gasoline consumed by light and heavy duty vehicles in 2020
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalGGE
+            - 2020
+    StateTotalGGE2025:
+        kind: info
+        desc: Total gasoline consumed by light and heavy duty vehicles in 2025
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalGGE
+            - 2025
+    StateTotalGGE2030:
+        kind: info
+        desc: Total gasoline consumed by light and heavy duty vehicles in 2030
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalGGE
+            - 2030
+    StateTotalGGE2035:
+        kind: info
+        desc: Total gasoline consumed by light and heavy duty vehicles in 2035
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalGGE
+            - 2035
+    StateTotalGGE2040:
+        kind: info
+        desc: Total gasoline consumed by light and heavy duty vehicles in 2040
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalGGE
+            - 2040
+    StateTotalGGE2045:
+        kind: info
+        desc: Total gasoline consumed by light and heavy duty vehicles in 2045
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalGGE
+            - 2045
+    StateTotalGGE2050:
+        kind: info
+        desc: Total gasoline consumed by light and heavy duty vehicles in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - TotalGGE
+            - 2050
+    StateComSvcCO2e2020:
+        kind: info
+        desc: Total gasoline consumed by light and heavy duty vehicles in 2020
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - ComSvcCO2e
+            - 2020
+    StateComSvcCO2e2025:
+        kind: info
+        desc: Total gasoline consumed by light and heavy duty vehicles in 2025
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - ComSvcCO2e
+            - 2025
+    StateComSvcCO2e2030:
+        kind: info
+        desc: Total gasoline consumed by light and heavy duty vehicles in 2030
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - ComSvcCO2e
+            - 2030
+    StateComSvcCO2e2035:
+        kind: info
+        desc: Total gasoline consumed by light and heavy duty vehicles in 2035
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - ComSvcCO2e
+            - 2035
+    StateComSvcCO2e2040:
+        kind: info
+        desc: Total gasoline consumed by light and heavy duty vehicles in 2040
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - ComSvcCO2e
+            - 2040
+    StateComSvcCO2e2045:
+        kind: info
+        desc: Total gasoline consumed by light and heavy duty vehicles in 2045
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - ComSvcCO2e
+            - 2045
+    StateComSvcCO2e2050:
+        kind: info
+        desc: Total gasoline consumed by light and heavy duty vehicles in 2050
+        transform: none
+        metamodeltype: linear
+        parser:
+            file: state_validation_measures.csv
+            loc:
+            - ComSvcCO2e
+            - 2050

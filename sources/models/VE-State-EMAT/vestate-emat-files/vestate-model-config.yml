@@ -1,5 +1,5 @@
 
-model_path: ./VE-State-DL-MM
+model_path: ./VE-State-DL0-MM
 model_archive: ./VisionEval-Archive
 #model_source: E:/Projects/Clients/odot/ODOT_VEState/Github/built/emat_setup/4.1.0/runtime/models/VE-State-MM
 model_hist_datastore: E:/Projects/Clients/odot/ODOT_VEState/Github/sources/models/VE-State-EMAT/BaseDatastore

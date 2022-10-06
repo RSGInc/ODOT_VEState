@@ -3,8 +3,8 @@
   "Scenario": "AP2022 MM",
   "Description": "New AP with updates assembled in 2022",
   "Region": "Oregon",
-  "BaseYear": "2010",
-  "Years": ["2050"],
+  "BaseYear": "2015",
+  "Years": ["2015", "2050"],
   "DatastoreName": "Datastore",
   "DatastoreType": "RD",
   "Seed": 1,
@@ -16,7 +16,7 @@
     "VEHouseholdVehicles",
     "VEHouseholdVehiclesDL",
     "VETravelDemandMM",
-    "VEPowertrainsAndFuelsAP2022",
+    "VEPowertrainsAndFuelsAP22aLowEV",
     "VETravelPerformanceDL"
   ]
 }

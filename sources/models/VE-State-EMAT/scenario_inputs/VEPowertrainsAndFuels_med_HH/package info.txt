@@ -1,0 +1,14 @@
+This package was originally delivered from Sylvan Hooper at ODOT on 17 August. 
+
+Updated: 16 Sept:
+This package includes updates to the hh_powertrain_prop.csv to account for a monotonic increase in the PHEV share. 
+
+from Sylvan"
+I’ve attached a hh_powertrain_prop.csv variant, the only PowertrainsAndFuel file we found ourselves modifying for the ‘GHG Mitigation/EV charging’ scenario (Tara mentioned below we would soon be supplying). It takes the same file as provided earlier and applies a monotonic increasing constraint to non-ICEV powertrain proportions for MY2020 and after w/ the needed deductions taken from the ICEV proportion; in case it’s easier to implement that way rather than w/ the attached file. The result from the monotonic approach tracks w/ what we had been roughly estimating the impact of the scenario with the benefit of being able to explain the difference between the two easily."
+
+
+This package will inform a medium level of GHG/Electrification
+
+
+
+

@@ -1,0 +1,724 @@
+---
+# VEState Scope Definition for ODOT OTP
+
+scope:
+    name: VEState
+    desc: VisionEval State Strategic Planning Model. ODOT OTP
+
+inputs:
+
+    # # LAND-USE
+    # LUDENSITYMIX:
+    #     # TMIP - CATEGORICAL
+    #     # SCENARIOFOLDER: L1
+    #     # FILENAME: marea_mix_targets.csv
+    #     # MODEL NAME: _manipulate_ludensity
+    #     shortname: Urban Mix Prop
+    #     ptype: exogenous uncertainty
+    #     dtype: cat
+    #     desc: Urban proportion for each marea by year
+    #     default: AP
+    #     values:
+    #         - AP   # AP 22 input
+    #         - PVOP # Preservation/Operation input
+    #         - MM   # Multimodal input
+
+    # LAND-USE
+    # LUDENSITYMIX:
+    #     # TMIP - CATEGORICAL
+    #     # SCENARIOFOLDER: L1
+    #     # FILENAME: marea_mix_targets.csv
+    #     # MODEL NAME: _manipulate_ludensity
+    #     shortname: Urban Mix Prop
+    #     ptype: exogenous uncertainty
+    #     dtype: float
+    #     desc: Urban proportion for each marea by year
+    #     default: 0
+    #     min: 0  #- AP   # AP 22 input
+    #     max: 1  #- MM   # Multimodal input
+    # 
+    # INTDENSITYSCEN:
+    #     # TMIP - MIXTURE
+    #     # SCENARIOFOLDER: L2
+    #     # FILENAME: marea_d3bpo4_adj.csv
+    #     # MODEL NAME: _manipulate_intdensity
+    #     shortname: D3BPO4 Adj
+    #     ptype: exogenous uncertainty
+    #     dtype: float
+    #     desc: D3BPO4 adjustment factor for each marea by year by Urban, Town, and Rural segments.
+    #     default: 0 # Default no adjustment to the D3BPO4 (AP)
+    #                # marea_d3bpo4_adj: UrbanD3bpo4Adj,TownD3bpo4Adj,RuralD3bpo4Adj
+    #     max: 1
+    #                # marea_d3bpo4_adj: UrbanD3bpo4Adj,TownD3bpo4Adj,RuralD3bpo4Adj (MM)
+    #     min: 0
+    #                # marea_d3bpo4_adj: UrbanD3bpo4Adj,TownD3bpo4Adj,RuralD3bpo4Adj
+            
+    # SOCIO-ECONOMIC FACOTRS
+    # HHPOPGROWTHRATE:
+    #     # TMIP - CATEGORICAL
+    #     # SCENARIOFOLDER: SE1
+    #     # FILENAME: azone_hh_pop_by_age.csv
+    #     # FILENAME: azone_relative_employment.csv
+    #     # FILENAME: azone_loc_type_land_area.csv
+    #     # MODEL NAME: _manipulate_population
+    #     shortname: Population Characteristics
+    #     ptype: exogenous uncertainty
+    #     dtype: cat
+    #     desc: Age and relative employment distribution across population by azone and year.
+    #     default: mid
+    #     values:
+    #         - low    #
+    #                  # azone_hh_pop_by_age: Population growth rate less than .2% annually 
+    #                  # Age0to14,Age15to19,Age20to29,Age30to54,Age55to64,Age65Plus
+    #                  # azone_relative_employment: relative employment close to x%
+    #                  # RelEmp15to19,RelEmp20to29,RelEmp30to54,RelEmp55to64,RelEmp
+    #                  # azone_loc_type_land_area: Land growth of a% for every 1% population growth
+    #                  # MetroLandArea , TownLandArea
+    #         - mid    #
+    #                  # azone_hh_pop_by_age: Population growth rate less than .6% annually 
+    #                  # Age0to14,Age15to19,Age20to29,Age30to54,Age55to64,Age65Plus
+    #                  # azone_relative_employment: relative employment close to y%
+    #                  # RelEmp15to19,RelEmp20to29,RelEmp30to54,RelEmp55to64,RelEmp65Plus
+    #                  # azone_loc_type_land_area: Land growth of a% for every 1% population growth
+    #                  # MetroLandArea , TownLandArea
+    #         - high   #
+    #                  # azone_hh_pop_by_age: Population growth rate more than 1% annually 
+    #                  # Age0to14,Age15to19,Age20to29,Age30to54,Age55to64,Age65Plus
+    #                  # azone_relative_employment: relative employment close to z%
+    #                  # RelEmp15to19,RelEmp20to29,RelEmp30to54,RelEmp55to64,RelEmp65Plus
+    #                  # azone_loc_type_land_area: Land growth of a% for every 1% population growth
+    #                  # MetroLandArea , TownLandArea
+        
+    # TECHNOLOGY
+#     LDVECODRVSCEN:
+#         # TMIP - MIXTURE
+#         # SCENARIOFOLDER: T1
+#         # FILENAME: marea_speed_smooth_ecodrive.csv
+#         # MODEL NAME: _manipulate_ldvecodrv
+#         shortname: LDV Eco Drive Penetration
+#         ptype: exogenour uncertainty
+#         dtype: float
+#         desc: Fraction of light duty vehicles that Eco-Drive 
+#         default: 0 # AP scenario eco-driving input
+#                    # marea_speed_smooth_ecodrive: FwySmooth,ArtSmooth,LdvEcoDrive
+#         max: 1     # STS scenario eco-driving input
+#                    # marea_speed_smooth_ecodrive: FwySmooth,ArtSmooth,LdvEcoDrive
+#         min: 0     # AP scenario eco-driving input
+#                    # marea_speed_smooth_ecodrive: FwySmooth,ArtSmooth,LdvEcoDrive
+        
+    # CARSVCAVAILSCEN:
+    #     # TMIP - CATEGORICAL
+    #     # SCENARIOFOLDER: T2
+    #     # FILENAME: marea_carsvc_availability.csv
+    #     # MODEL NAME: _manipulate_carsvcavail
+    #     shortname: Car Service Availability
+    #     ptype: exogenous uncertainty
+    #     dtype: cat
+    #     desc: Different levels of car service availability
+    #     default: mid
+    #     values:
+    #         - low     # low level of car services availability
+    #                   # marea_carsvc_availability: CenterPropHighCarSvc,InnerPropHighCarSvc,OuterPropHighCarSvc,FringePropHighCarSvc,CenterPropShdCarSvc,InnerPropShdCarSvc,OuterPropShdCarSvc,FringePropShdCarSvc
+    #         - mid     # mid level of car services availability
+    #                   # marea_carsvc_availability: CenterPropHighCarSvc,InnerPropHighCarSvc,OuterPropHighCarSvc,FringePropHighCarSvc,CenterPropShdCarSvc,InnerPropShdCarSvc,OuterPropShdCarSvc,FringePropShdCarSvc
+    #         - high    # low level of car services availability
+    #                   # marea_carsvc_availability: CenterPropHighCarSvc,InnerPropHighCarSvc,OuterPropHighCarSvc,FringePropHighCarSvc,CenterPropShdCarSvc,InnerPropShdCarSvc,OuterPropShdCarSvc,FringePropShdCarSvc
+    #     
+    # SHDCARSVCOCCUPRATE:
+    #     # TMIP - MANIPULATION
+    #     # SCENARIOFOLDER: T3
+    #     # FILENAME: region_carsvc_shd_occup.csv
+    #     # MODEL NAME: _manipulate_shdcarsvc
+    #     shortname: Shared Car Svc Occup
+    #     ptype: exogenous uncertainty
+    #     dtype: float
+    #     desc: Average occupancy in shared car services for future year.
+    #     default: 2.25 # Default average occupancy rate
+    #                   # region_carsvc_shd_occup: ShdCarSvcAveOccup
+    #     max: 3        # Highest estimate of average occupancy rate
+    #                   # region_carsvc_shd_occup: ShdCarSvcAveOccup
+    #     min: 1.0      # Lowest estimate of average occupancy rate
+    #                   # region_carsvc_shd_occup: ShdCarSvcAveOccup
+        
+    # DRVLESSADJSCEN:
+    #     # TMIP - CATEGORICAL
+    #     # SCENARIOFOLDER: T4
+    #     # FILENAME: driverless_effect_adj_param.csv
+    #     # MODEL NAME: _manipulate_drvlessadj
+    #     shortname: Driverless Effect Adjustment
+    #     ptype: exogenous uncertainty
+    #     dtype: cat
+    #     desc: Factor to adjust the effect of driverless vehicles only on congestion compared to effect of 100% driverless vehicles on congestion.
+    #     default: mid
+    #     values:
+    #         - low     # The effect of driverless vehicles only is less on congestion (more exponential in proportion of driverless DVMT)
+    #                   # driverless_effect_adj_param: Beta
+    #         - mid     # The effect of driverless vehicles only is average on congestion (less exponential in proportion of driverless DVMT)
+    #                   # driverless_effect_adj_param: Beta
+    #         - high    # The effect of driverless vehicles is more on congestion (more linear in proportion of driverless DVMT)
+    #                   # driverless_effect_adj_param: Beta
+        
+    # DRVLESSPROPREMOTEACC:
+    #     # TMIP - MANIPULATION
+    #     # SCENARIOFOLDER: T5
+    #     # FILENAME: region_driverless_vehicle_parameter.csv
+    #     # MODEL NAME: _manipulate_drvless_param
+    #     shortname: Proportion of Remote Accesss
+    #     ptype: exogenous uncertainty
+    #     dtype: float
+    #     desc: Proportion of trips in driverless vehicles that are remotely controlled for future year
+    #     default: 0.15 # Default is 15% of trips in driverless vehicles can be controlled remotely in future year
+    #                   # region_driverless_vehicle_parameter: PropRemoteAccess
+    #     max: 0.3      # 30% of trip s in driverless vehicles can be controlled remotely in future year
+    #                   # region_driverless_vehicle_parameter: PropRemoteAccess
+    #     min: 0.02     # 2% of trip s in driverless vehicles can be controlled remotely in future year
+    #                   # region_driverless_vehicle_parameter: PropRemoteAccess
+    #     corr:
+    #       PROPPARKINGFEEAVOID: 0.8
+        
+    # PROPPARKINGFEEAVOID:
+    #     # TMIP - MANIPULATION
+    #     # SCENARIOFOLDER: T5
+    #     # FILENAME: region_driverless_vehicle_parameter.csv
+    #     # MODEL NAME: _manipulate_drvless_param
+    #     shortname: Proporiton Avoided in Parking Fees
+    #     ptype: exogenous uncertainty
+    #     dtype: float
+    #     desc: Proportion of parking fees avoided by travel in owned driverless vehicles.
+    #     default: 0.17 # Default is 17% of trips in driverless vehicles can be controlled remotely in future year
+    #                   # region_driverless_vehicle_parameter: PropParkingFeeAvoid
+    #     max: 0.3      # 30% of trip s in driverless vehicles can be controlled remotely in future year
+    #                   # region_driverless_vehicle_parameter: PropParkingFeeAvoid
+    #     min: 0.02     # 2% of trip s in driverless vehicles can be controlled remotely in future year
+    #                   # region_driverless_vehicle_parameter: PropParkingFeeAvoid
+    #     corr:
+    #       DRVLESSPROPREMOTEACC: 0.8
+        
+    # AVVEHSALESGROWTHSCEN:
+    #     # TMIP - CATEGORICAL
+    #     # SCENARIOFOLDER: T6
+    #     # FILENAME: region_driverless_vehicle_prop.csv
+    #     # MODEL NAME: _manipulate_drvlessvehsales
+    #     shortname: Proportion of Driverless Vehicles
+    #     ptype: exogenous uncertainty
+    #     dtype: cat
+    #     desc: Proportion of vehicles sold that are driverless in a future year.
+    #     default: mid
+    #     values:
+    #         - low     # The proportion of vehicles sold that are driverless is less than 25%
+    #                   # region_driverless_vehicle_prop: AutoSalesDriverlessProp, LtTrkSalesDriverlessProp
+    #         - mid     # The proportion of vehicles sold that are driverless is around 50%
+    #                   # region_driverless_vehicle_prop: AutoSalesDriverlessProp, LtTrkSalesDriverlessProp
+    #         - high    # The proportion of vehicles sold that are driverless is more than 95%
+    #                   # region_driverless_vehicle_prop: AutoSalesDriverlessProp, LtTrkSalesDriverlessProp
+
+    # # OPTION 1    
+    # CARCHARGEAVAILSCEN:
+    #     # TMIP - CATEGORICAL
+    #     # SCENARIOFOLDER: T7
+    #     # FILENAME: azone_charging_availability.csv
+    #     # MODEL NAME: _manipulate_carchargeavailscen
+    #     shortname: Car Charging Availability
+    #     ptype: exogenous uncertainty
+    #     dtype: cat
+    #     desc: Car charging availability scenario.
+    #     default: AP
+    #     values:
+    #         - AP     # Current funding
+    #         - MM     # Multimodal
+    #         - OPPV    # OperationEmphasis/PreservationEmphasis
+
+    # OPTION 2
+    CARCHARGEAVAILSCEN:
+        # TMIP - MIXTURE
+        # SCENARIOFOLDER: T7
+        # FILENAME: azone_charging_availability.csv
+        # MODEL NAME: _manipulate_carchargeavailscen
+        shortname: Car Charging Availability
+        ptype: exogenous uncertainty
+        dtype: float
+        desc: Car charging availability scenario.
+        default: 0  # Default no adjustment to the charging availability (AP)
+                   
+        max: 1      # 50% of SF charging availability (MM)
+        min: 0      # marea_d3bpo4_adj: UrbanD3bpo4Adj,TownD3bpo4Adj,RuralD3bpo4Adj
+        
+#     # ENERGY
+#     CICHANGERATESCEN:
+#         # TMIP - CATEGORICAL
+#         # SCENARIOFOLDER: E1
+#         # FILENAME: region_ave_fuel_carbon_intensity.csv
+#         # FILENAME: region_hvytrk_powertrain_prop.csv
+#         # FILENAME: region_comsvc_powertrain_prop.csv
+#         # FILENAME: marea_transit_fuel.csv
+#         # FILENAME: marea_transit_powertrain_prop.csv
+#         # MODELNAME: _manipulate_cichange
+#         shortname: Change Carbon Intensity
+#         ptype: exogenous uncertainty
+#         dtype: cat
+#         desc: Levels of carbon emission based on fuel composition and vehicle powertrain distribution. 
+#         default: mid
+#         values:
+#             - low  # More carbon emission due to less reliance on electric vehicles
+#                    # region_ave_fuel_carbon_intensity - default
+#                    # HhFuelCI,CarSvcFuelCI,ComSvcFuelCI,HvyTrkFuelCI,TransitVanFuelCI,TransitBusFuelCI,TransitRailFuelCI
+#                    #
+#                    # region_hvytrk_powertrain_prop - Heavy truck ICE proportion close to 99% for 2050
+#                    # HvyTrkPropIcev,HvyTrkPropHev,HvyTrkPropBev
+#                    #
+#                    # region_comsvc_powertrain_prop - Commercial servce ICE proportion close to 90% for 2050
+#                    # ComSvcAutoPropIcev,ComSvcAutoPropHev,ComSvcAutoPropBev,ComSvcLtTrkPropIcev,FcLtTrkPropHev,ComSvcLtTrkPropBev
+#                    #
+#                    # marea_transit_fuel - default
+#                    # VanPropDiesel,VanPropGasoline,VanPropCng,BusPropGasoline,BusPropDiesel,BusPropCng,RailPropGasoline,RailPropDiesel
+#                    #
+#                    # marea_transit_powertrain_prop - All transit ICE vehicles constitute close 90% for 2050
+#                    # VanPropIcev,VanPropHev,VanPropBev,BusPropIcev,BusPropHev,BusPropBev,RailPropIcev,RailPropHev,RailPropEv
+#                    #
+#             - mid  # Between the low and mid
+#                    # region_ave_fuel_carbon_intensity - default
+#                    # HhFuelCI,CarSvcFuelCI,ComSvcFuelCI,HvyTrkFuelCI,TransitVanFuelCI,TransitBusFuelCI,TransitRailFuelCI
+#                    #
+#                    # region_hvytrk_powertrain_prop - Heavy truck ICE proportion close to 65% for 2050
+#                    # HvyTrkPropIcev,HvyTrkPropHev,HvyTrkPropBev
+#                    #
+#                    # region_comsvc_powertrain_prop - Commercial servce ICE proportion close to 60% for 2050
+#                    # ComSvcAutoPropIcev,ComSvcAutoPropHev,ComSvcAutoPropBev,ComSvcLtTrkPropIcev,ComSvcLtTrkPropHev,ComSvcLtTrkPropBev
+#                    #
+#                    # marea_transit_fuel - default
+#                    # VanPropDiesel,VanPropGasoline,VanPropCng,BusPropGasoline,BusPropDiesel,BusPropCng,RailPropGasoline,RailPropDiesel
+#                    #
+#                    # marea_transit_powertrain_prop - All transit ICE vehicles constitute close 60% for 2050
+#                    # VanPropIcev,VanPropHev,VanPropBev,BusPropIcev,BusPropHev,BusPropBev,RailPropIcev,RailPropHev,RailPropEv
+#                    #
+#             - high # Less carbon emission due to more electric powertrains and better fuel composition.
+#                    # region_ave_fuel_carbon_intensity - Reduce carbon intensity by 10% for 2050 compared to default
+#                    # HhFuelCI,CarSvcFuelCI,ComSvcFuelCI,HvyTrkFuelCI,TransitVanFuelCI,TransitBusFuelCI,TransitRailFuelCI
+#                    #
+#                    # region_hvytrk_powertrain_prop - Heavy truck ICE proportion close to 50% for 2050
+#                    # HvyTrkPropIcev,HvyTrkPropHev,HvyTrkPropBev
+#                    #
+#                    # region_comsvc_powertrain_prop - Commercial servce ICE proportion close to 45% for 2050
+#                    # ComSvcAutoPropIcev,ComSvcAutoPropHev,ComSvcAutoPropBev,ComSvcLtTrkPropIcev,ComSvcLtTrkPropHev,ComSvcLtTrkPropBev
+#                    #
+#                    # marea_transit_fuel - Reduce carbon intensity by 10% for 2050 compared to default
+#                    # VanPropDiesel,VanPropGasoline,VanPropCng,BusPropGasoline,BusPropDiesel,BusPropCng,RailPropGasoline,RailPropDiesel
+#                    #
+#                    # marea_transit_powertrain_prop - All transit ICE vehicles constitute close 45% for 2050
+#                    # VanPropIcev,VanPropHev,VanPropBev,BusPropIcev,BusPropHev,BusPropBev,RailPropIcev,RailPropHev,RailPropEv
+        
+    # # INVESTMENT
+    # INVESTMENTSCEN:
+    #     # TMIP - CATEGORICAL
+    #     # SCENARIOFOLDER: I1
+    #     # FILENAME: azone_charging_availability
+    #     # FILENAME: marea_travel-demand-mgt_by_area-type.csv
+    #     # FILENAME: azone_prop_sov_dvmt_diverted.csv
+    #     # FILENAME: marea_transit_service.csv
+    #     # FILENAME: azone_veh_use_taxes.csv
+    #     # FILENAME: marea_lane_miles.csv
+    #     # FILENAME: marea_operations_deployment.csv
+    #     # MODELNAME: _manipulate_inv
+    #     shortname: Investment Scenario
+    #     ptype: policy lever
+    #     dtype: cat
+    #     desc: Different investment scenarios.
+    #     default: AP
+    #     values:
+    #         - AP
+    #         - MM
+    #         - OP
+    #         - PV
+    # # Option 1
+    # SOVDIVIVERTSCEN:
+    #     # TMIP - CATEGORICAL
+    #     # SCENARIOFOLDER: I2
+    #     # FILENAME: azone_prop_sov_dvmt_diverted.csv
+    #     # MODELNAME: _manipulate_sovdivert
+    #     shortname: SOV Diversion
+    #     ptype: policy lever
+    #     dtype: cat
+    #     desc: SOV diversion scenarios
+    #     default: AP
+    #     values:
+    #         - AP    # Current funding
+    #         - MM    # Multimodal
+    #         - OPPV  # Operation/Preservation emphasis
+    # Option 2
+    # SOVDIVIVERTSCEN:
+    #     # TMIP - Misture
+    #     # SCENARIOFOLDER: I2
+    #     # FILENAME: azone_prop_sov_dvmt_diverted.csv
+    #     # MODELNAME: _manipulate_sovdivert
+    #     shortname: SOV Diversion
+    #     ptype: policy lever
+    #     dtype: float
+    #     desc: SOV diversion scenarios
+    #     default: 0  # Default no adjustment to the SOV Diversion (AP)                   
+    #     max: 1      # SOV Diversion from (MM)
+    #     min: 0      # SOV Diversion from AP
+
+    # TAXSCEN:
+    #     # TMIP - CATEGORICAL
+    #     # SCENARIOFOLDER: I3
+    #     # FILENAME: azone_veh_use_taxes.csv
+    #     # MODELNAME: _manipulate_taxes
+    #     shortname: Tax Scenario
+    #     ptype: policy lever
+    #     dtype: cat
+    #     desc: Different taxes scenarios.
+    #     default: AP
+    #     values:
+    #         - AP    # Current funding
+    #         - NONAP # Other investments
+
+    # TAXSCEN:
+    #     # TMIP - CATEGORICAL
+    #     # SCENARIOFOLDER: I3
+    #     # FILENAME: azone_veh_use_taxes.csv
+    #     # MODELNAME: _manipulate_taxes
+    #     shortname: Tax Scenario
+    #     ptype: policy lever
+    #     dtype: float
+    #     desc: Different taxes scenarios.
+    #     default: 0
+    #     max: 1          # VMTTax High = 0.047/mile 
+    #     min: 0          # VMTTax Low = 0.013/mile 
+
+    # LANEMILESCEN:
+    #     # TMIP - CATEGORICAL
+    #     # SCENARIOFOLDER: I4
+    #     # FILENAME: marea_lane_miles.csv
+    #     # MODELNAME: _manipulate_mlanemiles
+    #     shortname: Marea Lane Miles
+    #     ptype: policy lever
+    #     dtype: cat
+    #     desc: Different marea lane mile scenario
+    #     default: APMMPV
+    #     values:
+    #         - APMMPV  # Current funding/Multimodal/Preservation emphasis
+    #         - OP      # Operations emphasis
+
+    # LANEMILESCEN:
+    #     # TMIP - CATEGORICAL
+    #     # SCENARIOFOLDER: I4
+    #     # FILENAME: marea_lane_miles.csv
+    #     # MODELNAME: _manipulate_mlanemiles
+    #     shortname: Marea Lane Miles
+    #     ptype: policy lever
+    #     dtype: float
+    #     desc: Different marea lane mile scenario
+    #     default: 0
+    #     max: 1          # Operations emphasis
+    #     min: 0          # Current funding/Multimodal/Preservation emphasis
+
+    # OPSDEPLOYSCEN:
+    #     # TMIP - CATEGORICAL
+    #     # SCENARIOFOLDER: I5
+    #     # FILENAME: marea_operations_deployment.csv
+    #     # MODELNAME: _manipulate_opsdeployment
+    #     shortname: Operations Deployment Scenario
+    #     ptype: policy lever
+    #     dtype: cat
+    #     desc: Different operations deployment scenarios.
+    #     default: AP
+    #     values:
+    #         - AP    # Curent funding
+    #         - MMPV  # Multimodal/Preservation emphasis
+    #         - OP    # Operations emphasis
+
+    # OPSDEPLOYSCEN:
+    #     # TMIP - CATEGORICAL
+    #     # SCENARIOFOLDER: I5
+    #     # FILENAME: marea_operations_deployment.csv
+    #     # MODELNAME: _manipulate_opsdeployment
+    #     shortname: Operations Deployment Scenario
+    #     ptype: policy lever
+    #     dtype: float
+    #     desc: Different operations deployment scenarios.
+    #     default: 0
+    #     min: 0  #- AP    # Curent funding
+    #     max: 1  #- MMPV  # Multimodal/Preservation emphasis
+
+    # TRANSITSERVICESCEN:
+    #     # TMIP - CATEGORICAL
+    #     # SCENARIOFOLDER: I6
+    #     # FILENAME: marea_transit_service.csv
+    #     # MODELNAME: _manipulate_transitservice
+    #     shortname: Transit Service Investment
+    #     ptype: policy lever
+    #     dtype: cat
+    #     desc: Different transit service scenario.
+    #     default: AP
+    #     values:
+    #         - AP    # Curent funding
+    #         - MM    # Multimodal
+    #         - OPPV  # Operations emphasis/Preservation emphasis
+
+    # TRANSITSERVICESCEN:
+    #     # TMIP - CATEGORICAL
+    #     # SCENARIOFOLDER: I6
+    #     # FILENAME: marea_transit_service.csv
+    #     # MODELNAME: _manipulate_transitservice
+    #     shortname: Transit Service Investment
+    #     ptype: policy lever
+    #     dtype: float
+    #     desc: Different transit service scenario.
+    #     default: 0
+    #     min: 0  # Curent funding
+    #     max: 1  # Multimodal
+
+    # # Option 1
+    # TDMINVESTMENTSCEN:
+    #     # TMIP - CATEGORICAL
+    #     # SCENARIOFOLDER: I7
+    #     # FILENAME: marea_travel-demand-mgt_by_area-type.csv
+    #     # MODELNAME: _manipulate_tdmareatype
+    #     shortname: Travel Demand Management
+    #     ptype: policy lever
+    #     dtype: cat
+    #     desc: Different TDM investment scenario.
+    #     default: APOPPV
+    #     values:
+    #         - APOPPV    # Curent funding Operations emphasis/Preservation emphasis
+    #         - MM        # Multimodal
+
+    # Option 2
+    # TDMINVESTMENTSCEN:
+    #     # TMIP - MIXTURE
+    #     # SCENARIOFOLDER: I7
+    #     # FILENAME: marea_travel-demand-mgt_by_area-type.csv
+    #     # MODELNAME: _manipulate_tdmareatype
+    #     shortname: Travel Demand Management
+    #     ptype: policy lever
+    #     dtype: float
+    #     desc: Different TDM investment scenario.
+    #     default: 0      # Curent funding Operations emphasis/Preservation emphasis 
+    #     max: 1          # Multimodal
+    #     min: 0          # Curent funding Operations emphasis/Preservation emphasis
+
+outputs:
+    Albany_VehDvmt:
+      kind: info
+      metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - Albany_VehDvmt
+        - Value
+    Albany_VehElecDvmt:
+      kind: info
+      metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - Albany_VehElecDvmt
+        - Value
+    Albany_VehElecDvmtProp:
+      kind: info
+      #metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - Albany_VehElecDvmtProp
+        - Value
+    Bend_VehDvmt:
+      kind: info
+      metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - Bend_VehDvmt
+        - Value
+    Bend_VehElecDvmt:
+      kind: info
+      metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - Bend_VehElecDvmt
+        - Value
+    Bend_VehElecDvmtProp:
+      kind: info
+      #metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - Bend_VehElecDvmtProp
+        - Value
+    Corvallis_VehDvmt:
+      kind: info
+      metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - Corvallis_VehDvmt
+        - Value
+    Corvallis_VehElecDvmt:
+      kind: info
+      metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - Corvallis_VehElecDvmt
+        - Value
+    Corvallis_VehElecDvmtProp:
+      kind: info
+      #metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - Corvallis_VehElecDvmtProp
+        - Value
+    ElecDvmtProp:
+      kind: info
+      metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - ElecDvmtProp
+        - Value
+    EugeneSpringfield_VehDvmt:
+      kind: info
+      metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - EugeneSpringfield_VehDvmt
+        - Value
+    EugeneSpringfield_VehElecDvmt:
+      kind: info
+      metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - EugeneSpringfield_VehElecDvmt
+        - Value
+    EugeneSpringfield_VehElecDvmtProp:
+      kind: info
+      #metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - EugeneSpringfield_VehElecDvmtProp
+        - Value
+    GrantsPass_VehDvmt:
+      kind: info
+      metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - GrantsPass_VehDvmt
+        - Value
+    GrantsPass_VehElecDvmt:
+      kind: info
+      metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - GrantsPass_VehElecDvmt
+        - Value
+    GrantsPass_VehElecDvmtProp:
+      kind: info
+      #metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - GrantsPass_VehElecDvmtProp
+        - Value
+    Metro_VehDvmt:
+      kind: info
+      metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - Metro_VehDvmt
+        - Value
+    Metro_VehElecDvmt:
+      kind: info
+      metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - Metro_VehElecDvmt
+        - Value
+    Metro_VehElecDvmtProp:
+      kind: info
+      #metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - Metro_VehElecDvmtProp
+        - Value
+    RogueValley_VehDvmt:
+      kind: info
+      metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - RogueValley_VehDvmt
+        - Value
+    RogueValley_VehElecDvmt:
+      kind: info
+      metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - RogueValley_VehElecDvmt
+        - Value
+    RogueValley_VehElecDvmtProp:
+      kind: info
+      #metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - RogueValley_VehElecDvmtProp
+        - Value
+    SalemKeizer_VehDvmt:
+      kind: info
+      metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - SalemKeizer_VehDvmt
+        - Value
+    SalemKeizer_VehElecDvmt:
+      kind: info
+      metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - SalemKeizer_VehElecDvmt
+        - Value
+    SalemKeizer_VehElecDvmtProp:
+      kind: info
+      #metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - SalemKeizer_VehElecDvmtProp
+        - Value
+    TotalDvmtVehOwned:
+      kind: info
+      metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - TotalDvmtVehOwned
+        - Value
+    TotalElecDvmtVehOwned:
+      kind: info
+      metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - TotalElecDvmtVehOwned
+        - Value
+    ElecDvmtProp:
+      kind: info
+      #metamodeltype: log
+      parser:
+        file: output_measures.csv
+        loc:
+        - ElecDvmtProp
+        - Value

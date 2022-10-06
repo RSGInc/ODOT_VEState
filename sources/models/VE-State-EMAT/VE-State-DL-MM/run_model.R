@@ -17,9 +17,7 @@ initializeModel(
   RunParamFile = "run_parameters.json",
   GeoFile = "geo.csv",
   ModelParamFile = "model_parameters.json",
-  LoadDatastore = TRUE,
-  DatastoreName = "Datastore",
-  SaveDatastore = TRUE
+  LoadDatastore = FALSE
   )  
 cat('run_model.R: initializeModel completed\n')
 
@@ -52,8 +50,8 @@ for(Year in getYears()) {
   runModule("CalculateAltModeTrips",           "VETravelDemandMM",            RunFor = "AllYears",    RunYear = Year)
   runModule("CalculateVehicleTrips",           "VEHouseholdTravel",           RunFor = "AllYears",    RunYear = Year)
   runModule("DivertSovTravel",                 "VEHouseholdTravel",           RunFor = "AllYears",    RunYear = Year)
-  runModule("CalculateCarbonIntensity",        "VEPowertrainsAndFuelsAP2022", RunFor = "AllYears",    RunYear = Year)
-  runModule("AssignHhVehiclePowertrain",       "VEPowertrainsAndFuelsAP2022", RunFor = "AllYears",    RunYear = Year)
+  runModule("CalculateCarbonIntensity",        "VEPowertrainsAndFuelsAP22aLowEV", RunFor = "AllYears",    RunYear = Year)
+  runModule("AssignHhVehiclePowertrain",       "VEPowertrainsAndFuelsAP22aLowEV", RunFor = "AllYears",    RunYear = Year)
   for (i in 1:2) {
     runModule("CalculateRoadDvmt",             "VETravelPerformanceDL",       RunFor = "AllYear",    RunYear = Year)
     runModule("CalculateRoadPerformance",      "VETravelPerformanceDL",       RunFor = "AllYears",    RunYear = Year)
@@ -158,35 +156,3 @@ if (file.exists("CalcStateValidationMeasuresFunction.R")) {
                 "because the 'CalcOregonValidationMeasures.R' script is not",
                 "present in the same directory as the 'run_model.R' script."))
 }
-
-#source("Combine_metro_measures.R")
-# #Tabulate DataStore Inventory
-# #------------------------------
-# documentDatastoreTables <- function(SaveArchiveName, QueryPrep_ls) {
-#   GroupNames_ <- QueryPrep_ls$Listing$Datastore$Datastore$groupname
-#   Groups_ <- GroupNames_[-grep("/", GroupNames_)]
-#   if (any(Groups_ == "")) {
-#     Groups_ <- Groups_[-(Groups_ == "")]
-#   }
-#   TempDir <- SaveArchiveName
-#   dir.create(TempDir)
-#   for (Group in Groups_) {
-#     GroupDir <- file.path(TempDir, Group)
-#     dir.create(GroupDir)
-#     Tables_ <- listTables(Group, QueryPrep_ls)$Datastore
-#     for (tb in Tables_) {
-#       Listing_df <- listDatasets(tb, Group, QueryPrep_ls)$Datastore
-#       write.table(Listing_df, file = file.path(GroupDir, paste0(tb, ".csv")),
-#                   row.names = FALSE, col.names = TRUE, sep = ",")
-#     }
-#   }
-#   zip(paste0(SaveArchiveName, ".zip"), TempDir)
-#   #remove_dir(TempDir)
-#   TRUE
-# }
-# 
-# QPrep_ls <- prepareForDatastoreQuery(
-#   DstoreLocs_ = DatastoreName,
-#   DstoreType = DatastoreType
-# )
-# documentDatastoreTables("Datastore_Documentation", QPrep_ls)

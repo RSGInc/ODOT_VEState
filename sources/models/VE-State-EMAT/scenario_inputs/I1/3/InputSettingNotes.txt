@@ -1,0 +1,12 @@
+Alex Bettinardi
+5-25-2022
+
+Quick readme to document the investement levels each "bundle" was assumed at:
+
+BikePed = Medium (azone_prop_sov_dvmt_diverted.csv)
+CapacityEnhance = Medium (marea_lane_miles.csv) 
+GHG_Mit = Medium (azone_charging_availability.csv) 
+Operations = High (marea_operations_deployment.csv and marea_speed_smooth_ecodrive.csv)
+Preservation = Medium (note no VE inputs, regional disinvestment consequences will be added via post-processing)
+TO = Medium (marea_travel-demand-mgt_by_area-type.csv)
+Transit = Medium (marea_transit_service.csv)
